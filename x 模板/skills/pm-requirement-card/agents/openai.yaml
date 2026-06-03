@@ -1,0 +1,4 @@
+interface:
+  display_name: "PM Requirement Card"
+  short_description: "Turn product signals into lightweight requirement cards."
+  default_prompt: "Create or improve a lightweight requirement card from the provided material."

@@ -1,0 +1,45 @@
+/* IconPark DsIcon — runtime (survives runtime-ui.css regeneration) */
+.ds-icon {
+  display: inline-block;
+  width: max(1em, var(--ds-icon-min-size));
+  height: max(1em, var(--ds-icon-min-size));
+  min-width: var(--ds-icon-min-size);
+  min-height: var(--ds-icon-min-size);
+  vertical-align: -0.125em;
+  flex-shrink: 0;
+  color: inherit;
+}
+.ds-icon--missing {
+  width: max(1em, var(--ds-icon-min-size));
+  height: max(1em, var(--ds-icon-min-size));
+  min-width: var(--ds-icon-min-size);
+  min-height: var(--ds-icon-min-size);
+  background: rgba(var(--ds-rgb-ink), 0.08);
+  border-radius: 2px;
+}
+@keyframes ds-icon-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.ds-icon.is-spin {
+  animation: ds-icon-spin 1s linear infinite;
+}
+
+/* IconPark SVG sprite（<use href="#left-bar"> / #right-bar） */
+.iconpark-icon {
+  display: inline-block;
+  width: max(1em, var(--ds-icon-min-size));
+  height: max(1em, var(--ds-icon-min-size));
+  min-width: var(--ds-icon-min-size);
+  min-height: var(--ds-icon-min-size);
+  vertical-align: -0.125em;
+  flex-shrink: 0;
+  color: inherit;
+  fill: none;
+}
+.iconpark-icon.is-flipped {
+  transform: scaleX(-1);
+}
+.iconpark-icon.is-spin {
+  animation: ds-icon-spin 1s linear infinite;
+}

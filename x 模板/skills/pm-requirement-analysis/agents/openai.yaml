@@ -1,0 +1,4 @@
+interface:
+  display_name: "PM Requirement Analysis"
+  short_description: "Analyze requirements with first-principles PM review."
+  default_prompt: "Analyze this requirement from first principles, expand the important considerations, then reduce it to the core product direction."

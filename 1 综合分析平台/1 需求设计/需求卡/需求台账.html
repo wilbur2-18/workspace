@@ -1,0 +1,1346 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>综合分析平台需求台账</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --paper: #ffffff;
+      --ink: #1f2937;
+      --muted: #64748b;
+      --line: #d8e0ea;
+      --line-soft: #e8eef5;
+      --blue: #1677ff;
+      --green: #168a5b;
+      --orange: #b66a00;
+      --gray: #697586;
+      --red: #b42318;
+      --shadow: 0 18px 45px rgba(38, 55, 77, 0.10);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      line-height: 1.5;
+    }
+
+    .page {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 28px 32px 40px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: flex-start;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 26px;
+      line-height: 1.25;
+    }
+
+    .subtitle {
+      margin: 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(94px, 1fr));
+      gap: 10px;
+      min-width: 470px;
+    }
+
+    .metric {
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: 0 8px 18px rgba(39, 58, 84, 0.06);
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 21px;
+      line-height: 1;
+    }
+
+    .metric span {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 14px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .filter {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 4px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #f8fafc;
+      color: #334155;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .note {
+      color: var(--muted);
+      font-size: 12px;
+      text-align: right;
+    }
+
+    .ledger {
+      display: grid;
+      grid-template-columns: 360px minmax(0, 1fr);
+      gap: 16px;
+      min-height: calc(100vh - 220px);
+    }
+
+    .sidebar,
+    .preview {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .sidebar-head {
+      padding: 14px;
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .sidebar-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .search {
+      width: 100%;
+      height: 34px;
+      padding: 0 11px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      color: var(--ink);
+      font: inherit;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .search:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(22, 119, 255, 0.12);
+    }
+
+    .req-list {
+      overflow: auto;
+      padding: 8px;
+    }
+
+    .req-item {
+      width: 100%;
+      margin: 0 0 6px;
+      padding: 10px;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      background: transparent;
+      color: inherit;
+      text-align: left;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .req-item:hover {
+      background: #f8fbff;
+      border-color: var(--line-soft);
+    }
+
+    .req-item.active {
+      background: #eef5ff;
+      border-color: #b9d5ff;
+    }
+
+    .req-line {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+
+    .req-name {
+      overflow: hidden;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.35;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .req-desc {
+      display: -webkit-box;
+      overflow: hidden;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+
+    .req-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .badge,
+    .priority {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 22px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .priority {
+      min-width: 34px;
+      border-radius: 7px;
+    }
+
+    .s-intake { background: #eef5ff; color: #1459b8; }
+    .s-design { background: #fff3df; color: #9a5a00; }
+    .s-dev { background: #eaf8f2; color: #0f6f48; }
+    .s-live { background: #f1f5f9; color: #526174; }
+    .p1 { background: #fff0ed; color: var(--red); }
+    .p2 { background: #fff7e8; color: var(--orange); }
+    .p3 { background: #eef6ff; color: var(--blue); }
+    .p4 { background: #f1f5f9; color: var(--gray); }
+
+    .preview {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      min-height: 0;
+    }
+
+    .preview-head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: start;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line-soft);
+      background: #fbfdff;
+    }
+
+    .preview-title {
+      margin: 0 0 8px;
+      font-size: 22px;
+      line-height: 1.3;
+    }
+
+    .preview-subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .head-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    a.button {
+      display: inline-flex;
+      align-items: center;
+      height: 32px;
+      padding: 0 11px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    a.button:hover {
+      border-color: #b9d5ff;
+      background: #f4f8ff;
+      text-decoration: none;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--line-soft);
+      background: #fff;
+    }
+
+    .summary-card {
+      padding: 10px 12px;
+      border: 1px solid var(--line-soft);
+      border-radius: 10px;
+      background: #fbfdff;
+    }
+
+    .summary-card span {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .summary-card strong {
+      display: block;
+      color: var(--ink);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .markdown {
+      overflow: auto;
+      padding: 22px 28px 32px;
+      font-size: 14px;
+    }
+
+    .markdown h1,
+    .markdown h2,
+    .markdown h3 {
+      line-height: 1.35;
+    }
+
+    .markdown h1 {
+      margin: 0 0 18px;
+      font-size: 25px;
+    }
+
+    .markdown h2 {
+      margin: 26px 0 12px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line-soft);
+      font-size: 18px;
+    }
+
+    .markdown h3 {
+      margin: 20px 0 10px;
+      font-size: 15px;
+    }
+
+    .markdown p {
+      margin: 0 0 12px;
+    }
+
+    .markdown ul,
+    .markdown ol {
+      margin: 0 0 14px 22px;
+      padding: 0;
+    }
+
+    .markdown li {
+      margin: 4px 0;
+    }
+
+    .markdown table {
+      width: 100%;
+      margin: 10px 0 16px;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .markdown th,
+    .markdown td {
+      padding: 9px 10px;
+      border: 1px solid var(--line-soft);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .markdown th {
+      background: #f3f7fb;
+      color: #42526b;
+      font-weight: 800;
+    }
+
+    .markdown code {
+      padding: 1px 5px;
+      border-radius: 5px;
+      background: #f1f5f9;
+      color: #334155;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    .markdown hr {
+      margin: 20px 0;
+      border: 0;
+      border-top: 1px solid var(--line-soft);
+    }
+
+    .empty {
+      padding: 28px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .footer {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 1100px) {
+      .page { padding: 20px; }
+      .header { display: block; }
+      .meta { margin-top: 16px; min-width: 0; }
+      .toolbar { grid-template-columns: 1fr; }
+      .note { text-align: left; }
+      .ledger { grid-template-columns: 1fr; }
+      .sidebar { max-height: 430px; }
+      .preview-head { grid-template-columns: 1fr; }
+      .head-actions { justify-content: flex-start; }
+      .summary { grid-template-columns: 1fr; }
+    }
+
+    .ledger-page {
+      max-width: 1680px;
+      min-height: 100vh;
+      padding: 24px 28px 36px;
+    }
+
+    .hero {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(560px, 720px);
+      gap: 24px;
+      align-items: stretch;
+      margin-bottom: 16px;
+      padding: 22px;
+      overflow: hidden;
+      border: 1px solid rgba(120, 144, 174, 0.32);
+      border-radius: 18px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.96), rgba(246,249,253,0.86)),
+        radial-gradient(circle at 12% 20%, rgba(22,119,255,0.12), transparent 28%);
+      box-shadow: 0 22px 56px rgba(33, 47, 69, 0.11);
+    }
+
+    .hero-copy {
+      display: flex;
+      min-width: 0;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      margin-bottom: 8px;
+      color: #3e5c84;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      font-size: 30px;
+    }
+
+    .hero .meta {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      min-width: 0;
+      align-content: stretch;
+    }
+
+    .hero .metric {
+      position: relative;
+      display: flex;
+      min-height: 116px;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 14px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.74);
+    }
+
+    .metric small {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .metric .metric-bar {
+      height: 6px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #e8eef5;
+    }
+
+    .metric .metric-fill {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--blue);
+    }
+
+    .command-bar {
+      grid-template-columns: minmax(260px, 1.2fr) auto auto 190px auto;
+      border-radius: 16px;
+      box-shadow: 0 16px 36px rgba(33, 47, 69, 0.08);
+    }
+
+    .search-wrap,
+    .select-wrap {
+      display: grid;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .select-wrap select {
+      height: 34px;
+      padding: 0 10px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .segmented {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-self: end;
+      justify-content: flex-start;
+    }
+
+    .segment {
+      min-height: 34px;
+      padding: 0 11px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: #fff;
+      color: #42526b;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .segment.active {
+      border-color: #a8c8f4;
+      background: #edf5ff;
+      color: #1459b8;
+    }
+
+    .compact .segment {
+      min-width: 48px;
+      padding: 0 9px;
+    }
+
+    .ops-layout {
+      grid-template-columns: 280px minmax(420px, 0.95fr) minmax(520px, 1.25fr);
+      min-height: calc(100vh - 236px);
+    }
+
+    .control-panel,
+    .table-panel,
+    .preview {
+      border-radius: 16px;
+    }
+
+    .panel-note {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .focus-list {
+      display: grid;
+      gap: 8px;
+      overflow: auto;
+      padding: 12px;
+    }
+
+    .focus-card {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid var(--line-soft);
+      border-radius: 12px;
+      background: #fbfdff;
+      color: inherit;
+      text-align: left;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .focus-card:hover,
+    .focus-card.active {
+      border-color: #b9d5ff;
+      background: #f0f6ff;
+    }
+
+    .focus-card strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .focus-card span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .table-panel {
+      display: flex;
+      min-height: 0;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .table-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      padding: 16px;
+      border-bottom: 1px solid var(--line-soft);
+      background: #fbfdff;
+    }
+
+    .table-head h2 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .ghost-button {
+      height: 32px;
+      padding: 0 11px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: #42526b;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .ghost-button:hover {
+      border-color: #b9d5ff;
+      color: var(--blue);
+    }
+
+    .ledger-table {
+      display: grid;
+      gap: 8px;
+      padding: 10px;
+    }
+
+    .ledger-table .req-item {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: start;
+      margin: 0;
+      border-color: var(--line-soft);
+      background: #fff;
+    }
+
+    .ledger-table .req-item:hover,
+    .ledger-table .req-item.active {
+      border-color: #b9d5ff;
+      background: #f7fbff;
+    }
+
+    .req-main {
+      min-width: 0;
+    }
+
+    .req-next {
+      grid-column: 1 / -1;
+      padding-top: 8px;
+      border-top: 1px dashed var(--line-soft);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .req-module {
+      max-width: 126px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .preview-head {
+      background:
+        linear-gradient(180deg, #fbfdff, #fff);
+    }
+
+    .preview-title {
+      margin-top: 4px;
+      font-size: 24px;
+    }
+
+    .preview-subtitle {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    @media (max-width: 1400px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .ops-layout {
+        grid-template-columns: 260px minmax(0, 1fr);
+      }
+
+      .preview {
+        grid-column: 1 / -1;
+        min-height: 620px;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .ledger-page {
+        padding: 16px;
+      }
+
+      .hero,
+      .command-bar,
+      .ops-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .hero .meta {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .command-bar .note {
+        text-align: left;
+      }
+    }
+
+    .ledger-page {
+      max-width: 1660px;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 14% 8%, rgba(167, 131, 79, 0.16), transparent 28%),
+        radial-gradient(circle at 86% 18%, rgba(49, 95, 134, 0.10), transparent 24%),
+        linear-gradient(135deg, #efe8d8 0%, #f7f2e8 42%, #e8dbc3 100%);
+      color: #2f281f;
+    }
+
+    .hero,
+    .command-bar,
+    .control-panel,
+    .table-panel,
+    .preview {
+      border-color: rgba(145, 112, 66, 0.28);
+      background:
+        linear-gradient(180deg, rgba(255, 251, 241, 0.96), rgba(248, 240, 224, 0.92)),
+        repeating-linear-gradient(0deg, rgba(116, 84, 45, 0.035), rgba(116, 84, 45, 0.035) 1px, transparent 1px, transparent 8px);
+      box-shadow: 0 18px 42px rgba(82, 62, 37, 0.13);
+    }
+
+    .hero {
+      border-radius: 20px 20px 14px 14px;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: 34px;
+      bottom: -18px;
+      width: 154px;
+      height: 42px;
+      border: 1px solid rgba(129, 72, 48, 0.24);
+      border-radius: 12px 12px 0 0;
+      background: rgba(180, 76, 51, 0.10);
+      transform: rotate(-1.5deg);
+      pointer-events: none;
+    }
+
+    .hero h1,
+    .table-head h2,
+    .preview-title {
+      color: #261f18;
+    }
+
+    .eyebrow,
+    .subtitle,
+    .panel-note,
+    .note,
+    .req-desc,
+    .req-next,
+    .preview-subtitle,
+    .summary-card span {
+      color: #6b5a45;
+    }
+
+    .hero .metric {
+      border-color: rgba(145, 112, 66, 0.28);
+      background: rgba(255, 249, 237, 0.86);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.58), 0 10px 22px rgba(82, 62, 37, 0.08);
+    }
+
+    .metric strong {
+      color: #1f2937;
+    }
+
+    .metric .metric-bar {
+      background: rgba(145, 112, 66, 0.16);
+    }
+
+    .metric .metric-fill {
+      background: linear-gradient(90deg, #8b4a36, #315f86);
+    }
+
+    .command-bar {
+      align-items: end;
+      border-radius: 14px;
+    }
+
+    .search,
+    .select-wrap select {
+      border-color: rgba(145, 112, 66, 0.30);
+      background: rgba(255, 252, 245, 0.92);
+    }
+
+    .segment {
+      position: relative;
+      border-color: rgba(145, 112, 66, 0.30);
+      border-radius: 12px 12px 6px 6px;
+      background: #efe2c8;
+      color: #4e3f2e;
+      box-shadow: inset 0 -2px 0 rgba(116, 84, 45, 0.08);
+    }
+
+    .segment.active {
+      top: -2px;
+      border-color: rgba(139, 74, 54, 0.42);
+      background: #fff5df;
+      color: #8b3f2d;
+      box-shadow: 0 8px 18px rgba(82, 62, 37, 0.12);
+    }
+
+    .table-head,
+    .preview-head,
+    .sidebar-head,
+    .summary {
+      border-color: rgba(145, 112, 66, 0.20);
+      background: rgba(255, 248, 236, 0.72);
+    }
+
+    .focus-card,
+    .ledger-table .req-item,
+    .summary-card {
+      border-color: rgba(145, 112, 66, 0.24);
+      background: rgba(255, 251, 242, 0.78);
+    }
+
+    .focus-card:hover,
+    .focus-card.active,
+    .ledger-table .req-item:hover,
+    .ledger-table .req-item.active {
+      border-color: rgba(139, 74, 54, 0.40);
+      background: #fff5df;
+    }
+
+    .ledger-table .req-item.active {
+      box-shadow: inset 4px 0 0 #8b4a36;
+    }
+
+    .badge,
+    .priority {
+      border: 1px solid rgba(255, 255, 255, 0.58);
+      box-shadow: 0 3px 8px rgba(82, 62, 37, 0.07);
+    }
+
+    .s-intake { background: #e9f0fb; color: #275780; }
+    .s-design { background: #fff0cc; color: #825112; }
+    .s-dev { background: #e2f0e4; color: #246642; }
+    .s-live { background: #ede6da; color: #5f5140; }
+    .p1 { background: #f8dfd6; color: #913d2b; }
+    .p2 { background: #f8e8bd; color: #7b560f; }
+    .p3 { background: #dfeaf4; color: #315f86; }
+    .p4 { background: #e9e1d5; color: #5f5140; }
+
+    .preview .markdown {
+      background:
+        linear-gradient(90deg, rgba(139, 74, 54, 0.10) 0 1px, transparent 1px 100%),
+        repeating-linear-gradient(180deg, transparent 0 31px, rgba(145, 112, 66, 0.12) 31px 32px),
+        rgba(255, 252, 246, 0.88);
+      background-size: 100% 100%, 100% 32px, 100% 100%;
+    }
+
+    .markdown h2 {
+      border-top-color: rgba(145, 112, 66, 0.22);
+    }
+
+    .markdown th,
+    .markdown td {
+      border-color: rgba(145, 112, 66, 0.24);
+    }
+
+    .markdown th {
+      background: #f1e4cc;
+      color: #514230;
+    }
+
+    a.button,
+    .ghost-button {
+      border-color: rgba(145, 112, 66, 0.30);
+      background: #fff8e8;
+      color: #8b3f2d;
+    }
+
+    a.button:hover,
+    .ghost-button:hover {
+      border-color: rgba(139, 74, 54, 0.46);
+      background: #fff0d2;
+      color: #7e3324;
+    }
+
+    .hero::after {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <main class="page ledger-page">
+    <header class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow">Requirement Ledger</span>
+        <h1>综合分析平台需求台账</h1>
+        <p class="subtitle">面向 PM、设计和开发的需求工作台：先看状态分布和高优先级事项，再下钻对应需求卡。具体背景、边界和验收仍以 Markdown 原文件为准。</p>
+      </div>
+      <section id="kpi-row" class="meta" aria-label="需求状态统计"></section>
+    </header>
+
+    <section class="toolbar command-bar" aria-label="台账筛选">
+      <label class="search-wrap">
+        <span>搜索</span>
+        <input id="search" class="search" type="search" placeholder="需求名称、模块、状态、下一步">
+      </label>
+      <div id="status-tabs" class="segmented" aria-label="状态筛选"></div>
+      <div id="priority-tabs" class="segmented compact" aria-label="优先级筛选"></div>
+      <label class="select-wrap">
+        <span>模块</span>
+        <select id="module-filter"></select>
+      </label>
+      <div class="note">更新日期：2026-05-28</div>
+    </section>
+
+    <section class="ledger ops-layout" aria-label="需求台账">
+      <aside class="sidebar control-panel" aria-label="需求概览">
+        <div class="sidebar-head">
+          <div class="sidebar-title"><span>工作队列</span><span id="visible-count">0 项</span></div>
+          <p class="panel-note">按优先级、状态和模块收敛当前关注事项。</p>
+        </div>
+        <div id="focus-list" class="focus-list"></div>
+      </aside>
+
+      <section class="table-panel" aria-label="需求列表">
+        <div class="table-head">
+          <div>
+            <span class="eyebrow">Current Scope</span>
+            <h2>需求清单</h2>
+          </div>
+          <button id="reset-filters" class="ghost-button" type="button">重置筛选</button>
+        </div>
+        <div id="req-list" class="req-list ledger-table"></div>
+      </section>
+
+      <article class="preview" aria-label="需求卡预览">
+        <div class="preview-head">
+          <div>
+            <p id="preview-subtitle" class="preview-subtitle"></p>
+            <h2 id="preview-title" class="preview-title"></h2>
+          </div>
+          <div class="head-actions">
+            <a id="source-link" class="button" href="#">打开原文件</a>
+          </div>
+        </div>
+        <div class="summary">
+          <div class="summary-card"><span>管理判断</span><strong id="summary-judgment"></strong></div>
+          <div class="summary-card"><span>下一步</span><strong id="summary-next"></strong></div>
+          <div class="summary-card"><span>文件位置</span><strong id="summary-file"></strong></div>
+        </div>
+        <div id="markdown" class="markdown"></div>
+      </article>
+    </section>
+
+    <p class="footer">维护规则：新增需求卡后同步补入本台账；状态变化时优先改文件名前缀，再更新台账状态和下一步。</p>
+  </main>
+
+  <script id="cards-data" type="application/json">[{"title":"技能库分类","status":"待梳理","module":"技能","priority":"P1","desc":"为技能增加稳定分类，标签保留为灵活检索。","judgment":"当前最高优先级之一，是技能库使用、筛选和后续 SkillHub 化的基础能力。","next":"优先确认首批分类、分类展示位置和迁移规则。","file":"./1待梳理：需求卡-技能库分类.md","markdown":"# 技能库分类\n\n**产品**：综合分析平台  \n**状态**：待梳理  \n**更新**：2026-05-22  \n**关联材料**：技能库；技能创建 / 编辑弹窗；技能库标签筛选与排序\n\n---\n\n## 1. 需求背景\n\n当前技能库已有“我的技能 / 共享技能”、搜索、标签筛选和排序能力。随着技能数量增加，仅依赖名称搜索和标签会让用户先定位大类技能的成本变高。\n\n本次需求新增“分类”作为技能的主归属，用于稳定组织技能资产；标签继续作为灵活检索补充，不替代分类。\n\n---\n\n## 2. 目标场景\n\n用户进入技能库后，可以先按业务分类缩小技能范围，再结合搜索、标签和排序找到目标技能；用户创建、导入、复制或整理技能时，也能为技能指定一个稳定分类。\n\n---\n\n## 3. 本次做什么\n\n### 3.1 分类口径\n\n| 对象 | 规则 |\n| --- | --- |\n| 分类 | 技能的主归属，一个技能只有一个分类 |\n| 标签 | 技能的多维特征，一个技能可有多个标签 |\n| 未分类 | 未设置分类的技能统一进入“未分类” |\n| 我的 / 共享 | “我的技能”和“共享技能”分别统计和筛选分类 |\n\n### 3.2 分类入口与筛选\n\n- 在技能库现有控制区增加“分类”筛选入口，位置靠近“标签”和“排序”。\n- 分类选项包含“全部”“未分类”和预置业务分类。\n- 选择分类后，技能列表只展示当前页签下属于该分类的技能。\n- 分类与搜索、标签、排序叠加生效：先按分类限定范围，再搜索 / 标签筛选，最后排序。\n- 分类数量统计当前页签下对应分类的技能数量。\n\n### 3.3 技能创建、编辑与流转\n\n| 场景 | 分类规则 |\n| --- | --- |\n| 创建技能 | 增加“分类”字段；在某分类下创建时默认带入当前分类 |\n| 编辑技能 | 可修改分类；修改分类不影响标签 |\n| 导入技能 | 有分类字段则带入；无分类字段进入“未分类” |\n| 复制共享技能到我的技能 | 默认保留原分类，复制后可在“我的技能”中调整 |\n| 共享我的技能 | 共享时带出当前分类；未分类技能共享后仍为“未分类” |\n\n### 3.4 列表展示与批量整理\n\n- 技能卡片展示分类信息，视觉上与标签区分。\n- 已有批量选择能力中增加“移动分类”，用于把选中的可编辑技能移动到同一分类。\n- 批量移动分类只修改分类，不新增、删除或覆盖标签。\n\n---\n\n## 4. 本次不做什么\n\n1. 不做分类后台管理、分类新增 / 改名 / 排序。\n2. 不做二级分类。\n3. 不做智能推荐分类。\n4. 不做分类权限体系。\n5. 不改变技能执行、共享和历史版本回退逻辑。\n\n---\n\n## 5. 验收口径\n\n1. 用户进入技能库后，可以在“我的技能”和“共享技能”下按分类筛选技能。\n2. 分类、搜索、标签、排序可叠加生效，筛选结果与当前条件一致。\n3. 未设置分类的技能统一展示在“未分类”中。\n4. 用户创建、编辑、导入、复制、共享技能时，分类按本卡规则保留或进入“未分类”。\n5. 用户批量移动分类后，选中技能的分类变化，原有标签保持不变。\n6. 分类为空或筛选无结果时，空态文案能说明是分类为空还是条件筛选无结果。\n\n---\n\n## 待确认问题\n\n| 问题 | 影响 | 建议处理 |\n| --- | --- | --- |\n| 首批预置分类清单 | 影响原型和初始数据 | 结合审计业务技能池单独确认 |\n| 共享技能分类是否允许本人在共享侧直接调整 | 影响“我的技能”和“共享技能”的数据关系 | 优先以“我的技能”为源，降低公共副本维护复杂度 |\n"},{"title":"应用中心","status":"待梳理","module":"系统管理 / 应用中心","priority":"P1","desc":"平台应用入口和能力组织方式。","judgment":"当前最高优先级之一，需要先明确应用中心与任务、技能和快捷 AI 应用的关系。","next":"优先收敛第一阶段范围、入口位置和应用执行链路。","file":"./1待梳理：需求卡-应用中心.md","markdown":"# 应用中心\n\n**产品**：综合分析平台 / 应用中心  \n**状态**：待梳理  \n**更新**：2026-05-25  \n**关联材料**：任务监管板块、创建任务弹窗、批量打包下载任务、SkillHub、现有工作台三栏布局\n\n---\n\n## 1. 原始需求 / 背景\n\n需要新增“应用中心”：和任务衔接，也支持自定义开发注入，服务于审计人员进行快捷的 AI 应用，比如上传文件，然后等待执行，最后拿到结果。需要深度收集信息后再设计。\n\n这个模块本质上不是普通功能菜单，而是把可复用的 AI 审计能力包装成审计人员能直接启动的应用。\n\n---\n\n## 2. 信息收集摘要\n\n### 2.1 本地产品现状\n\n- 综合分析平台当前核心闭环是“资料输入 - 技能执行 - 助手协同 - 结果沉淀”。\n- 工作台内已有任务创建、任务列表、任务详情、结果沉淀、打包下载任务等能力。\n- 当前三栏工作台适合做具体审计作业，不适合承载大量可浏览、可启动、可维护的应用目录。\n\n### 2.2 外部参考\n\n| 参考对象 | 可借鉴点 |\n| --- | --- |\n| Dify 应用 / 模板市场 | 用户发现应用模板，一键采用，按步骤配置模型、工具、数据源并运行测试 |\n| OpenAI GPTs / 企业工作区 | 应用创建、分享、权限、第三方能力控制、使用分析 |\n| Microsoft Copilot Studio | 应用可挂接预置连接器和自定义连接器，作为业务流程工具执行 |\n| Palantir AIP | 应用、工作流、数据对象、动作和任务在统一治理框架下协同 |\n| 传统数据分析平台应用商店 | 把高频分析模型、报表、脚本、专题应用封装为业务人员可直接使用的入口 |\n\n---\n\n## 3. 初步理解\n\n应用中心要解决的是“审计人员不想配置完整技能和任务，只想启动一个明确的 AI 审计小应用”。\n\n典型路径：\n\n1. 用户进入应用中心。\n2. 选择一个应用，如“合同关键条款提取”“整改报告合规检查”“财政数据异常初筛”。\n3. 上传或选择资料，填写少量参数。\n4. 系统创建后台任务。\n5. 用户在任务列表查看进度。\n6. 任务完成后下载、查看或沉淀结果。\n\n应用中心和 SkillHub 的关系：\n\n- SkillHub 管“能力资产”：技能、工具、工作流、版本、权限。\n- 应用中心管“用户入口”：把能力包装成可启动、可等待、可拿结果的业务应用。\n\n---\n\n## 4. 参考方案\n\n### 方案 A：应用启动器\n\n把应用中心做成审计 AI 应用目录，重点服务业务人员快速启动。\n\n- 应用卡片展示名称、用途、适用资料、预计耗时、输出结果。\n- 点击应用后进入启动弹窗 / 启动页。\n- 用户上传文件或选择工作台资源，填写必要参数。\n- 提交后创建任务，后续在任务列表查看和取结果。\n\n适合首版，用户价值最直接。\n\n### 方案 B：任务模板中心\n\n把应用中心理解为“可复用任务模板”。\n\n- 每个应用对应一类任务模板。\n- 应用启动后，本质是创建一个预配置任务。\n- 任务名称、输入资源、输出位置、执行技能、参数由应用模板预置。\n- 更容易和现有任务系统打通。\n\n实现路径清晰，但应用感会弱一些。\n\n### 方案 C：AI 应用开放平台\n\n支持内部开发者或厂商把自定义应用注入平台。\n\n- 支持自定义应用注册：应用信息、入口表单、参数 Schema、执行接口、输出格式。\n- 支持接入 SkillHub 能力、MCP / API 工具、工作流服务。\n- 支持应用审核、权限、版本、上架、下架。\n- 支持运行日志、失败原因、调用统计。\n\n扩展性强，但首版复杂度高，建议作为二期能力。\n\n---\n\n## 5. 初步范围\n\n首版建议聚焦“应用启动器 + 任务衔接”：\n\n1. 应用中心作为独立入口，展示可用 AI 审计应用。\n2. 应用支持分类、搜索、标签、适用场景、收藏 / 最近使用。\n3. 应用详情展示：用途、输入要求、输出结果、预计耗时、使用说明、维护来源。\n4. 启动应用时打开配置弹窗 / 启动页，支持上传文件、选择资源、填写参数。\n5. 点击运行后创建任务，任务进入统一任务列表。\n6. 任务完成后从任务详情查看结果、下载产物或沉淀到结果树。\n7. 应用来源支持平台预置、SkillHub 发布、自定义开发注入。\n\n---\n\n## 6. 影响面与风险\n\n- 应用中心会放大任务系统的重要性，需要统一任务状态、进度、失败、重跑、产物下载。\n- 应用与技能、工作流、工具的关系需要清楚，否则容易和 SkillHub 重叠。\n- 自定义开发注入涉及安全审核、参数 Schema、接口权限、运行沙箱和日志追踪，首版不宜做深。\n- 应用启动时的输入方式要与现有资源树、结果树、数据库表选择保持一致。\n- 对审计机关来说，应用必须可控、可审计、可追溯，不能只是“谁都能发布的小工具市场”。\n\n---\n\n## 待确认问题\n\n| 问题 | 影响 |\n| --- | --- |\n| 应用中心首版是平台级入口，还是工作台内入口 | 决定导航和数据范围 |\n| 应用运行结果默认进入任务详情、结果树，还是两者都进入 | 决定结果沉淀链路 |\n| 上传文件型应用是否自动创建临时工作台 / 临时资源区 | 影响“上传即用”的体验 |\n| 自定义开发注入首版是否只做登记和展示，不开放在线开发 | 控制实施复杂度 |\n| 应用是否必须绑定 SkillHub 中的技能 / 工作流版本 | 影响可追溯和复现 |\n| 应用权限按组织、项目、角色还是应用自身授权 | 影响审计厅 / 审计署分级管理 |\n\n---\n\n## 参考来源\n\n- Dify Marketplace：应用模板可被用户发现、采用，并通过配置步骤完成连接数据源、工具和运行测试。\n- OpenAI 企业 GPT 管理：工作区层面对应用能力、Actions、分享和访问做统一管控。\n- Microsoft Copilot Studio：通过预置连接器和自定义连接器把应用 / 智能体接入外部系统动作。\n- Palantir AIP：面向企业把 AI 工作流、应用、数据对象、动作、权限和任务治理统一起来。\n- SmartBI 智能分析 / 数据运营平台：传统数据平台已有应用商店、场景案例库、自助分析和智能体分析等建设思路。\n"},{"title":"知识库接入与对话引用","status":"待梳理","module":"资源 / 知识库","priority":"P2","desc":"接入外部知识库平台数据，用户选择知识库加入工作台并在对话中显式引用。","judgment":"后端已做数据打通，前端重点复用数据图谱式添加和对话引用交互，不做连接配置。","next":"确认知识库加入工作台与加入对话的关系、持久化口径和详情展示字段。","file":"./1待梳理：需求卡-知识库接入与对话引用.md","markdown":"# 知识库接入与对话引用\n\n**产品**：综合分析平台  \n**状态**：待梳理  \n**更新**：2026-05-29  \n**关联材料**：审计助手资源区；知识库抽屉；数据图谱添加弹窗；数据库表添加弹窗；对话引用资源\n\n---\n\n## 1. 需求背景\n\n当前工作台资源区已有文件、数据库表、数据图谱和知识库分组，但知识库仍为占位状态。后端已通过外部知识库平台完成数据打通，不需要用户在综合分析平台内配置连接。\n\n本次需求重点是让用户选择本次对话需要使用的知识库，并在对话中作为可引用资源使用。\n\n---\n\n## 2. 目标场景\n\n审计人员进入工作台后，可以从已有外部知识库中选择一个或多个知识库加入当前工作台，并在对话中引用。大模型回答时，可结合用户选定的知识库进行制度、政策、规范或历史资料检索。\n\n---\n\n## 3. 本次做什么\n\n### 3.1 知识库资源区\n\n- 左侧资源区保留“知识库”分组。\n- 知识库分组展示已加入当前工作台的知识库。\n- 知识库分组增加“添加知识库”入口，交互参考“添加数据图谱”。\n- 支持搜索已加入的知识库。\n- 知识库条目支持添加到对话、查看详情、移除。\n\n### 3.2 添加知识库\n\n打开“添加知识库”弹窗后，展示外部知识库平台已授权给当前用户的知识库列表。\n\n建议列表信息：\n\n| 信息 | 说明 |\n| --- | --- |\n| 知识库名称 | 用户识别知识库用途 |\n| 简介 | 展示知识库内容范围 |\n| 来源 / 范围 | 如组织级、项目级、个人可用等 |\n| 更新时间 | 帮助用户判断内容新鲜度 |\n| 状态 | 可用、已添加、无权限或不可用 |\n\n规则：\n\n1. 用户可一次选择多个知识库。\n2. 已加入当前工作台的知识库展示“已添加”，不可重复添加。\n3. 无权限或不可用知识库不可选择，但可展示原因。\n4. 点击“添加”后，知识库进入左侧知识库分组。\n\n### 3.3 对话中使用知识库\n\n- 知识库条目支持“添加到对话”。\n- 添加后，输入框引用区展示知识库引用标签，样式与数据库表、图谱引用保持一致。\n- 用户发送消息后，大模型在本轮问题中可使用已引用知识库。\n- 未引用知识库时，不默认使用全部知识库，避免检索范围过大。\n\n### 3.4 知识库详情\n\n知识库详情以只读方式展示基础信息。\n\n建议包含：\n\n- 知识库名称。\n- 简介 / 内容范围。\n- 来源平台。\n- 更新时间。\n- 可用状态。\n- 可检索范围说明。\n\n---\n\n## 4. 本次不做什么\n\n1. 不在综合分析平台内创建、编辑、删除外部知识库。\n2. 不做知识库连接配置、账号配置或同步配置。\n3. 不做知识库内容全文预览。\n4. 不做知识库权限管理。\n5. 不默认把所有知识库加入每次对话。\n6. 不改变文件、数据库表、数据图谱已有添加和引用逻辑。\n\n---\n\n## 5. 验收口径\n\n1. 资源区“知识库”分组不再展示“能力暂未开放”占位。\n2. 用户可以打开“添加知识库”弹窗，并看到可用知识库列表。\n3. 用户选择知识库并点击添加后，知识库出现在左侧知识库分组。\n4. 已添加知识库不可重复添加。\n5. 用户可以将知识库添加到对话输入框引用区。\n6. 发送消息后，本轮对话使用已引用知识库作为可检索资源。\n7. 用户移除知识库后，该知识库不再出现在当前工作台知识库分组中。\n8. 无权限或不可用知识库不能被添加，并展示不可用原因。\n\n---\n\n## 待确认问题\n\n| 问题 | 影响 |\n| --- | --- |\n| 知识库是加入当前工作台后再添加到对话，还是可从弹窗直接加入当前对话 | 影响是否完全复用图谱交互 |\n| 添加到工作台的知识库是否在同一工作台内持久保留 | 影响工作台资源保存口径 |\n| 大模型是否只使用输入框显式引用的知识库 | 影响默认检索范围和回答可控性 |\n| 知识库详情是否需要展示文档数量、分组、标签等统计信息 | 影响弹窗信息密度 |\n"},{"title":"对话快捷引用与技能调用","status":"待梳理","module":"对话 / 输入框","priority":"P2","desc":"从头梳理输入框 @ 引用资源和 / 选择技能的快捷指定交互。","judgment":"现有原型已有基础样式，但需要明确触发规则、候选范围、结构化标签和发送口径。","next":"确认 @ 候选资源范围、/ 是否只覆盖技能，以及标签展示位置和多技能规则。","file":"./1待梳理：需求卡-对话快捷引用与技能调用.md","markdown":"# 对话快捷引用与技能调用\n\n**产品**：综合分析平台  \n**状态**：待梳理  \n**更新**：2026-05-29  \n**关联材料**：审计助手对话输入框；资源区；结果区；技能区；当前 `@` / `/` 输入原型样式\n\n---\n\n## 1. 需求背景\n\n当前原型中，对话输入框已具备输入 `@` 或 `/` 后弹出候选面板的基础样式，但能力口径还不完整。需要从头梳理：用户如何在输入问题时快捷指定引用文件、结果或其他资源，以及如何快捷选择本轮要使用的技能。\n\n---\n\n## 2. 目标场景\n\n审计人员在输入问题时，可以不离开输入框，直接通过快捷符号选择本轮对话需要使用的上下文资源和技能：\n\n- 输入 `@`，选择要引用的资料、结果或其他可引用资源。\n- 输入 `/`，选择本轮要使用的技能。\n\n选择完成后，输入框展示结构化引用标签或技能标签，发送消息时一并提交给大模型。\n\n---\n\n## 3. 本次做什么\n\n### 3.1 触发规则\n\n| 符号 | 用途 | 触发口径 |\n| --- | --- | --- |\n| `@` | 引用上下文资源 | 在输入框中输入 `@` 后展示可引用资源候选 |\n| `/` | 使用技能 | 在输入框中输入 `/` 后展示可用技能候选 |\n\n规则：\n\n1. `@` 和 `/` 在行首或空格后触发。\n2. 输入关键字后，候选列表按名称过滤。\n3. `Esc` 关闭候选面板。\n4. 点击候选项或键盘确认后完成选择。\n5. 关闭面板后，普通文本输入不受影响。\n\n### 3.2 `@` 引用资源\n\n`@` 面板用于选择本轮对话的上下文资源。\n\n建议候选范围：\n\n| 类型 | 说明 |\n| --- | --- |\n| 文件 | 当前工作台中可引用的文件 |\n| 文件夹 | 当前工作台中文件夹，可作为一组文件引用 |\n| 结果 | 当前工作台中已有结果 |\n| 数据库表 | 已加入工作台的库表 |\n| 数据图谱 | 已加入工作台的数据图谱 |\n| 知识库 | 已加入工作台的知识库 |\n\n规则：\n\n1. 候选项按类型分组展示。\n2. 支持按名称搜索。\n3. 已选择对象不重复添加。\n4. 不可用对象不进入候选，或置灰并说明原因。\n5. 未完成解析文件可被选择，但选择后沿用现有“可能无法读取完整内容”提示。\n\n### 3.3 `/` 使用技能\n\n`/` 面板用于选择本轮对话要使用的技能。\n\n规则：\n\n1. 候选范围为当前工作台已引用或可使用的技能。\n2. 支持按技能名称搜索。\n3. 选择技能后，在输入框中展示技能标签。\n4. 本轮对话只默认使用用户显式选择的技能。\n5. 如果没有选择技能，大模型按普通对话处理。\n\n### 3.4 选择后的输入框展示\n\n选择完成后，输入框上方或输入区内展示结构化标签。\n\n| 标签 | 展示内容 |\n| --- | --- |\n| 资源引用标签 | 类型、名称、移除入口 |\n| 技能标签 | 技能名称、移除入口 |\n\n规则：\n\n1. 标签可移除。\n2. 标签与用户输入文本一起构成本次消息上下文。\n3. 发送后，消息气泡中展示本次引用数量、引用对象和使用技能。\n4. 仅输入 `@文件名` 或 `/技能名` 文本但未选择候选时，不应当作结构化引用或技能调用。\n\n---\n\n## 4. 本次不做什么\n\n1. 不做自然语言自动识别所有资源名称。\n2. 不把 `/` 扩展为完整命令中心。\n3. 不在本卡中定义技能配置确认弹窗。\n4. 不改变资源区、结果区、技能区已有添加到对话逻辑。\n5. 不做跨工作台资源搜索。\n\n---\n\n## 5. 验收口径\n\n1. 用户在输入框输入 `@` 后，可以看到可引用资源候选面板。\n2. 用户输入 `@` 后继续输入关键字，候选列表按资源名称过滤。\n3. 用户选择资源后，输入框展示对应资源引用标签。\n4. 用户在输入框输入 `/` 后，可以看到可用技能候选面板。\n5. 用户输入 `/` 后继续输入关键字，候选列表按技能名称过滤。\n6. 用户选择技能后，输入框展示对应技能标签。\n7. 用户可以移除已选择的资源引用标签和技能标签。\n8. 发送消息后，本次消息携带所选资源和技能；未选择候选的普通 `@` / `/` 文本不作为结构化引用。\n9. 未完成解析文件被引用时，对话区展示现有未完成解析提示。\n\n---\n\n## 待确认问题\n\n| 问题 | 影响 |\n| --- | --- |\n| `@` 首版是否覆盖文件夹、数据库表、图谱、知识库，还是先只覆盖文件和结果 | 影响候选面板复杂度 |\n| `/` 首版只用于选择技能，还是也包含创建任务、保存结果等命令 | 影响是否会演变成命令中心 |\n| 资源引用标签放在输入框上方，还是嵌入输入区内 | 影响后续 UI 设计 |\n| 多个技能是否允许同时选择 | 影响大模型执行口径和技能冲突处理 |\n"},{"title":"工作台空状态引导","status":"已上线","module":"布局体验","priority":"归档","desc":"按当前原型收敛资源、技能、任务、结果空态和对话区新会话引导。","judgment":"已上线，保留为历史记录。","next":"无。","file":"./x 已上线/x 已上线：需求卡-工作台空状态引导.md","markdown":"# 工作台空状态引导\n\n**产品**：综合分析平台  \n**状态**：已上线  \n**更新**：2026-06-01  \n**关联材料**：审计助手三栏工作台；资源区；技能区；对话区；任务区；结果区\n\n---\n\n## 1. 需求背景\n\n工作台首次进入或局部内容为空时，需要让用户快速知道下一步从哪里开始。当前原型口径为：区域内保留极简占位和就近入口，对话区只在新会话时展示轻量引导卡。\n\n本卡以当前原型实现为基准，收敛原先待确认问题，不再要求额外的示例问题填入输入框。\n\n---\n\n## 2. 目标场景\n\n用户进入审计助手工作台后，可以在空工作台、资源已就绪、已有技能等状态下快速选择下一步；发送第一条消息后，对话区进入正常消息流。\n\n---\n\n## 3. 本次做什么\n\n### 3.1 区域空状态\n\n| 区域 | 原型空态 | 操作口径 |\n| --- | --- | --- |\n| 文件资源 | 文件树无内容时展示轻量空态 | 上传入口在文件标题右侧「添加」菜单 |\n| 数据库表 | 只展示轻量占位图，不展示提示文字 | 复用添加库表入口 |\n| 数据图谱 | 只展示轻量占位图，不展示提示文字 | 复用添加图谱入口 |\n| 知识库 | 展示轻量空态，占位说明“知识库能力暂未开放，当前仅展示占位信息。” | 本轮不提供关联知识库入口 |\n| 技能 | 展示“添加技能 / 为大模型注入专业的审计思路” | 提供创建技能、引用技能 |\n| 任务 | 无任务时展示轻量空态占位 | 创建任务沿用现有入口和对话引导 |\n| 结果 | 无结果时展示轻量空态占位 | 不展示按钮 |\n\n展示规则：\n\n1. 区域空态只表达当前区域为空，不放长业务说明。\n2. 空态入口复用当前区域已有入口，不新增专属流程。\n3. 多个区域同时为空时，入口保持轻量样式。\n4. 解析中、排队中、执行中等过程状态优先于空态。\n\n### 3.2 对话区新会话引导\n\n对话区引导只在当前工作台没有消息时展示。\n\n| 当前状态 | 标题 | 引导卡 |\n| --- | --- | --- |\n| 无任何资源 | 你好，本次审计从哪里开始？ | 审文件：上传资料或压缩包；查数据：添加数据库表；查人或关系：配置数据图谱 |\n| 有资源，无技能 | 资源已就绪，接下来想怎么审？ | 直接提问：围绕当前资料追问、核对、总结；配置技能：创建或引用审计方法（技能） |\n| 有资源，有技能 | 资源已就绪，接下来想怎么审？ | 直接提问：围绕当前资料追问、核对、总结；配置技能：创建或引用审计方法（技能）；创建任务：重复执行技能，批量审计 |\n\n规则：\n\n1. 无资源只展示 3 个资源切入卡，不展示知识库入口。\n2. 有资源时不展示示例问题和结果入口。\n3. 配置技能始终展示；创建任务仅在已有技能时展示。\n4. 引导卡只触发现有流程，不新增独立空态流程。\n5. 引导卡图标复用现有业务列表图标，不使用临时或新增图标。\n\n---\n\n## 4. 本次不做什么\n\n1. 不新增资源、技能、任务、结果流程。\n2. 不新增空态专属入口。\n3. 不新增知识库关联入口。\n4. 不做示例问题点击填入输入框。\n5. 不定义移动端适配。\n\n---\n\n## 5. 验收口径\n\n1. 文件、数据库表、数据图谱、知识库为空时均展示轻量空态；数据库表和数据图谱只展示占位图，不展示提示文字。\n2. 技能为空时展示技能空态，并提供创建技能、引用技能入口。\n3. 任务为空时只展示轻量空态；结果为空时只展示轻量空态且不展示按钮。\n4. 新会话且无资源时，标题为“你好，本次审计从哪里开始？”，展示“审文件 / 查数据 / 查人或关系”3 张卡。\n5. 点击“审文件 / 查数据 / 查人或关系”分别进入上传资料、添加数据库表、配置数据图谱流程。\n6. 新会话且有资源无技能时，标题为“资源已就绪，接下来想怎么审？”，只展示“直接提问 / 配置技能”。\n7. 新会话且有资源有技能时，展示“直接提问 / 配置技能 / 创建任务”。\n8. 点击“直接提问”聚焦输入框；点击“配置技能”切到技能区；点击“创建任务”打开创建任务流程。\n9. 引导卡图标与现有业务列表图标一致，不出现临时技能图标或任务类型不一致的图标。\n10. 用户发送第一条消息后，引导消失；解析中、排队中、执行中状态不被空态覆盖。\n\n---\n\n## 关键决策\n\n| 决策点 | 结论 |\n| --- | --- |\n| 空态入口 | 复用现有入口，不新增专属流程 |\n| 资源入口 | 原型只提供审文件、查数据、查人或关系 3 个资源切入 |\n| 知识库 | 需要轻量空态占位，但不进入本轮空态入口 |\n| 对话示例 | 当前原型不做示例问题填入输入框 |\n| 图标口径 | 引导卡复用现有业务图标，不新增临时图标 |\n| 任务入口 | 仅在已有技能时展示；技能、任务都不是必备前置流程 |\n| 结果入口 | 新会话引导不展示结果卡 |\n| 引导消失时机 | 发送第一条消息后消失 |\n| 状态优先级 | 过程状态优先于空态 |\n"},{"title":"上传与解析中文件可用性优化","status":"已上线","module":"资源 / 对话","priority":"归档","desc":"按当前原型收敛上传会话、解析状态、未完成引用和批量操作口径。","judgment":"已上线，保留为历史记录。","next":"无。","file":"./x 已上线/x 已上线：需求卡-上传与解析中文件可用性优化.md","markdown":"# 上传与解析中文件可用性优化\n\n**产品**：综合分析平台  \n**状态**：已上线  \n**更新**：2026-06-01  \n**关联材料**：审计助手工作台；上传文件弹窗；资源区状态入口；对话引用资料；资料解析状态\n\n---\n\n## 1. 需求背景\n\n审计资料上传后会经历上传、排队、解析、失败或完成等状态。原型重点模拟用户在等待期间继续使用工作台，并清楚区分上传会话、资源入库和解析状态。\n\n对话支持大模型按需调用 OCR / 解析工具。未完成解析文件可以作为对话引用，由系统在需要读取内容时发起工具处理，用户只需要关注文件处理状态和对话结果。\n\n---\n\n## 2. 目标场景\n\n用户在工作台上传文件后，文件先进入上传弹窗的待上传列表；点击开始上传后进入上传中；上传成功后从弹窗移除并进入资源区排队解析。解析未完成前，用户可以在资源区查看文件状态，也可以把文件添加到对话；如果对话需要读取文件内容，大模型按需调用 OCR / 解析工具。\n\n---\n\n## 3. 本次做什么\n\n### 3.1 上传文件弹窗\n\n上传弹窗标题为“上传文件”。\n\n| 状态 | 展示与操作 |\n| --- | --- |\n| 零文件 | 单栏上传入口，展示支持格式、ZIP、数量和大小限制说明 |\n| 待上传 | 展示在当前上传会话列表，可移除，可点击「开始上传（N）」进入上传中 |\n| 上传中 | 展示上传进度，可取消上传；关闭弹窗不取消上传 |\n| 上传失败 | 留在弹窗中，展示失败原因，可重试上传或移除 |\n\n规则：\n\n1. 有文件后弹窗切换为双栏：左侧轻量上传入口和上传说明，右侧当前上传会话列表。\n2. 上传成功的文件立即从弹窗移除，并进入资源区排队解析。\n3. 上传中允许继续添加文件，新文件进入待上传，需要再次点击底部按钮才会上传。\n4. 「清空」只清除待上传文件，不影响上传中和上传失败文件。\n5. 底部按钮为「关闭」和「开始上传（N）」；存在上传中或失败但无待上传文件时，不展示主按钮。\n6. 当前原型以流程模拟为主，点击上传区域生成模拟文件；真实文件选择、真实拖拽解析和浏览器文件 IO 不作为本轮原型验收项。\n\n### 3.2 上传与解析状态\n\n1. 页面顶部仅在存在上传中文件时展示 uploading 提示，文案为“X 个文件正在上传，请勿关闭或刷新页面”。\n2. 点击顶部 uploading 提示回到当前上传弹窗，并保留本次上传目标文件夹。\n3. 上传中刷新或关闭页面时触发离开提醒。\n4. 仅剩上传失败项时，不展示顶部 uploading 提示。\n5. 存在上传失败且弹窗关闭时，资源区「添加」按钮展示失败数量角标。\n6. 资源区只承接已入库文件，状态入口展示排队中、解析中、失败及数量，不展示上传中。\n7. 点击资源区状态入口后，只展示对应状态的已入库文件；返回全部后恢复文件树。\n8. 上传成功后，文件在资源区首个状态为排队中，并在原型中继续模拟进入解析中、完成。\n\n### 3.3 解析中文件引用优化\n\n| 场景 | 规则 |\n| --- | --- |\n| 资源区存在排队中、解析中或失败文件 | 展示状态入口和数量 |\n| 用户在对话输入区引用未完成解析文件 | 允许添加到对话；输入区展示引用标签和文件状态 |\n| 大模型需要读取文件内容 | 可主动调用 OCR / 解析工具；工具执行过程按现有对话工具调用交互展示 |\n| 用户预览未完成解析文件 | 原始文件可预览时允许打开；OCR 结果未生成时展示空态或暂无内容 |\n\n说明：\n\n1. 排队中、解析中、失败文件都可以作为结构化引用发送。\n2. 文件解析状态在资源区和引用标签中展示，用于告知处理进度。\n3. 解析失败文件支持提交给对话工具尝试处理；如工具调用失败，再在工具执行结果中反馈失败原因。\n\n### 3.4 文件操作与批量操作\n\n资料文件行级操作按状态展示：\n\n| 状态 | 主动作 | 更多菜单 |\n| --- | --- | --- |\n| 排队中 | 中止 | 添加到对话、下载、重命名、删除 |\n| 解析中 | 添加到对话 | 中止、下载、重命名、删除 |\n| 失败 | 重跑 | 添加到对话、下载、重命名、删除 |\n| 已完成 | 添加到对话 | 下载、重命名、删除 |\n\n批量操作规则：\n\n1. 资源区和上传弹窗的批量操作互相独立，不跨区域混选。\n2. 批量操作按“所选项中至少一项支持即展示”处理；执行时只处理支持项，并反馈已处理和跳过数量。\n3. 批量条最多外放 2 个业务动作，其余进入“更多”。\n4. 资源区动作排序按覆盖数量优先；同覆盖数下按中止、重跑、添加到对话、下载、删除排序。\n5. 上传弹窗批量动作按上传会话状态提供：待上传支持上传/移除，上传中支持取消上传，上传失败支持重试上传/移除。\n6. 行内操作区保持“更多在左，核心操作在右”。\n7. 菜单图标仅保留给关键动作：添加到对话、上传文件、新建文件夹、删除；下载、重命名、中止、重跑等常规动作使用纯文字。\n\n---\n\n## 4. 本次不做什么\n\n1. 不新增完整上传历史中心。\n2. 不把上传进度放入资源区或右侧任务区。\n3. 不调整 ZIP 解压、自动 OCR 和资料解析规则。\n4. 不新增压缩包内容预览或上传前选择部分文件能力。\n5. 不改变任务资源选择和任务执行规则。\n6. 不新增 OCR / 解析工具的配置项。\n7. 不把真实文件选择、真实拖拽上传和网络上传作为当前原型验收项。\n\n---\n\n## 5. 验收口径\n\n1. 打开上传弹窗时，零文件态展示单栏上传入口、支持格式、ZIP、数量和大小限制说明。\n2. 点击上传区域后，原型生成待上传文件，弹窗切换为双栏并展示上传会话列表。\n3. 点击「开始上传（N）」后，待上传文件进入上传中；关闭弹窗不取消上传。\n4. 上传中顶部展示 uploading 提示，点击后回到上传弹窗。\n5. 上传成功文件从弹窗移除，并在资源区以排队中状态出现。\n6. 上传失败文件留在弹窗中，可重试上传或移除；弹窗关闭后「添加」按钮展示失败数量角标。\n7. 资源区状态入口仅展示排队中、解析中、失败，不展示上传中。\n8. 点击任一资源区状态入口后，资源区只展示对应状态的已入库文件。\n9. 上传中刷新或关闭页面时触发离开提醒。\n10. 资源区存在未完成解析文件时，展示状态入口和数量。\n11. 用户引用排队中、解析中或失败文件时，输入区展示引用标签和文件状态。\n12. 大模型需要读取未完成解析文件内容时，可以在对话中调用 OCR / 解析工具，并展示工具调用过程。\n13. 用户预览未完成解析文件时，原始文件可预览则允许打开；OCR 结果未生成时展示空态或暂无内容。\n14. 文件树、状态列表、右键菜单和详情入口中，同一资源状态文件的可用操作口径一致。\n15. 资源区与上传弹窗批量操作均按最大集合展示，执行后反馈已处理项数和跳过项数。\n16. 行内操作顺序为“更多在左，核心操作在右”。\n17. 常规菜单动作不展示图标，关键动作保留图标。\n18. 上传中继续添加文件后，新文件保持待上传，需再次点击底部主按钮才开始上传。\n19. 当前上传会话全部成功并清空后，toast「已全部上传」并自动关闭弹窗。\n\n---\n\n## 关键决策\n\n| 决策点 | 结论 |\n| --- | --- |\n| 原型范围 | 以流程模拟为主，不验收真实文件 IO |\n| 上传状态承接 | 待上传、上传中、上传失败由上传弹窗承接 |\n| 资源区状态承接 | 只承接已入库文件，状态入口为排队中、解析中、失败 |\n| 顶部提示 | 只在存在上传中会话时展示 |\n| 弹窗关闭语义 | 「关闭」只关弹窗，不取消上传中会话 |\n| 全部成功 | toast + 自动关闭弹窗 |\n| 失败外部提醒 | 「添加」按钮角标展示上传失败数量 |\n| 解析中文件引用 | 可正常引用；大模型按需调用 OCR / 解析工具 |\n| 批量条上限 | 最多外放 2 个业务动作，其余进入“更多” |\n| 菜单图标 | 关键动作保留图标，常规动作纯文字 |\n"},{"title":"表格结果生成与预览","status":"已上线","module":"结果 / 对话工具","priority":"归档","desc":"支持大模型创建、编辑 Excel 类表格结果，并在结果文件中只读预览 CSV、TSV、XLSX。","judgment":"已上线，保留为历史记录。","next":"无。","file":"./x 已上线/x 已上线：需求卡-表格结果生成与预览.md","markdown":"# 表格结果生成与预览\n\n**产品**：综合分析平台  \n**状态**：已上线  \n**更新**：2026-06-01  \n**关联材料**：对话工具调用；结果树；结果文件预览\n\n---\n\n## 1. 需求背景\n\n当前结果文件主要按 Markdown 展示。随着大模型开始生成结构化表格结果，需要支持创建和编辑 Excel 类结果，并在结果文件中预览表格内容。\n\n---\n\n## 2. 目标场景\n\n用户在对话中让大模型生成或调整表格结果后，可以在结果树中看到对应结果文件，并打开预览 CSV、TSV、XLSX 内容。\n\n---\n\n## 3. 本次做什么\n\n### 3.1 工具调用\n\n- 大模型支持调用“创建 Excel”工具，生成新的表格结果文件。\n- 大模型支持调用“编辑 Excel”工具，更新已有表格结果文件。\n- 表格结果文件进入结果树，作为结果文件展示。\n\n### 3.2 表格预览\n\n- 结果文件支持预览 CSV、TSV、XLSX 内容。\n- 表格预览为只读，暂不支持用户手动编辑单元格。\n- 表格结果与 Markdown 结果使用不同预览方式，不强行转成 Markdown 展示。\n\n### 3.3 表格结果操作限制\n\n表格结果暂不支持以下操作：\n\n- 复制内容。\n- 下载为 PDF。\n- 下载为 Word。\n\n表格结果下载时保持原表格格式：CSV 下载为 CSV，TSV 下载为 TSV，XLSX 下载为 XLSX，不转成 Markdown。\n\n---\n\n## 4. 本次不做什么\n\n1. 不做表格手动编辑。\n2. 不做公式、样式、合并单元格等复杂 Excel 能力。\n3. 不做表格结果转 PDF 或转 Word。\n4. 不做表格结果转 Markdown 下载。\n5. 不改变 Markdown 结果的复制和下载能力。\n\n---\n\n## 5. 验收口径\n\n1. 大模型调用“创建 Excel”工具后，结果树中生成表格结果文件。\n2. 大模型调用“编辑 Excel”工具后，已有表格结果内容被更新。\n3. 用户打开 CSV、TSV、XLSX 结果文件时，可以看到表格预览。\n4. 表格预览中不展示手动编辑入口。\n5. 表格结果不展示复制、下载为 PDF、下载为 Word 操作。\n6. 表格结果下载后仍为原表格格式，不转为 Markdown。\n7. Markdown 结果仍保留原有复制和下载操作。\n"},{"title":"对话中任务配置确认","status":"待梳理","module":"审计助手 / 任务","priority":"P1","desc":"助手准备创建任务前展示配置摘要并支持调整。","judgment":"影响对话到任务的闭环，是助手从问答到执行的关键入口。","next":"确认摘要字段和可编辑字段边界。","file":"./1待梳理：需求卡-对话中任务配置确认.md","markdown":"# 对话中任务配置确认\n\n**产品**：综合分析平台  \n**状态**：待梳理  \n**更新**：2026-05-23  \n**关联材料**：对话助手；创建任务；跑批任务；打包下载任务；任务配置\n\n---\n\n## 1. 需求背景\n\n助手可以根据用户在对话中的描述生成任务配置，并准备创建单次任务、跑批任务或打包下载任务。和删除、移动这类操作不同，任务类确认不是简单判断“过不过”，而是需要用户判断配置是否正确，必要时快速修改关键字段。\n\n如果只让用户在对话里反复说“这里不对、再改一下”，会降低效率；但如果一开始就展示完整任务创建表单，又会打断对话式流程。因此需要在对话中提供轻量的任务配置确认，并保留必要的手工调整入口。\n\n---\n\n## 2. 目标场景\n\n用户通过对话让助手创建任务时，助手先生成任务配置摘要。用户可以直接确认创建，也可以进入配置编辑态修改关键字段后再提交。\n\n---\n\n## 3. 本次做什么\n\n### 3.1 触发范围\n\n| 类型 | 触发规则 | 示例 |\n| --- | --- | --- |\n| 单次任务 | 助手根据对话生成一次性分析任务配置 | 基于当前资料创建分析任务 |\n| 跑批任务 | 助手根据资源、表格或标识列生成批量执行配置 | 基于表格每一行生成子任务 |\n| 打包下载任务 | 助手根据用户选择生成后台打包配置 | 批量下载结果并选择是否 MD 转 PDF |\n| 后续异步任务 | 本质是提交后台任务，且需要用户确认关键配置 | 打包上传任务、补充 OCR 任务 |\n\n### 3.2 配置摘要态\n\n助手先展示任务配置摘要，让用户快速判断配置是否可执行。\n\n| 内容 | 规则 |\n| --- | --- |\n| 任务名称 | 展示助手生成的任务名称 |\n| 任务类型 | 展示单次任务、跑批任务、打包下载任务等 |\n| 输入范围 | 展示资源、结果、文件夹、数据库表等范围 |\n| 使用技能 / 配置 | 展示技能名称、当前配置或关键策略 |\n| 输出位置 | 展示结果保存位置或产物入口 |\n| 关键参数 | 展示跑批标识列、下载格式、是否转 PDF、OCR 范围等 |\n| 操作按钮 | “创建任务”“调整配置”“取消” |\n\n说明：\n\n- 摘要态以扫读为主，不直接展示完整表单。\n- 如果配置存在缺失或冲突，应提示用户先调整，不能直接创建。\n\n### 3.3 配置编辑态\n\n用户点击“调整配置”后，进入可编辑配置态。该状态用于快速修正关键字段，不替代完整任务创建器。\n\n| 可编辑内容 | 规则 |\n| --- | --- |\n| 任务名称 | 支持手工修改 |\n| 输入范围 | 支持增删资源、结果或文件夹 |\n| 使用技能 | 支持切换技能或确认当前技能配置 |\n| 输出位置 | 支持修改结果保存位置 |\n| 任务指令 | 支持编辑助手生成的任务指令 |\n| 跑批关键字段 | 支持调整标识列、子任务命名等关键跑批字段 |\n| 打包 / OCR 参数 | 支持调整下载格式、是否转 PDF、OCR 范围等关键选项 |\n\n说明：\n\n- 用户也可以继续在对话中说“把任务名改成...”“资源换成...”，由助手更新配置摘要。\n- 第一版只编辑关键字段，不做所有高级配置。\n- 编辑后回到摘要态，由用户最终点击“创建任务”。\n\n### 3.4 提交流程\n\n1. 助手生成任务配置摘要。\n2. 用户确认无误，点击“创建任务”。\n3. 用户需要修改，点击“调整配置”或继续用对话补充修改。\n4. 配置修改后再次展示摘要。\n5. 用户确认后创建任务，并在对话中反馈任务创建结果。\n\n---\n\n## 4. 本次不做什么\n\n1. 不把完整任务创建器全部搬进对话卡片。\n2. 不做任务高级配置的完整编辑能力。\n3. 不做多人审批或任务审批流。\n4. 不改变任务创建后的状态流转、排队、运行和失败规则。\n5. 不处理对象不唯一的选择问题；对象歧义先进入“对话中歧义选择”。\n\n---\n\n## 5. 验收口径\n\n1. 助手准备创建任务前，会先展示任务配置摘要，不直接提交任务。\n2. 用户可以在摘要中看到任务名称、任务类型、输入范围、使用技能、输出位置和关键参数。\n3. 用户点击“创建任务”后，系统按该配置创建任务并反馈结果。\n4. 用户点击“调整配置”后，可以修改关键字段，并在修改后重新确认。\n5. 配置缺失或冲突时，系统不允许直接创建任务，并提示需要调整的内容。\n6. 用户继续通过对话修改配置后，确认卡内容同步更新。\n7. 对象或参数存在多个候选时，先进入歧义选择，再回到任务配置确认。\n"},{"title":"任务监管板块交互优化","status":"待梳理","module":"任务","priority":"P1","desc":"强化任务查看、监管和全局感知。","judgment":"当前任务类需求较多，任务监管应作为任务域的上层体验统一口径。","next":"和排队态、重跑、打包任务统一梳理。","file":"./1待梳理：需求卡-任务监管板块交互优化.md","markdown":"# 任务监管板块交互优化\n\n**产品**：综合分析平台  \n**状态**：待梳理  \n**更新**：2026-05-20  \n**关联材料**：当前工作台右上角任务区；单次任务、跑批任务、生成技能任务；后续打包下载任务、打包上传任务\n\n---\n\n## 1. 需求背景\n\n当前工作台中的任务展示主要集中在右上角一个较小区域，适合承载少量、轻量的执行状态提示。但随着平台能力扩展，任务类型已经不只是一类后台执行记录，而是逐步覆盖单次任务、跑批任务、生成技能任务，并会继续扩展到打包下载任务、打包上传任务等更多异步处理场景。\n\n任务正在从“页面边角的状态提示”变成用户需要持续监管的重要功能对象。用户需要判断任务是否在排队、运行、失败、完成，必要时还需要进入任务详情、查看进度、处理中止或重跑、追踪产物和异常原因。现有右栏小区域承载能力有限，后续如果继续叠加任务类型和操作，容易出现信息拥挤、状态不可见、监管路径分散的问题。\n\n本需求先记录任务模块升级的背景和问题，不在本卡中直接确定最终交互方案。\n\n---\n\n## 2. 目标场景\n\n用户在综合分析平台中发起分析、跑批、技能生成、打包下载或打包上传等异步任务后，可以在一个更适合监管的任务区域中持续查看任务状态、处理异常任务，并追踪任务结果或产物，而不是只依赖右上角小区域的简单状态展示。\n\n---\n\n## 3. 待梳理范围\n\n### 3.1 任务对象扩展\n\n后续需要统一梳理不同任务类型在平台中的展示和监管方式。\n\n| 任务类型 | 当前 / 预期状态 | 需要关注的问题 |\n| --- | --- | --- |\n| 单次任务 | 已存在 | 如何查看执行状态、进度、失败原因和结果入口 |\n| 跑批任务 | 已存在 | 如何查看父任务、子任务、排队、失败重跑和整体进度 |\n| 生成技能任务 | 已存在 | 如何跟踪生成过程、生成结果和失败处理 |\n| 打包下载任务 | 后续可能新增 | 如何展示打包进度、下载入口、过期或失败状态 |\n| 打包上传任务 | 后续可能新增 | 如何展示上传进度、解析 / 入库进度、失败原因和重试入口 |\n\n### 3.2 任务区域定位\n\n现有右上角小任务区需要重新评估是否仍适合作为主要任务入口。\n\n待梳理问题：\n\n1. 任务是否需要成为独立一级功能板块，还是保留在工作台内但扩大承载区域。\n2. 任务入口是否需要支持全局查看，还是只查看当前工作台 / 当前项目内任务。\n3. 任务列表、任务详情、任务操作和任务产物之间应如何组织。\n4. 原右上角任务区后续是保留为快捷入口、摘要提醒，还是被新的任务板块替代。\n\n### 3.3 任务监管能力\n\n后续方案需要重点覆盖用户监管任务的基本能力。\n\n| 能力 | 待梳理内容 |\n| --- | --- |\n| 状态查看 | 排队中、运行中、成功、失败、中止等状态如何展示 |\n| 进度查看 | 不同任务类型是否都有进度，进度口径是否一致 |\n| 异常处理 | 失败、中止、超时、部分成功等状态如何处理 |\n| 操作入口 | 中止、重跑、删除、下载、查看结果等操作放在哪里 |\n| 结果追踪 | 任务完成后如何回到分析结果、技能、文件包或上传产物 |\n| 通知提醒 | 任务完成或失败后是否需要提醒，提醒出现在哪里 |\n\n---\n\n## 4. 本次不做什么\n\n1. 本卡不直接确定任务板块的最终布局和交互方案。\n2. 不调整现有单次任务、跑批任务、生成技能任务的执行逻辑。\n3. 不定义打包下载、打包上传任务的完整业务规则。\n4. 不处理任务调度、并发、优先级等后端策略。\n5. 不替代已有排队提醒、任务排队态等单点需求卡。\n\n---\n\n## 5. 后续验收方向\n\n后续正式梳理时，至少需要能验证以下方向：\n\n1. 用户可以在明确入口中查看当前相关任务，而不是只能依赖右上角小区域。\n2. 不同任务类型可以被统一识别、筛选或查看，任务状态口径清晰。\n3. 用户可以从任务进入详情，并看到任务进度、异常原因和相关产物入口。\n4. 任务完成、失败、中止等关键状态不会被隐藏在页面边角，用户能够及时发现并处理。\n5. 原右上角任务区与新任务板块的关系明确，不出现两个入口信息不一致的问题。\n\n---\n\n## 待确认问题\n\n| 问题 | 影响 | 建议处理 |\n| --- | --- | --- |\n| 任务板块是全局能力还是工作台内能力 | 影响入口层级、数据范围和权限边界 | 后续结合工作台、项目列表和任务详情页统一判断 |\n| 右上角任务区后续是否保留 | 影响现有页面布局和用户习惯迁移 | 可以先定位为任务摘要 / 快捷入口，再评估是否替换 |\n| 打包下载、打包上传任务是否纳入同一任务模型 | 影响任务类型、状态和操作抽象 | 在正式方案中对比现有任务对象后再确定 |\n| 是否需要任务通知机制 | 影响全局提醒、消息中心或页面内提示设计 | 与任务监管入口一起梳理，避免只做列表不做提醒 |\n"},{"title":"对话输入框直接上传文件","status":"已上线","module":"对话 / 资源","priority":"归档","desc":"在对话输入框提供轻量文件上传入口，发送前自动上传解析但不入资源树，发送后提交为引用资源。","judgment":"已上线，保留为历史记录。","next":"无。","file":"./x 已上线/x 已上线：需求卡-对话输入框直接上传文件.md","markdown":"# 对话输入框直接上传文件\n\n**产品**：综合分析平台  \n**状态**：已上线  \n**更新**：2026-06-01  \n**关联材料**：审计助手对话区；输入框；资源区文件状态；引用文件规则；上传与解析中文件可用性优化\n\n---\n\n## 1. 需求背景\n\n用户在对话中临时需要补充资料时，希望直接在输入框上传文件并继续提问，不必先切到资源区上传，再手动添加到对话。\n\n输入框上传本质上仍复用现有文件上传和解析逻辑，只是在对话输入区提供一个轻量入口；输入框不承载完整上传管理或解析管理。\n\n---\n\n## 2. 目标场景\n\n用户通过输入框附件图标或拖拽添加文件。文件上传完成前，仅作为当前输入框的临时附件；文件上传完成后，立即进入资源树，并在当前输入框中等同于从资源树引用该文件。\n\n用户发送消息时，该文件按引用资源参与本条消息，与从资源树添加到对话的文件遵循同一套引用规则。\n\n---\n\n## 3. 本次做什么\n\n### 3.1 上传入口\n\n- 输入框工具区增加附件上传入口。\n- 点击附件图标选择文件。\n- 支持将本地文件拖入输入框区域。\n- 鼠标悬停附件图标时，展示上传限制说明。\n\n限制说明：\n\n> 支持 PDF、Word、表格、图片、ZIP、MD、TXT、JSON、XML 等格式。单次上传总大小不超过 4GB，文件发送后将保存到资源区并自动引用到当前对话。\n\n### 3.2 上传中临时附件\n\n文件选择后开始上传，并在输入框中展示当前上传文件。\n\n| 状态 | 规则 |\n| --- | --- |\n| 上传中 | 文件尚未进入资源树；当前消息不可发送；用户可以移除 |\n| 上传失败 | 文件未进入资源树；当前消息不可发送；用户可以移除后重新上传 |\n| 上传完成 | 文件进入资源树，并自动作为当前输入框引用资源 |\n\n说明：\n\n1. 上传中和上传失败都属于输入框临时态，不进入资源树。\n2. 上传完成后，文件进入资源树，成为正式资源。\n3. 用户在上传完成前移除文件，不影响资源树。\n\n### 3.3 上传完成后的引用规则\n\n上传完成后的文件与从资源树引用的文件遵循同一套对话引用规则。\n\n| 文件解析状态 | 对话引用规则 |\n| --- | --- |\n| 排队中 | 允许作为引用发送 |\n| 解析中 | 允许作为引用发送 |\n| 解析完成 | 允许作为引用发送 |\n| 解析失败 | 允许作为引用发送 |\n\n规则：\n\n1. 上传完成后即进入资源树，后续排队、解析、完成、失败都属于资源文件状态。\n2. 输入框上传完成的文件，与用户手动从资源树添加到对话的文件保持一致。\n3. 引用文件尚未解析完成时，输入区展示引用标签和文件状态；对话需要读取内容时，大模型按需调用 OCR / 解析工具。\n4. 本条消息的引用数量和引用来源包含该上传文件。\n\n---\n\n## 4. 本次不做什么\n\n1. 不做输入框内完整上传管理。\n2. 不做输入框内解析队列管理；解析状态仍由资源区文件状态承载。\n3. 不展示历史上传记录。\n4. 不支持从输入框上传文件夹。\n5. 不替代资源区上传入口；批量上传、失败处理和资源管理仍在资源区或上传弹窗完成。\n\n---\n\n## 5. 验收口径\n\n1. 用户可以通过输入框附件图标选择文件，也可以将文件拖入输入框区域。\n2. 鼠标悬停附件图标时，可以看到支持格式和 4GB 限制说明。\n3. 文件上传中时，输入框展示该文件，当前消息不可发送，资源树不新增该文件。\n4. 文件上传失败时，当前消息不可发送，资源树不新增该文件，用户可以移除后重新上传。\n5. 文件上传完成后，资源树新增该文件，输入框中该文件按引用资源处理。\n6. 上传完成后的文件处于排队中、解析中、解析完成或解析失败时，都允许随当前消息发送。\n7. 引用文件未解析完成时，对话区展示引用标签和文件状态。\n8. 发送消息后，本条消息的引用数量和引用来源包含该上传文件。\n9. 用户在上传完成前移除文件，资源树不新增该文件；用户在上传完成后移除输入框引用，不删除资源树文件。\n"},{"title":"大模型操作审批（结果树相关）","status":"已上线","module":"审计助手 / 结果","priority":"归档","desc":"对会改变结果树或文件的模型操作进行确认。","judgment":"已上线，保留为历史记录。","next":"无。","file":"./x 已上线/x 已上线：需求卡-大模型操作审批（结果树相关）.md","markdown":"# 大模型操作审批（结果树相关）\n\n**产品**：综合分析平台  \n**状态**：已上线  \n**更新**：2026-06-01  \n**关联材料**：对话助手；工具执行；结果树\n\n---\n\n## 1. 需求背景\n\n助手后续会具备部分结果树操作能力。如果所有工具动作都要求用户决策，会频繁打断对话；但删除、覆盖、移动目录这类动作会破坏既有结果资产或结构，需要用户明确同意后再执行。\n\n本需求只处理结果树相关操作的审批交互与界面样式，不定义审批流，也不定义哪些动作必须进入审批。\n\n新增反馈：用户认为删除审批不一定有必要，更倾向于大模型不要直接删除结果。大模型应优先通过新建结果、新建版本或新建副本完成操作；如果确实需要支持删除结果，需要先考虑回收站 / 软删除能力，保证误删后可以恢复。\n\n---\n\n## 2. 目标场景\n\n当后端返回一条需要用户确认的结果树操作时，前端在对话区展示审批信息。用户允许后继续执行；拒绝或 60 秒未操作则不执行。\n\n---\n\n## 3. 本次做什么\n\n### 3.0 待重新评估的产品方向\n\n| 方向 | 说明 |\n| --- | --- |\n| 大模型默认不删除结果 | 大模型不直接执行删除结果；如需清理，由用户在结果树中手动操作 |\n| 优先新建而非覆盖 / 删除 | 大模型生成内容时优先新建结果、版本或副本，避免破坏既有产物 |\n| 删除前置回收站能力 | 如果后续允许删除结果，建议先支持回收站 / 软删除，可恢复后再评估是否仍需要审批 |\n| 审批范围收缩 | 审批不再默认围绕“删除结果”展开，只保留给确实不可逆或高风险的操作 |\n\n说明：以上是新增需求反馈，后续设计时需要重新判断本卡是否继续以“删除审批”为主，还是改为“限制大模型破坏性操作 + 可恢复删除”。\n\n### 3.1 前后端边界\n\n- 后端负责返回：是否需要审批、审批状态、工具名称、动作名称、对象信息、剩余时间、历史审批记录、技术细节字段与代码块。\n- 前端负责定义：审批信息在对话中的展示结构、状态切换、按钮行为、超时反馈、历史记录回放方式、技术细节区样式。\n- 本需求不定义：审批判定逻辑、对象分类规则、权限体系、审批流转规则。\n- 对象不明确时，仍先进入“对话中歧义选择”；任务配置提交仍进入“对话中任务配置确认”。\n- 本期只覆盖结果树相关审批展示，资源、任务、数据库表等对象另行定义。\n\n### 3.2 决策卡内容\n\n| 内容 | 规则 |\n| --- | --- |\n| 头部 | 统一显示“工具调用请求”；右侧显示剩余时间或审批结果 |\n| 问题句 | 按“是否允许调用「工具名」执行某动作”生成，问题句中包含对象名称 |\n| 影响摘要 | 主卡下方展示“影响：图标 + 对象名称”；批量时展示数量和前几项 |\n| 技术细节 | 展示工具、动作、对象、路径、审批编号、状态、原始参数等；字段与代码块支持滚动 |\n| 按钮 | 统一使用“允许 / 拒绝” |\n| 超时 | 60 秒未操作，默认取消 |\n\n### 3.3 对话展示\n\n| 状态 | 对话展示 |\n| --- | --- |\n| 历史审批 | 以工具行形式展示已超时、已拒绝、待确认等历史记录；已完成项可展开查看审批详情 |\n| 待审批 | 底部展示当前可操作审批卡，按钮可点击，显示剩余有效时间 |\n| 已允许 | 历史记录更新为“已允许，已执行……”；当前审批卡不再可操作 |\n| 已拒绝 | 历史记录更新为“已拒绝，未执行……”；当前审批卡不再可操作 |\n| 已超时 | 历史记录更新为“已超时，未执行……”；当前审批卡不再可操作 |\n\n说明：本卡只定义审批信息在对话中的展示逻辑与界面状态；同意或拒绝后的模型回复策略不在本需求内定义。\n\n---\n\n## 4. 本次不做什么\n\n1. 不做多人审批、权限体系或永久放行。\n2. 不承载任务配置确认和歧义选择。\n3. 不要求编辑结果正文、新增结果时打断用户决策。\n4. 不覆盖资源、任务、数据库表等对象。\n5. 不在本卡中完整定义回收站能力；如确认要做回收站，应另行拆分结果回收站需求。\n\n---\n\n## 5. 验收口径\n\n1. 当后端返回待审批项时，界面展示当前审批卡，包含头部、问题句、影响摘要、按钮和剩余时间。\n2. 当后端返回历史审批记录时，界面先展示历史工具行；已完成项可展开查看审批详情。\n3. 当前审批卡与历史审批记录使用同一套审批语义，但当前审批卡保留操作按钮，历史记录为只读。\n4. 批量对象场景下，主卡与详情区都能展示数量、对象类型和影响范围。\n5. 技术细节区支持字段信息与代码块混排，并在超出最大高度时内部滚动。\n6. 用户允许、拒绝、超时后，界面分别更新为对应结果态，且不再提供重复操作入口。\n7. 审批相关界面样式在对话区内保持一致：待审批卡用于当前决策，历史审批项用于回放和查看详情。\n\n---\n\n## 待确认问题\n\n| 问题 | 影响 |\n| --- | --- |\n| 大模型是否应默认禁止删除结果 | 决定是否还需要删除类审批 |\n| 是否优先支持“新建结果 / 新建版本 / 新建副本”来替代覆盖和删除 | 影响模型工具能力边界 |\n| 是否需要先做结果回收站 / 软删除能力 | 影响删除是否可恢复，以及审批是否必要 |\n"},{"title":"已完成任务支持重跑","status":"已上线","module":"任务","priority":"归档","desc":"完成态任务可基于原配置再次执行。","judgment":"已上线，保留为历史记录。","next":"无。","file":"./x 已上线/x 已上线：需求卡-已完成任务支持重跑.md","markdown":"# 已完成任务支持重跑\n\n**产品**：综合分析平台  \n**状态**：已上线  \n**更新**：2026-06-01  \n**关联材料**：任务列表；任务详情；单次任务；跑批任务；生成技能任务；打包下载任务\n\n---\n\n## 1. 需求背景\n\n当前任务区已支持对失败、排队中或运行中的部分任务进行重跑、中止、删除等操作，但已完成任务通常只提供查看结果、下载或删除。\n\n实际使用中，即使资源和任务输入不变，大模型生成结果也可能存在差异；同时用户可能已经调整了技能配置，希望基于当前技能配置重新生成一版结果。因此已完成任务需要支持重跑。\n\n---\n\n## 2. 目标场景\n\n用户在任务列表或任务详情中查看已完成任务时，可以通过“重跑 / 重新打包”再次执行该任务。系统在执行前让用户确认是否删除上次执行产出的结果，然后按任务类型进入新的执行流程。\n\n---\n\n## 3. 本次做什么\n\n### 3.1 操作入口\n\n| 位置 | 规则 |\n| --- | --- |\n| 任务列表 / 任务树 | 已完成单次任务、生成技能任务在“更多”中展示“重跑” |\n| 任务详情 | 已完成任务在详情页顶栏“更多”中展示“重跑” |\n| 打包下载任务 | 已完成打包下载任务展示“重新打包” |\n| 跑批父任务 | 跑批父任务提供“一键重跑” |\n| 跑批子任务 | 已完成和失败子任务提供“重跑” |\n\n### 3.2 重跑规则\n\n| 对象 | 规则 |\n| --- | --- |\n| 单次任务 | 基于原任务名称、资源范围、任务指令和当前可用技能配置创建新的任务记录 |\n| 生成技能任务 | 基于原生成要求和引用上下文创建新的生成任务记录 |\n| 打包下载任务 | 基于原打包范围和下载格式创建新的打包下载任务记录 |\n| 跑批父任务 | 在当前跑批任务内重新执行全部子任务，父任务进度随子任务状态更新 |\n| 跑批子任务 | 仅重跑当前子任务，不影响其他子任务 |\n\n补充规则：\n\n1. 单次任务、生成技能任务和打包下载任务重跑后生成新的任务记录，原任务记录保留。\n2. 跑批父任务和跑批子任务在当前跑批结构内重新流转，不新增跑批父任务或子任务记录。\n3. 新任务或重跑中的子任务先进入排队中，再按既有任务状态流转为运行中、已完成或失败。\n4. 普通重跑任务名称默认沿用原任务名称并追加“重跑”；打包下载任务追加“重新打包”。\n5. 若原任务引用的资源、结果、技能或配置已不存在，系统不直接重跑，并提示原因。\n\n### 3.3 确认规则\n\n用户点击“重跑 / 重新打包 / 一键重跑”后，先展示轻量确认弹窗。\n\n| 内容 | 规则 |\n| --- | --- |\n| 标题 | 按操作展示“确认重跑任务 / 确认重跑子任务 / 确认重新打包”等 |\n| 提示文案 | “请确认是否删除上次执行产出的结果” |\n| 产物处理 | 提供“保留当前结果 / 删除当前结果”两个选项，默认保留 |\n| 操作按钮 | “取消 / 确认重跑” |\n\n选择“删除当前结果”时，重跑前同步删除上次执行产出的结果、技能产物或文件包；选择“保留当前结果”时，新产出与原产出并存。\n\n---\n\n## 4. 本次不做什么\n\n1. 不支持在重跑前编辑完整任务配置。\n2. 不支持重跑前修改任务名称。\n3. 不处理任务调度优先级、并发策略或插队。\n4. 不做跑批父任务下的部分子任务选择；第一版只支持整批重跑和单个子任务重跑。\n5. 不改变失败任务、排队中任务、运行中任务已有的中止 / 重跑规则。\n\n---\n\n## 5. 验收口径\n\n1. 已完成单次任务、生成技能任务在任务列表和任务详情中可以看到“重跑”入口。\n2. 已完成打包下载任务可以看到“重新打包”入口，并创建新的打包下载任务记录。\n3. 跑批父任务可以发起“一键重跑”，所有子任务重新进入执行流程。\n4. 已完成和失败跑批子任务可以单独重跑，且不影响其他子任务。\n5. 重跑确认弹窗展示“请确认是否删除上次执行产出的结果”，并提供“保留当前结果 / 删除当前结果”。\n6. 用户确认后，新任务或子任务按既有状态进入排队中、运行中、已完成或失败。\n7. 普通任务和打包下载任务重跑后生成的新任务名称能与原任务区分。\n8. 原任务引用资源或配置失效时，系统不直接重跑，并提示原因。\n"},{"title":"排队提醒与任务排队态","status":"已上线","module":"任务","priority":"归档","desc":"任务排队状态、提醒和用户感知。","judgment":"已上线，保留为历史记录。","next":"无。","file":"./x 已上线/x 已上线：需求卡-排队提醒与任务排队态.md","markdown":"# 排队提醒与任务排队态\n\n**产品**：综合分析平台  \n**状态**：已上线  \n**更新**：2026-06-01  \n**关联材料**：审计助手对话页、任务区、跑批子任务列表；对话排队单点说明已并入本文\n\n---\n\n## 1. 需求背景\n\n工作台中存在两类容易被用户误解的“等待”：一类是审计助手提交问题后，模型请求因繁忙进入排队，用户容易误以为问题没有发送成功或页面卡住；另一类是跑批父任务下存在多个子任务排队执行，用户只能看到“排队中”状态，但难以判断子任务的先后顺序。\n\n同时，任务区页头同时露出“刷新”和“中止”等操作时，中止这类破坏性操作过于靠前，误触成本高。本次优化重点是让“等待中但仍在推进”的状态更可见，并把任务区高频刷新与高风险操作分开，不改变模型调度、跑批调度和资料解析队列规则。\n\n---\n\n## 2. 目标场景\n\n审计人员在工作台中使用审计助手或查看跑批任务时，可以清楚判断当前请求或子任务是否已经进入排队、排在什么位置，以及哪些操作会刷新列表、哪些操作会中止或重跑任务；在等待期间，不需要通过重复发送、刷新页面或逐条点开子任务来确认系统是否仍在处理。\n\n---\n\n## 3. 本次做什么\n\n### 3.1 排队语义边界\n\n本需求只处理“模型对话排队”和“跑批子任务排队”两类状态，避免与资料解析队列混用。\n\n| 对象 | 本次是否覆盖 | 用户看到的反馈 | 说明 |\n| --- | --- | --- | --- |\n| 模型对话请求 | 是 | 输入区上方“排队提醒” | 表示本次提问已提交，但模型尚未开始正常生成 |\n| 跑批子任务 | 是 | 子任务行“第 N 位” | 表示同一父任务下该子任务的排队顺序 |\n| 资料排队 / 解析中 | 否 | 维持现有状态筛选与操作规则 | 不新增解析排队位次，不改资料状态筛选条 |\n\n说明：\n\n- 对话排队提醒不得用于表示资料是否在解析，也不得用于表示跑批子任务是否在执行。\n- 跑批子任务位次只服务于父任务下钻后的子任务列表，不扩展到任务列表、结果列表或资料列表。\n\n### 3.2 审计助手对话排队提醒\n\n当当前会话存在一条已提交但尚未进入正常生成的模型请求时，在对话输入框上方展示排队提醒。\n\n| 要素 | 规则 |\n| --- | --- |\n| 展示位置 | 贴近输入区上沿，宽度与输入区对齐并水平居中，不进入对话消息流 |\n| 标题 | 固定展示“排队提醒”，配预警色信息图标 |\n| 正文 | “当前模型请求量较高，你目前排在第 N 位。请耐心等待” |\n| 排位 N | 展示当前请求的排队位次，最小为 1，不展示 0、负数、空值或 NaN |\n| 伴随内容 | 保留用户本次提问，以及已展示的思考 / 工具调用步骤 |\n| 操作 | 不提供取消、插队、重试等按钮 |\n\n提醒消失规则：\n\n- 请求开始正常生成或执行时，隐藏排队提醒。\n- 用户暂停生成、在同会话发送新消息、切换到其他历史会话时，清理当前提醒。\n- 切回仍处于排队状态的会话时，可恢复对应提醒和排位。\n\n### 3.3 历史会话菜单\n\n历史会话下拉用于切换真实会话，不承担演示场景分组说明。\n\n| 项 | 规则 |\n| --- | --- |\n| 菜单结构 | 扁平列表，一项对应一个会话 |\n| 会话名称 | 仅展示真实会话标题，不出现“案例”“演示场景”等分组或占位文案 |\n| 切换排队态 | 切到无排队会话时不展示提醒；切回排队会话时恢复提醒与排位 |\n\n### 3.4 任务区刷新与高风险操作收纳\n\n任务区页头保留“刷新”作为外侧高频操作，将中止、重跑、删除等操作收纳到“更多”中，降低误触。\n\n| 区域 | 外侧操作 | 更多菜单 | 规则 |\n| --- | --- | --- | --- |\n| 跑批子任务列表页头 | 刷新 | 中止父任务、全部重跑、仅失败重跑、删除 | 刷新仅重新加载任务列表，不刷新中间助手对话 |\n| 任务详情顶栏 | 刷新 | 中止、重跑、删除 | 仅可操作任务展示相关菜单项 |\n| 子任务行 | 不单独放中止图标 | 更多 / 右键菜单 | 行尾不重复暴露破坏性操作 |\n\n说明：\n\n- 刷新按钮提示需明确“重新加载任务列表，不刷新对话”。\n- 中止、删除等破坏性操作进入“更多”后，仍按既有二次确认或状态规则执行；本需求不重新定义任务操作后状态。\n\n### 3.5 跑批子任务排队位次\n\n在跑批父任务下钻后的子任务列表中，仅对“排队中”子任务展示排队位次。\n\n| 要素 | 规则 |\n| --- | --- |\n| 展示文案 | “第 N 位” |\n| 位次口径 | 同一父任务下，按当前子任务列表顺序，对“排队中”子任务从 1 开始编号 |\n| 展示样式 | 小胶囊标签，数字 N 使用预警色并加粗 |\n| 左侧图标 | 排队中时钟图标使用预警色，仅作用于子任务列表 |\n| 悬停行为 | 默认显示位次；悬停该行时隐藏位次并露出“更多”；移开后恢复 |\n| 非排队状态 | 运行中、成功、失败子任务不展示“第 N 位” |\n\n说明：\n\n- 若后端提供调度器真实位次，以接口位次为准；若暂未提供，则按父任务内列表顺序生成展示位次。\n- 位次只表达当前列表中的排队顺序，不承诺全局等待时间或预计完成时间。\n\n---\n\n## 4. 本次不做什么\n\n1. 不做资料文件在“排队中 / 解析中”状态下的排队位次展示或专项排队 UI。\n2. 不调整模型、跑批任务、资料解析的调度策略、优先级和并发配置。\n3. 不新增取消排队、插队、优先执行、预计等待时长等能力。\n4. 不把模型排队提醒写入对话历史、分析结果、技能沉淀或导出内容。\n5. 不改变跑批下钻、子任务状态筛选、分页、父任务进度等既有结构。\n6. 不在本需求内重新定义排队期间是否允许继续发问，沿用当前发送规则。\n\n---\n\n## 5. 验收口径\n\n### 5.1 对话排队提醒\n\n1. 模型请求进入排队状态时，审计助手输入框上方展示“排队提醒”。\n2. 提醒正文显示“当前模型请求量较高，你目前排在第 N 位。请耐心等待”，且 N 不小于 1。\n3. 排队期间，对话区仍保留用户本次提问和已展示的思考 / 工具调用步骤，提醒不进入历史消息流。\n4. 请求开始生成、用户暂停生成、同会话新发消息或切换到非排队会话后，提醒消失。\n5. 历史会话下拉为扁平会话名列表，不出现“案例 / 演示场景”等分组文案。\n6. 提醒不遮挡发送按钮、@ 引用入口、技能入口和输入区上方的引用 / 技能选择面板。\n\n### 5.2 任务区操作收纳\n\n1. 跑批子任务列表页头展示“刷新 + 更多”，不再单独展示中止图标。\n2. 任务详情顶栏展示“刷新 + 更多”，中止、重跑、删除等操作在“更多”内触达。\n3. 点击任务区刷新后，任务列表重新加载，中间助手对话和输入内容不被清空。\n4. 子任务行尾不重复展示独立中止图标，相关操作通过“更多”或右键菜单触达。\n\n### 5.3 子任务排队位次\n\n1. 跑批子任务列表中，“排队中”子任务左侧时钟图标使用预警色。\n2. “排队中”子任务右侧展示“第 N 位”胶囊，N 按同一父任务下排队子任务的列表顺序递增。\n3. 运行中、成功、失败子任务不展示“第 N 位”。\n4. 悬停排队子任务行时，“第 N 位”隐藏并露出“更多”；移开后恢复位次展示。\n5. 资料“排队中 / 解析中”视图不出现“第 N 位”或类似解析排队位次。\n\n---\n\n## 关键决策\n\n| 决策点 | 结论 | 原因 |\n| --- | --- | --- |\n| 本期范围 | 只覆盖对话排队和跑批子任务排队 | 资料解析排队展示另行处理，降低联调和验收范围 |\n| 对话与任务排队 UI | 语义分开，不共用同一提醒 | 对话等待和任务排队的对象、位置、用户动作不同 |\n| 子任务位次文案 | 使用“第 N 位”胶囊 | 适合侧栏窄空间，能直接表达顺序 |\n| 任务页头主操作 | 外侧保留刷新，高风险操作进更多 | 刷新高频且低风险，中止 / 删除需要降低误触 |\n\n---\n\n## 待确认问题\n\n| 问题 | 影响 | 建议处理 |\n| --- | --- | --- |\n| 模型排队位次是否由后端实时返回 | 影响对话提醒中 N 的数据来源 | 联调前可用 demo 默认值；正式验收需绑定接口字段 |\n| 子任务“第 N 位”是否使用调度器全局顺序 | 影响位次计算口径 | 若接口提供全局位次则使用接口；否则按父任务内排队子任务顺序展示 |\n| 资料解析排队 UI 是否单独立项 | 影响后续需求拆分 | 将资料解析位次、资料状态筛选条工具栏等另开需求卡 |\n"},{"title":"对话中图谱模板精准调用","status":"待梳理","module":"资源 / 图谱 / 对话","priority":"P2","desc":"对话引用图谱时，让大模型看到可用模板并按模板标识准确调用。","judgment":"影响图谱资源在对话中的可用性，需要先明确模板元数据和调用边界。","next":"确认图谱模板类型、展示入口和多模板匹配时的处理方式。","file":"./1待梳理：需求卡-对话中图谱模板精准调用.md","markdown":"# 对话中图谱模板精准调用\n\n**产品**：综合分析平台  \n**状态**：待梳理  \n**更新**：2026-05-26  \n**关联材料**：工作台图谱资源；对话引用资源；任务资源配置；数据图谱平台模板\n\n---\n\n## 1. 原始需求 / 背景\n\n对话中的图谱资源，应该可以看到可用的模板，确保模板可以精准的调用。\n\n---\n\n## 2. 初步理解\n\n当前对话可以引用图谱资源，但大模型在使用图谱时，需要知道当前图谱有哪些可用模板，以及每个模板适合解决什么问题。\n\n本需求重点不是新增图谱分析能力，而是把“可用模板”作为图谱资源的一部分在对话中暴露出来，让大模型可以按用户意图选择正确模板，减少误调用、错调用或泛化回答。\n\n---\n\n## 3. 目标场景\n\n用户在对话中引用某个图谱资源并提出分析问题时，大模型可以识别该图谱可用的模板，选择匹配的模板发起调用，并在无法确定模板时向用户说明或追问。\n\n---\n\n## 4. 初步范围\n\n| 对象 | 初步规则 |\n| --- | --- |\n| 图谱资源 | 对话上下文中展示图谱名称、类型、可用模板列表和模板状态 |\n| 图谱模板 | 向大模型揭露模板名称、用途、输入要求、输出结果和适用条件 |\n| 模板调用 | 大模型调用模板时，应传入模板标识，避免只按模板名称模糊匹配 |\n| 不可用模板 | 不进入可调用范围，必要时展示不可用原因 |\n| 多模板匹配 | 如果多个模板都可能适用，优先让用户选择或让模型说明选择依据 |\n\n说明：\n\n- 模板需要有稳定 ID，不能只依赖自然语言名称调用。\n- 对话中展示给用户的模板信息可以简化，但给大模型的工具上下文需要足够明确。\n- 图谱资源被删除、无权限或模板下线时，对话中不应继续调用该模板。\n\n---\n\n## 5. 影响面与风险\n\n1. 影响图谱资源详情、对话资源引用、工具调用参数和模型上下文构造。\n2. 需要明确模板元数据口径，否则大模型难以判断模板适用场景。\n3. 如果模板名称相似或用途重叠，容易出现误调用，需要有歧义处理。\n4. 与任务配置中的图谱资源选择、应用中心模板、SkillHub 能力资产可能存在交叉。\n\n---\n\n## 待确认问题\n\n| 问题 | 影响 |\n| --- | --- |\n| 图谱模板具体指查询模板、分析模板，还是图谱平台的业务模板 | 影响模板元数据和调用方式 |\n| 模板列表是在图谱资源详情中展示，还是只在对话引用后展示 | 影响交互入口 |\n| 多个模板都匹配用户问题时，是由模型自动选择还是让用户选择 | 影响对话流转和歧义处理 |\n"},{"title":"对话中歧义选择","status":"待梳理","module":"审计助手","priority":"P2","desc":"当助手识别多个候选对象时让用户确认。","judgment":"与任务配置确认、资源引用和敏感操作确认存在交互复用空间。","next":"沉淀候选选择卡片的通用规则。","file":"./1待梳理：需求卡-对话中歧义选择.md","markdown":"# 对话中歧义选择\n\n**产品**：综合分析平台  \n**状态**：待梳理  \n**更新**：2026-05-23  \n**关联材料**：对话助手；资源树；结果树；任务配置；工具执行\n\n---\n\n## 1. 需求背景\n\n用户在对话中经常会用自然语言表达目标，例如“删除这个”“用上次的报告”“把那个文件加进来”。这类表达对人来说可能依赖上下文，但对助手来说可能存在多个候选对象或多个可选参数。\n\n歧义选择的核心不是风险决策，而是先让用户选对对象或参数。它应与删除、覆盖等风险决策区分开，避免用户以为“选中对象”就等于已经同意执行危险操作。\n\n---\n\n## 2. 目标场景\n\n当助手无法唯一确定用户要操作的对象、范围或参数时，在对话中展示候选选择卡。用户选择后，助手再继续后续流程：如果后续是高风险操作，进入操作确认；如果后续是任务创建，进入任务配置确认。\n\n---\n\n## 3. 本次做什么\n\n### 3.1 触发范围\n\n| 类型 | 触发规则 | 示例 |\n| --- | --- | --- |\n| 对象不唯一 | 存在多个同名、相似名称或上下文相关对象 | 多个“付款异常报告” |\n| 范围不明确 | 用户没有明确使用哪个文件夹、资源范围或结果范围 | “用上次那些资料” |\n| 参数不明确 | 任务配置、输出位置、OCR 范围等存在多个合理选项 | “按之前的配置跑一遍” |\n| 指代不清 | “这个”“那个”“上次的”无法唯一映射 | “删除这个结果” |\n\n### 3.2 选择卡内容\n\n| 内容 | 规则 |\n| --- | --- |\n| 标题 | 用选择语气表达，例如“请选择要操作的结果” |\n| 候选项 | 展示候选对象名称、类型、路径、更新时间或来源任务 |\n| 选择方式 | 单选为主；需要多选时明确展示多选状态 |\n| 辅助信息 | 展示能帮助区分的字段，例如所属文件夹、生成时间、任务来源 |\n| 操作按钮 | “确认选择”“取消” |\n| 风险样式 | 默认不使用危险色，避免与删除确认混淆 |\n\n### 3.3 后续流转\n\n| 选择后动作 | 规则 |\n| --- | --- |\n| 后续为只读操作 | 选择后可直接执行，例如打开、查看、引用 |\n| 后续为风险操作 | 选择后进入“结果树敏感变更决策” |\n| 后续为任务创建 | 选择后进入“对话中任务配置确认” |\n| 仍存在歧义 | 继续展示下一层选择，不直接执行 |\n\n说明：\n\n- 歧义选择只解决“选哪个”，不承担删除、覆盖、中止等风险决策。\n- 如果候选项过多，应先展示最相关候选，并支持搜索或收起展开，具体交互待设计。\n\n---\n\n## 4. 本次不做什么\n\n1. 不做模型自动猜测并直接执行高风险操作。\n2. 不把歧义选择卡做成危险决策卡。\n3. 不处理完整搜索中心或高级筛选能力。\n4. 不做跨会话长期记忆中的对象指代推断。\n5. 不替代任务配置确认和操作确认。\n\n---\n\n## 5. 验收口径\n\n1. 当用户指令中的对象或参数不唯一时，系统展示歧义选择卡，而不是直接执行工具。\n2. 候选项至少展示名称、类型和路径 / 来源等区分信息。\n3. 用户确认选择后，助手按所选对象继续后续流程。\n4. 如果后续动作是删除、覆盖、中止等风险操作，选择后还需要展示操作确认。\n5. 如果后续动作是创建任务，选择后进入任务配置确认。\n6. 用户取消选择后，工具不执行，并在对话中反馈已取消。\n7. 歧义选择卡不使用危险决策样式，避免与风险决策混淆。\n"},{"title":"PDF 按需 OCR","status":"待梳理","module":"资源","priority":"P2","desc":"围绕 PDF 解析成本、按需触发和 OCR 结果使用。","judgment":"与文件资料解析链路相关，后续会影响资源状态和预览体验。","next":"明确触发条件、结果保存位置和失败处理。","file":"./1待梳理：需求卡-PDF按需OCR.md","markdown":"# PDF 按需 OCR\n\n**产品**：综合分析平台  \n**状态**：待梳理  \n**更新**：2026-05-23  \n**关联材料**：资料上传；PDF 资料解析；OCR 结果；资源文件树\n\n---\n\n## 1. 需求背景\n\n当前 PDF 文件解析会带来较大的 OCR 压力，尤其是页数较多、扫描件较多或批量上传时，容易导致解析耗时长、队列压力高。实际讨论中已出现 300MB 压缩包上传后等待 5-10 分钟、可能进入排队的情况，如果默认全量解析，用户在上传阶段无法判断需要等待多久，也无法决定是否只 OCR 部分内容。\n\n实际业务中，并不是所有 PDF 都需要全量 OCR。部分文件只需要在线预览、用于归档，或只需要识别指定页 / 指定范围。为了降低处理耗时和系统压力，需要支持 PDF 按需 OCR。\n\n---\n\n## 2. 目标场景\n\n用户上传或处理 PDF 资料时，可以先了解 PDF 页数和预计处理耗时，再按实际使用需要选择 OCR 范围。系统只对用户选择的 PDF 内容执行 OCR，并在资料状态和预览中清楚展示当前 OCR 覆盖情况。\n\n---\n\n## 3. 本次做什么\n\n### 3.1 OCR 处理选项\n\n| 选项 | 规则 |\n| --- | --- |\n| 全量 OCR | 对 PDF 全部页面执行 OCR，适用于后续需要全文检索、引用和分析的资料 |\n| 不做 OCR | 仅保留文件和在线预览，不生成 OCR 文本 |\n| 指定范围 OCR | 仅对用户指定页码或页码范围执行 OCR |\n\n说明：\n\n- 默认选项需要结合当前上传流程确认，避免用户无感触发大量 OCR。\n- OCR 范围由用户决策，系统不自动判断“应该 OCR 哪几页”。\n- 不做 OCR 的 PDF 仍应作为资源文件存在，但不能提供基于 OCR 文本的全文检索、引用或分析能力。\n- 指定范围 OCR 的页面之外，不应展示为已识别内容。\n\n### 3.2 入口与提示\n\n| 场景 | 规则 |\n| --- | --- |\n| 上传 PDF | 上传弹窗提供 OCR 开关，用户可以选择不 OCR、全量 OCR 或指定范围 OCR |\n| 上传 ZIP | 先尽量解析压缩包目录和 PDF 页数，再让用户决定是否 OCR 以及 OCR 范围 |\n| 已上传 PDF | 支持对未 OCR 或部分 OCR 的 PDF 补充发起 OCR |\n| 重新 OCR | 将原“重跑 / 重新解析”类入口调整为更明确的“OCR / 重新 OCR”，点击后弹出 OCR 选项 |\n| PDF 预览 | 展示当前 OCR 状态，例如未 OCR、部分 OCR、全量 OCR |\n| OCR 耗时提示 | 选择全量 OCR 或较大范围 OCR 时，展示预计耗时或提示处理耗时可能较长 |\n\n说明：\n\n- 对话内使用资料时，不依赖用户临时感知 PDF 页数；如果需要文本内容，应基于已 OCR 内容或明确的文本提取工具。\n- 对于大压缩包，优先让用户看到包内目录、PDF 数量、页数和耗时预估，再决定是否 OCR。\n\n### 3.3 状态口径\n\n| 状态 | 说明 |\n| --- | --- |\n| 未 OCR | 文件已上传，但未生成 OCR 文本 |\n| OCR 中 | 正在执行 OCR |\n| 部分 OCR | 仅部分页面完成 OCR |\n| 全量 OCR 完成 | 所有页面已完成 OCR |\n| OCR 失败 | OCR 执行失败，保留文件但提示失败原因 |\n\n说明：\n\n- OCR 状态需要与资料解析状态区分清楚，避免用户误以为文件整体解析失败。\n- 如果资料后续分析依赖 OCR 文本，应提示用户当前 OCR 覆盖范围不足。\n\n---\n\n## 4. 本次不做什么\n\n1. 不改变非 PDF 文件的解析规则。\n2. 不新增复杂 OCR 引擎配置，例如语言模型、版面识别模型选择。\n3. 不做自动判断哪些页面需要 OCR 的智能推荐。\n4. 不处理 OCR 结果的人工校对、编辑和版本管理。\n5. 不改变已有 PDF 在线预览能力。\n6. 不在本卡中完整定义 ZIP 上传任务、排队和后台任务监管方案。\n\n---\n\n## 5. 验收口径\n\n1. 用户上传 PDF 时，可以看到 OCR 处理选项。\n2. 用户选择不做 OCR 后，PDF 可以作为资源保存，但不生成 OCR 文本。\n3. 用户选择指定范围 OCR 后，系统只对指定页面范围执行 OCR。\n4. 用户点击已上传 PDF 的“OCR / 重新 OCR”入口后，可以重新选择 OCR 范围。\n5. PDF 预览或资料信息中可以看到当前 OCR 状态。\n6. 当用户尝试对未 OCR 或 OCR 不完整的 PDF 进行依赖 OCR 的分析时，系统给出提示。\n7. OCR 失败时，文件本身仍保留，并展示失败原因。\n8. 对 ZIP 中的 PDF，系统应尽量先展示目录、PDF 数量、页数或耗时预估，再让用户决定 OCR 范围。\n\n---\n\n## 待确认问题\n\n| 问题 | 影响 | 建议 |\n| --- | --- | --- |\n| PDF 上传时默认 OCR 选项是什么 | 影响用户成本和系统压力 | 建议默认按当前业务需要谨慎选择，至少避免无提示全量 OCR |\n| 指定范围 OCR 是否支持页码、多段页码或仅首页 | 影响交互复杂度 | 第一版可支持页码范围 |\n| 已上传 PDF 是否允许后续补充 OCR | 影响资源详情和任务触发入口 | 建议支持补充 OCR |\n| OCR 状态是否并入资料解析状态 | 影响状态设计 | 建议区分展示，避免混淆 |\n| 部分 OCR 的资料是否允许进入分析任务 | 影响分析结果完整性 | 建议允许，但在任务配置或执行前提示覆盖范围 |\n| ZIP 内 PDF 页数和耗时预估能否在 OCR 前获得 | 影响用户是否能提前决策 OCR 范围 | 需要后端确认预读能力 |\n| OCR 入口命名是否统一为“OCR / 重新 OCR” | 影响与当前“重跑 / 重新解析”入口关系 | 建议使用更贴近用户目标的命名 |\n"},{"title":"工作台案例只读展示","status":"待梳理","module":"工作台 / 案例","priority":"P2","desc":"支持展示案例工作台，案例内容只读不可变更。","judgment":"适合服务演示、培训和方法复盘，需要统一工作台各区域的只读权限。","next":"确认案例入口、只读标识和是否支持复制为可编辑工作台。","file":"./1待梳理：需求卡-工作台案例只读展示.md","markdown":"# 工作台案例只读展示\n\n**产品**：综合分析平台  \n**状态**：待梳理  \n**更新**：2026-05-26  \n**关联材料**：审计助手工作台；案例展示；资源区、对话区、任务区、结果区\n\n---\n\n## 1. 原始需求 / 背景\n\n工作台以及页面支持展示案例，案例中工作台内容不可变更，只读。\n\n---\n\n## 2. 初步理解\n\n平台需要支持“案例展示”场景，让用户查看一套预置或沉淀的审计工作台内容，包括资源、对话、任务、结果等信息。\n\n案例模式下，用户可以浏览、查看和学习案例过程，但不能修改案例中的工作台内容，避免误删、误改或影响标准案例。\n\n---\n\n## 3. 目标场景\n\n用户进入案例页面或打开某个案例工作台后，可以查看案例中的资料、技能使用、任务过程和结果产出，用于演示、培训、复盘或方法参考。\n\n---\n\n## 4. 初步范围\n\n| 区域 | 只读展示规则 |\n| --- | --- |\n| 资源 | 可查看资源目录、文件信息和预览；不可上传、删除、移动、重命名 |\n| 技能 | 可查看案例使用的技能；不可新增、编辑、移除案例技能 |\n| 对话 | 可查看历史对话和引用内容；不可继续发送消息 |\n| 任务 | 可查看任务配置、执行状态和结果；不可新建、重跑、中止、删除 |\n| 结果 | 可查看结果内容和目录结构；不可新增、编辑、删除、移动 |\n\n说明：\n\n- 案例工作台需要有明确的只读状态标识。\n- 原有可编辑入口在案例模式下应隐藏、置灰或提示只读，具体交互待设计阶段确定。\n- 是否支持“复制案例到我的工作台”可作为后续扩展，不纳入第一版默认范围。\n\n---\n\n## 5. 影响面与风险\n\n1. 影响工作台各区域的按钮、右键菜单、拖拽、快捷操作和批量操作。\n2. 需要区分普通工作台和案例工作台的权限模型。\n3. 案例内容可能用于演示和培训，需要避免用户操作改变标准案例。\n4. 若后续支持复制案例，需要明确复制后的资源、任务和结果归属。\n\n---\n\n## 待确认问题\n\n| 问题 | 影响 |\n| --- | --- |\n| 案例入口放在工作台内、应用中心，还是单独案例库 | 影响导航和信息架构 |\n| 案例是否支持复制为可编辑工作台 | 影响只读模式和后续转化路径 |\n| 案例中的任务是否展示真实执行记录，还是只展示结果摘要 | 影响案例数据组织方式 |\n"},{"title":"SkillHub 统一技能管理平台","status":"待梳理","module":"技能","priority":"P2","desc":"技能资产从当前技能库扩展到更统一的管理平台。","judgment":"范围较大，可能覆盖技能库、共享、分类、版本和平台化管理。","next":"先拆清楚第一阶段是否只做当前技能库增强。","file":"./1待梳理：需求卡-SkillHub统一技能管理平台.md","markdown":"# SkillHub 统一技能管理平台\n\n**产品**：综合分析平台 / SkillHub  \n**状态**：待梳理  \n**更新**：2026-05-25  \n**关联材料**：现有技能库、技能库分类、技能版本回退、生成技能任务、审计大数据平台 / 模型库建设思路\n\n---\n\n## 1. 原始需求 / 背景\n\n技能库需要和平台部分解耦，延伸出一个类似 SkillHub 的平台，用于做上层的统一管理和维护。需要站在审计厅、审计署视角进行需求设计。\n\n当前核心变化是技术路线从传统数据分析编程，转向 AI 驱动的技能、工具、工作流和智能应用，但业务本质没有变：审计机关仍然需要把可复用的分析方法、业务规则、模型和经验集中沉淀、统一治理、按需下发、持续迭代。\n\n---\n\n## 2. 信息收集摘要\n\n### 2.1 审计机关建设思路\n\n- 审计信息化长期围绕“集中分析、分散核查”“审计全覆盖”“模型库 / 方法库 / 数据平台”建设展开。\n- 审计署和地方审计厅视角更关注统一规划、分级部署、跨地区复用、数据安全、执行留痕和成果可推广。\n- 现有综合分析平台中的技能，更像项目级 / 工作台级可运行配置；SkillHub 应承载组织级能力资产治理。\n\n### 2.2 友商 / 类似平台参考\n\n| 参考对象 | 可借鉴点 |\n| --- | --- |\n| OpenAI 企业 GPT 管理 | 工作区级权限、创建 / 分享 / 第三方能力访问控制、行为合规与使用分析 |\n| Dify Marketplace / Creator Center | 模板发布、组织协作、提交审核、分类标签、使用前配置步骤 |\n| MCP Registry | 能力元数据注册、私有 Registry、自建内部工具目录、被下游应用消费 |\n| Hugging Face Hub | 组织空间、模型 / 数据集 / 应用资产集中管理、访问申请、审计日志与企业治理 |\n| Palantir AIP / Foundry | 数据、逻辑、动作统一到业务对象和治理体系中，面向组织构建可运行工作流 |\n| 传统审计大数据平台 | 审计方法模型、疑点模型、SQL / 脚本 / 指标口径集中沉淀与分级推广 |\n\n---\n\n## 3. 初步理解\n\nSkillHub 不只是“更大的技能库”，而是审计 AI 能力资产中心。\n\n它应该解决三类问题：\n\n1. **统一治理**：审计署 / 审计厅可以统一维护公共技能、业务分类、适用范围、版本、权限和质量状态。\n2. **分级复用**：地市、处室、项目组可以按业务场景引用、复制、定制技能，而不是各自重复配置。\n3. **持续演进**：技能从个人经验、项目沉淀、生成技能任务中产生，经审核后进入组织资产，再被工作台、应用中心和任务系统调用。\n\n---\n\n## 4. 参考方案\n\n### 方案 A：组织级技能资产库\n\n以“技能”为核心对象，先把现有技能库平台化。\n\n- 支持公共技能、厅级技能、地市技能、个人技能。\n- 支持分类、标签、适用审计类型、适用资料类型、版本、审核状态。\n- 支持技能发布、下架、复制、版本回退、使用统计。\n- 工作台只引用 SkillHub 中的技能副本或受控版本。\n\n适合先落地，改动相对可控。\n\n### 方案 B：审计方法 / AI 能力 Hub\n\n把技能、工具、提示词、工作流、模型配置、数据连接模板都作为能力资产管理。\n\n- 技能是能力资产的一种。\n- 工具 / MCP / API 连接作为可被技能和应用调用的底层能力。\n- 工作流用于沉淀可运行的多步骤审计方法。\n- 统一做权限、版本、依赖、测试、审核和上下线。\n\n治理更完整，但范围大，适合作为中期目标。\n\n### 方案 C：署厅级能力分发平台\n\n面向审计署 / 审计厅做上级统一维护和下级分发。\n\n- 上级维护标准技能、专项审计包、典型案例包。\n- 下级可订阅、复制、适配本地数据口径。\n- 支持分发范围、版本通知、更新说明、兼容性提示。\n- 统计各地使用、反馈、问题和复用效果。\n\n更符合审计机关纵向管理，但对组织权限和分发机制要求更高。\n\n---\n\n## 5. 初步范围\n\n首版建议聚焦：\n\n1. SkillHub 作为独立平台 / 模块入口，不继续只放在综合分析平台内部。\n2. 技能对象统一登记：名称、分类、标签、适用场景、输入要求、输出形式、版本、来源、状态、维护人。\n3. 技能生命周期：草稿、待审核、已发布、已下架、已废弃。\n4. 技能来源：人工创建、工作台沉淀、生成技能任务、导入模板。\n5. 技能使用：工作台引用、应用中心引用、任务创建引用。\n6. 技能治理：权限、审核、版本、依赖、使用统计、问题反馈。\n\n---\n\n## 6. 影响面与风险\n\n- 需要重新划分“平台技能库”和“工作台内引用技能”的边界。\n- 现有技能库分类需求可能成为 SkillHub 的子能力。\n- 生成技能任务、技能版本回退、任务创建引用技能都需要和 SkillHub 对齐。\n- 若一次性纳入工具、应用、模型、数据连接，范围会过大；首版需要先定核心对象。\n- 审计机关场景必须考虑分级权限、内部共享、资产审计、敏感能力下发和版本一致性。\n\n---\n\n## 待确认问题\n\n| 问题 | 影响 |\n| --- | --- |\n| SkillHub 首版是否只管理“技能”，还是同时纳入工具 / 工作流 / 应用模板 | 决定平台边界 |\n| 技能是否需要署级、厅级、地市级、项目级多级来源 | 决定权限和分发模型 |\n| 工作台引用技能时是引用固定版本，还是默认跟随最新发布版本 | 影响任务可复现和版本治理 |\n| 生成技能任务产物是否默认进入个人草稿，再经审核进入 SkillHub | 影响资产入库流程 |\n| 首批技能分类是否沿用审计业务分类、资料类型分类，还是按分析方法分类 | 影响信息架构 |\n\n---\n\n## 参考来源\n\n- 审计署网站：江苏省审计厅构建审计数据体系，强调国家审计数据系统、数字化审计平台和大数据审计模式。\n- 审计署网站：金审工程与审计全覆盖相关材料，体现统一规划、分级部署、以用为本的建设思路。\n- OpenAI Help：企业工作区对 GPT 创建、分享、Actions 域名、合规和使用分析做统一控制。\n- Dify Docs / Blog：应用模板可提交审核、组织协作、分类检索、一键采用。\n- MCP Registry：公共注册表只承载元数据，私有能力建议自建内部 Registry。\n- Hugging Face Hub：组织空间支持模型、数据集、应用资产的访问控制、审计日志与企业治理。\n"},{"title":"工作台数据包导入导出","status":"待梳理","module":"工作台 / 数据迁移","priority":"P2","desc":"支持跨网段导出工作台数据包并导入继续分析。","judgment":"属于跨环境协作和数据治理能力，需优先明确包内对象和安全边界。","next":"确认首版导出范围、导入权限和是否任务化执行。","file":"./1待梳理：需求卡-工作台数据包导入导出.md","markdown":"# 工作台数据包导入导出\n\n**产品**：综合分析平台  \n**状态**：待梳理  \n**更新**：2026-05-25  \n**关联材料**：工作台资源、结果、任务、上传与解析中文件可用性优化、工作台资源存储上限、批量打包下载任务\n\n---\n\n## 1. 原始需求 / 背景\n\n工作台的整体数据打包：比如不同网段的平台，从专网导出后导入到分析网继续开展工作。分析网的数据权限比专网分析权限更大。\n\n这个需求面向跨网络、跨部署环境的工作台迁移，不是普通文件下载。\n\n---\n\n## 2. 初步理解\n\n审计场景下可能存在多个隔离网段或部署环境。用户在一个环境中完成资料收集、初步整理或部分分析后，需要把整个工作台的数据包导出，再导入到另一个权限更充分、算力或工具能力更强的分析环境中继续工作。\n\n核心问题是：如何把“一个工作台可继续分析所需的对象和上下文”打成可迁移包，并在目标环境恢复为可用工作台。\n\n---\n\n## 3. 目标场景\n\n用户在专网平台中选择一个工作台，导出工作台数据包。数据包通过合规方式转移到分析网后，用户在分析网导入数据包，系统恢复资源、目录、结果和必要的任务上下文，用户可以继续开展分析。\n\n---\n\n## 4. 初步范围\n\n### 4.1 导出内容\n\n首轮需要梳理哪些对象进入工作台数据包：\n\n| 对象 | 初步判断 |\n| --- | --- |\n| 资源文件 | 需要导出，包括目录结构和文件元数据 |\n| 数据库表 | 需区分真实数据、表结构、连接信息或导出快照 |\n| 数据图谱 | 需区分图谱实体数据、关系数据和配置 |\n| 知识库 | 需区分原始文件、索引结果和关联关系 |\n| 技能配置 | 需要导出工作台内引用或配置过的技能副本 |\n| 对话记录 | 待确认是否导出，涉及敏感内容和上下文复用 |\n| 任务记录 | 待确认是否导出完整记录，至少需要保留产出关系 |\n| 分析结果 | 需要导出，包括结果树结构、结果文件和元数据 |\n\n### 4.2 导出 / 导入流程\n\n- 导出时由用户选择工作台，系统生成工作台数据包。\n- 数据包生成可能耗时，应作为后台任务进入任务列表。\n- 导入时校验数据包完整性、版本兼容性、容量限制和权限。\n- 导入成功后生成一个新的工作台，保留原工作台名称或允许用户重命名。\n- 导入后资源、结果、技能、任务关系尽量恢复到可继续分析状态。\n\n### 4.3 数据包规则\n\n- 数据包需要包含清单文件，记录包内对象、数量、来源环境、导出时间和版本。\n- 数据包应支持完整性校验，避免导入半包或损坏包。\n- 跨网段迁移需要考虑脱敏、权限、加密和导入审计日志。\n- 目标环境权限更大时，不能默认绕过原数据的安全边界，需要有导入后的权限归属规则。\n\n---\n\n## 5. 影响面与风险\n\n- 与资源存储上限、ZIP 上传、任务监管、批量打包下载任务都有交叉，但本需求对象是“工作台整体迁移包”。\n- 数据库表、图谱和知识库是否导出真实数据，会显著影响包大小、安全和导入复杂度。\n- 跨网段导入涉及安全合规，需要明确加密、签名、审计日志和导入权限。\n- 任务是否可继续执行、是否只保留历史记录，需要单独确认。\n- 不同版本平台之间导入导出可能存在兼容性问题。\n\n---\n\n## 待确认问题\n\n| 问题 | 影响 |\n| --- | --- |\n| 工作台数据包首版是否只覆盖资源和结果，还是覆盖技能、任务、对话、库表、图谱、知识库 | 决定首版范围 |\n| 数据库表和图谱导出真实数据还是只导出引用 / 快照 | 影响安全和可用性 |\n| 导出包是否必须加密、签名、校验 | 影响跨网段合规 |\n| 导入后是恢复原工作台 ID，还是生成新工作台 | 影响任务、结果和引用关系 |\n| 导出和导入是否都进入任务列表 | 影响任务监管设计 |\n| 目标环境权限更大时，导入后的资源权限如何归属 | 影响安全边界 |\n"},{"title":"跨工作台引入资料","status":"待设计","module":"资源 / 工作台","priority":"P2","desc":"从其他有权限的工作台引入文件、结果或文件夹，在当前工作台生成独立资源副本。","judgment":"核心口径已明确：按本地文件复制心智处理，引入后保存快照，不同步来源，不反向影响来源权限。","next":"进入交互设计，重点确认来源选择弹窗、目标目录展示和重名反馈。","file":"./2待设计：需求卡-跨工作台引入资料.md","markdown":"# 跨工作台引入资料\n\n**产品**：综合分析平台  \n**状态**：待设计  \n**更新**：2026-06-03  \n**关联材料**：审计助手工作台；资源区文件树；结果树；对话引用资源；工作台权限\n\n---\n\n## 1. 需求背景\n\n审计人员在不同工作台中可能沉淀了可复用的文件、结果和目录结构。当前用户需要先下载再上传，或重新生成结果，才能在当前工作台继续使用，操作成本高，也容易丢失目录关系。\n\n本次新增“从其他工作台引入”能力，让用户像在本地文件管理器中复制文件一样，把其他工作台里的文件或结果引入当前工作台。\n\n---\n\n## 2. 目标场景\n\n用户在当前工作台需要复用其他工作台资料时，可以选择有权限访问的工作台，从其中的文件树或结果树选择文件、结果或文件夹，引入到当前工作台资源区，并继续添加到对话、创建任务或作为后续分析资料使用。\n\n---\n\n## 3. 本次做什么\n\n### 3.1 引入入口\n\n资源区“文件”添加入口中增加“从其他工作台引入”。\n\n打开后进入引入弹窗：\n\n- 先选择来源工作台，支持按工作台名称搜索。\n- 来源内容分为“文件”和“结果”两个页签。\n- 文件和结果均按来源工作台中的目录结构展示。\n- 支持选择单个文件、结果文件、文件夹、结果文件夹。\n- 点击“引入”后，所选内容进入当前工作台资源区。\n\n### 3.2 引入后的展示\n\n引入后的内容作为当前工作台资源展示，不进入结果树。\n\n| 来源对象 | 当前工作台展示 |\n| --- | --- |\n| 文件 | 资源区文件 |\n| 文件夹 | 资源区文件夹，保留子级结构 |\n| 结果文件 | 资源区文件 |\n| 结果文件夹 | 资源区文件夹，保留子级结构 |\n\n规则：\n\n1. 默认引入到资源区文件树根目录；从某个文件夹发起时，默认引入到该文件夹。\n2. 引入完成后，用户可按现有资源树能力移动、删除、下载或添加到对话。\n3. 文件详情中保留来源工作台、来源路径、来源类型和引入时间。\n\n### 3.3 数据规则\n\n引入完成后，在当前工作台生成独立副本。\n\n| 规则 | 说明 |\n| --- | --- |\n| 内容快照 | 引入后不跟随来源内容更新 |\n| 权限影响 | 来源权限被收回后，当前工作台已引入内容仍可使用 |\n| 删除影响 | 删除当前工作台内容，不影响来源工作台 |\n| 存储统计 | 引入内容计入当前工作台资源存储 |\n| 解析状态 | 引入后按当前资源文件规则展示解析状态；可用解析内容随副本带入 |\n\n### 3.4 重名处理\n\n同一目标文件夹下不覆盖已有内容。\n\n- 无重名时，保留原名称。\n- 与已有文件或文件夹重名时，自动追加序号，例如“审计资料 (1)”。\n- 同批引入多个同名对象时，按引入顺序追加序号。\n- 文件夹重名时新建带序号的文件夹，不与已有文件夹合并。\n\n### 3.5 权限与不可用对象\n\n- 只展示当前用户有权限访问的工作台和对象。\n- 来源工作台不可访问时，不出现在来源工作台列表中。\n- 来源对象不可用、已删除或不存在时，不可选择，并展示原因。\n- 引入操作需要记录操作人、来源工作台、来源对象和引入时间。\n\n---\n\n## 4. 本次不做什么\n\n1. 不做来源内容实时同步。\n2. 不支持反向修改来源工作台内容。\n3. 不把引入结果放入当前工作台结果树。\n4. 不做数据库表、图谱、知识库的跨工作台引入。\n5. 不处理跨网段、跨部署环境的数据迁移。\n6. 不新增跨工作台对话直接检索能力。\n\n---\n\n## 5. 验收口径\n\n1. 用户可以从资源区“文件”添加入口打开“从其他工作台引入”弹窗。\n2. 用户只能看到自己有权限访问的来源工作台和对象。\n3. 用户可以从来源工作台的“文件”或“结果”中选择文件、结果文件或文件夹。\n4. 用户引入文件夹后，当前工作台资源区保留对应目录结构。\n5. 来源结果引入后展示在当前工作台资源区，不展示在结果树。\n6. 引入内容与来源内容相互独立，后续来源权限变化、来源删除或当前删除都不互相影响。\n7. 目标文件夹存在重名时，系统自动追加序号，不覆盖、不合并已有内容。\n8. 引入后的资源可继续使用现有添加到对话、移动、下载和删除能力。\n"},{"title":"批量打包下载任务","status":"待开发","module":"结果 / 任务","priority":"P2","desc":"将结果文件或文件夹打包为后台下载任务。","judgment":"已和任务区、结果区产生明确联动。","next":"确认下载格式、过期策略和任务详情展示。","file":"./3待开发：需求卡-批量打包下载任务.md","markdown":"# 批量打包下载任务\n\n**产品**：综合分析平台  \n**状态**：待开发  \n**更新**：2026-05-22  \n**关联材料**：结果树打包下载；资源、结果与任务批量操作；任务监管板块\n\n---\n\n## 1. 需求背景\n\n当前结果文件和结果文件夹支持下载 / 打包下载。后续批量下载会涉及多个结果文件、文件夹，以及文件中的 Markdown 转 PDF 后再打包的场景，处理时间可能明显长于普通下载。\n\n本次需求将“批量打包下载”从即时操作调整为异步任务：用户发起后无需停留等待，可在任务区查看进度，并在完成后下载产物。\n\n---\n\n## 2. 目标场景\n\n用户在结果区选择多个结果文件或结果文件夹后，先通过文件打包任务弹窗确认打包方式，再创建后台打包任务。任务执行过程通过任务列表监控，完成后用户从任务中下载文件包。\n\n---\n\n## 3. 本次做什么\n\n### 3.1 触发入口\n\n| 入口 | 规则 |\n| --- | --- |\n| 结果批量操作条 | 选中结果文件 / 文件夹后，点击下载或打包下载，打开文件打包任务弹窗 |\n| 结果文件夹行级菜单 | 沿用结果文件夹“打包下载”入口，打开文件打包任务弹窗 |\n\n### 3.2 文件打包任务弹窗\n\n用户点击打包下载后，先进入文件打包任务弹窗，确认如何打包，再创建任务。\n\n| 配置项 | 规则 |\n| --- | --- |\n| 任务名称 | 必填，默认按“结果打包下载-时间”生成，用户可修改 |\n| 打包范围 | 展示已选数量、结果文件数量、文件夹数量 |\n| 目录结构 | 支持保留层级 / 剔除层级 |\n| 下载格式 | 单选：全部保留原始格式，或全部按 MD 转 PDF |\n| 转换提示 | 选择 MD 转 PDF 时提示需要转换处理，耗时更长 |\n\n弹窗操作：\n\n- 点击“创建任务”后关闭弹窗，并提示“已创建打包任务，可在任务列表查看进度”。\n- 点击“取消”不创建任务，返回原结果区选择状态。\n- 任务名称为空时不能创建任务，并在任务名称输入框下方提示。\n- 弹窗只处理打包配置，不展示完整文件预览和单文件剔除。\n\n### 3.3 任务状态与操作\n\n| 状态 | 展示口径 | 可操作 |\n| --- | --- | --- |\n| 排队中 | 等待开始打包 | 中止 |\n| 运行中 | 正在转换和生成压缩包 | 中止 |\n| 已完成 | 文件包已生成 | 下载 |\n| 失败 | 未生成可用文件包 | 查看原因、重新打包 |\n\n说明：\n\n- 打包任务状态与其他任务保持统一，不新增“部分完成”状态。\n- 如果部分文件打包或转换失败，由后端按任务结果判定为“已完成”或“失败”；失败文件明细在任务详情中展示。\n\n### 3.4 产物规则\n\n- 打包产物为 ZIP。\n- 原始格式输出沿用当前结果文件格式。\n- MD 转 PDF 输出表示将本次打包范围内的 Markdown 内容统一转为 PDF 后下载。\n- 首版不支持同一次打包中部分文件转 PDF、部分文件保留原始格式。\n- 文件夹打包继续支持保留层级 / 剔除层级。\n- 任务完成后在任务列表 / 任务详情提供下载入口。\n- 下载包有效期暂定 30 天；过期后保留任务记录，但需要重新打包。\n\n### 3.5 任务列表与详情\n\n- 任务列表中展示用户填写的任务名称，任务类型展示为“打包下载”。\n- 任务详情展示打包范围、下载格式、任务状态、失败原因和下载入口。\n\n---\n\n## 4. 本次不做什么\n\n1. 不做 PDF 模板、水印、页眉页脚配置。\n2. 不做下载包内容预览和手动剔除单个文件。\n3. 不做任务优先级和调度策略配置。\n4. 不做站内消息中心或浏览器通知。\n5. 不改变现有资源、结果、任务的多选边界。\n6. 不做部分文件转 PDF、部分文件保留原始格式，也不做 Word 等其它导出格式。\n\n---\n\n## 5. 验收口径\n\n1. 用户在结果区选择可下载结果后，点击下载 / 打包下载会打开文件打包任务弹窗。\n2. 用户选择 MD 转 PDF 时，系统明确提示转换处理会增加等待时间。\n3. 用户在弹窗中填写任务名称并点击“创建任务”后，弹窗关闭，并在任务列表看到对应名称的“打包下载”任务。\n4. 打包任务状态与其他任务保持统一，至少能区分排队中、运行中、已完成、失败。\n5. 任务完成后，用户可以从任务列表或任务详情下载 ZIP 文件。\n6. 任务失败时，用户可以查看失败原因并重新打包。\n7. 存在单个文件打包或转换失败时，任务详情可以展示失败文件明细，不新增“部分完成”任务状态。\n"},{"title":"工作台资源存储上限","status":"待梳理","module":"工作台 / 资源","priority":"P3","desc":"明确工作台资源容量、提示和限制策略。","judgment":"属于平台治理能力，可能依赖真实存储和租户策略。","next":"确认容量口径、提示时机和超限动作。","file":"./1待梳理：需求卡-工作台资源存储上限.md","markdown":"# 工作台资源存储上限\n\n**产品**：综合分析平台  \n**状态**：待梳理  \n**更新**：2026-05-22  \n**关联材料**：工作台资源；资料上传；资源文件树；上传与解析中文件可用性优化\n\n---\n\n## 1. 需求背景\n\n当前资料上传已有单文件大小限制，但工作台维度缺少资源存储总量上限。随着用户持续上传普通文件、ZIP 压缩包和后续可能的打包上传任务，单个工作台可能沉淀大量资源，影响存储成本、解析性能和后续任务稳定性。\n\n本次需求先记录：工作台资源需要有存储上限，并在用户上传和管理资源时给出清晰反馈。\n\n---\n\n## 2. 目标场景\n\n用户在工作台上传或管理资源时，可以知道当前工作台资源已使用多少存储、剩余多少容量；当上传会超过上限时，系统应提前提示并阻止继续上传，避免上传后才失败。\n\n---\n\n## 3. 本次做什么\n\n### 3.1 存储上限口径\n\n| 对象 | 规则 |\n| --- | --- |\n| 统计范围 | 当前工作台下的资源文件 |\n| 统计内容 | 普通上传文件、ZIP 解压后的文件、后续打包上传形成的资源文件 |\n| 文件夹 | 文件夹本身不计容量，仅统计其下文件 |\n| 已删除资源 | 不计入当前已用容量 |\n| 解析结果 / 分析结果 | 不纳入本卡的资源存储上限 |\n\n### 3.2 展示与提示\n\n| 场景 | 规则 |\n| --- | --- |\n| 资源区 | 展示当前工作台资源容量使用情况 |\n| 上传弹窗 | 展示本次待上传文件大小和上传后预计占用 |\n| 接近上限 | 给出提醒，提示用户清理资源或减少上传 |\n| 超过上限 | 阻止上传，并说明当前上限、已用容量和本次上传大小 |\n\n### 3.3 上传拦截\n\n| 上传方式 | 规则 |\n| --- | --- |\n| 普通文件上传 | 上传前校验本次文件大小是否会导致工作台超限 |\n| 多文件上传 | 按本次批量文件总大小校验 |\n| ZIP 上传 | 按 ZIP 文件大小或解压后文件总大小校验，口径待确认 |\n| 文件夹入口上传 | 仍按工作台总容量校验，不只校验目标文件夹 |\n\n说明：\n\n- 工作台容量上限是工作台维度，不是文件夹维度。\n- 超限时不应创建部分资源，除非后续明确支持部分成功。\n- 用户需要能通过删除资源释放容量。\n\n---\n\n## 4. 本次不做什么\n\n1. 不定义企业级、用户级或项目级总存储配额。\n2. 不处理解析结果、分析结果、任务产物的存储上限。\n3. 不做自动清理、自动归档或自动压缩。\n4. 不做付费扩容、审批扩容或容量申请流程。\n5. 不改变现有单文件大小限制。\n\n---\n\n## 5. 验收口径\n\n1. 用户可以在工作台资源区看到当前资源容量使用情况。\n2. 用户上传普通文件或多文件时，系统能判断是否会超过工作台资源上限。\n3. 上传超过上限时，系统阻止上传并提示已用容量、上限和本次上传大小。\n4. 删除资源后，工作台已用容量随之减少。\n5. 文件夹不单独计算容量上限，上传到任意文件夹都按工作台总容量校验。\n6. ZIP 上传与工作台容量上限之间的校验口径明确后，可以按该口径验收。\n\n---\n\n## 待确认问题\n\n| 问题 | 影响 | 建议 |\n| --- | --- | --- |\n| 单个工作台资源存储上限是多少 | 影响提示文案和后端限制 | 需与后端 / 部署策略确认 |\n| ZIP 上传按压缩包大小还是解压后总大小计入 | 影响上传前校验准确性 | 倾向按解压后有效文件总大小计入 |\n| 是否需要展示容量进度条 | 影响资源区 UI 设计 | 待交互设计时确认 |\n| 接近上限提醒阈值是多少 | 影响提醒触发时机 | 可先按 80% 或 90% 讨论 |\n| 删除资源是否立即释放容量 | 影响回收站 / 软删除设计 | 若存在回收站，需要明确释放时点 |\n"},{"title":"技能版本回退","status":"待开发","module":"技能","priority":"P3","desc":"技能支持历史版本查看和回退。","judgment":"范围较清楚，可跟随技能库增强排期。","next":"确认回退后是否生成新版本。","file":"./3待开发：需求卡-技能版本回退.md","markdown":"# 技能版本回退\n\n**产品**：综合分析平台  \n**状态**：待开发  \n**更新**：2026-05-14  \n**原始需求**：[[20260429-技能版本快照与恢复]]\n\n## 1. 需求背景\n\n用户在“我的技能”中导入或编辑技能配置后，可能需要保留阶段性版本；当后续修改不符合预期时，需要能够查看历史版本并回退到指定版本。\n\n本次需求通过“快照”方式管理技能版本，避免用户只能依赖手工备份 JSON。\n\n## 2. 目标场景\n\n用户从本地导入 JSON 技能到“我的技能”，编辑配置后创建快照。后续发现当前配置不合适时，可以进入历史版本查看详情，并将目标历史版本恢复为当前技能配置。\n\n## 3. 本次做什么\n\n### 3.1 创建快照\n\n在“技能详情 - 技能配置”中，用户可以将当前技能配置保存为一个历史版本。\n\n| 字段 | 规则 |\n| --- | --- |\n| 版本号 | 必填，不可重复 |\n| 描述 | 必填，用于说明本次快照内容 |\n| 快照内容 | 保存当前技能配置 |\n\n### 3.2 查看历史版本\n\n用户可以在技能详情中查看该技能的历史版本列表，并查看单个历史版本的配置详情。\n\n### 3.3 回退到历史版本\n\n用户选择某个历史版本进行回退时，系统需要二次确认：\n\n- 用户确认是否先将当前配置创建为快照。\n- 如果选择创建快照，则先保存当前配置，再恢复目标历史版本。\n- 如果选择不创建快照，则直接用目标历史版本覆盖当前配置。\n\n## 4. 本次不做什么\n\n1. 工作台中引用的技能不支持快照和版本回退。\n2. 历史版本不支持导出。\n3. 不做不同历史版本之间的差异对比。\n4. 不支持多个技能之间互相恢复版本。\n\n## 5. 验收口径\n\n1. 用户可以在技能配置页创建快照。\n2. 创建快照时必须填写版本号和描述。\n3. 重复版本号不能保存。\n4. 用户可以查看历史版本详情。\n5. 用户回退历史版本前，会看到二次确认。\n6. 用户选择“先快照再回退”时，当前配置会先保存为新快照，再恢复目标版本。\n7. 回退完成后，当前技能配置被目标历史版本覆盖。"},{"title":"结果排序调整","status":"已上线","module":"结果","priority":"归档","desc":"优化结果列表 / 结果树排序。","judgment":"已上线，保留为历史记录；文件夹按子级结果生成时间排序的遗留问题已单独记录。","next":"见遗留问题清单。","file":"./x 已上线/x 已上线：需求卡-结果排序调整.md","markdown":"# 结果排序调整\n\n**产品**：综合分析平台  \n**状态**：已上线  \n**更新**：2026-06-01  \n**关联材料**：客户反馈；工作台右侧结果树\n\n---\n\n## 1. 需求背景\n\n客户反馈结果区需要支持排序。当前结果来自单次分析、跑批任务、审计助手保存等多个入口，用户生成结果后，需要更快找到最新产出的结果或包含新结果的文件夹。\n\n此前与后端约定的默认排序是基于名称排序。本次先按轻量方案处理：在右侧结果区增加一个排序按钮，保留名称排序，并补充按生成时间排序的切换能力。\n\n---\n\n## 2. 目标场景\n\n用户可以在右侧结果树中按名称维持稳定浏览，也可以在生成或保存结果后切换到生成时间排序，快速定位最新结果。\n\n---\n\n## 3. 本次做什么\n\n右侧结果区增加排序按钮，支持切换：\n\n1. 按名称排序，默认选项，沿用当前后端约定。\n2. 最新在前。\n3. 最早在前。\n\n排序规则：\n\n| 排序项 | 规则 |\n| --- | --- |\n| 按名称排序 | 同一层级内，文件夹和结果文件分别按名称排序；文件夹仍展示在结果文件前 |\n| 最新在前 | 同一层级内，文件夹仍展示在结果文件前；文件夹按其下所有子级结果中的最新生成时间倒序排列，结果文件按自身生成时间倒序排列 |\n| 最早在前 | 同一层级内，文件夹仍展示在结果文件前；文件夹按其下所有子级结果中的最早生成时间正序排列，结果文件按自身生成时间正序排列 |\n\n说明：\n\n- 排序只在同一层级内生效，不打散文件夹结构。\n- 生成时间排序使用生成时间，不使用更新时间。\n- 文件夹生成时间口径包含该文件夹及所有子级文件夹下的结果。\n- 空文件夹、无结果文件夹或缺少生成时间的结果排在同类最后。\n- 新生成结果进入目标位置后，按当前排序规则展示。\n- 排序选择只在当前页面会话内生效，刷新或重新进入工作台后恢复默认名称排序。\n\n---\n\n## 4. 本次不做什么\n\n1. 不做高级排序和筛选。\n2. 不改变结果树的文件夹结构。\n3. 不处理任务列表、资源列表或创建任务弹窗中的排序。\n4. 不新增或调整手动拖拽排序；切换排序后以当前系统排序规则展示，手动排序不作为本次验收内容。\n\n---\n\n## 5. 验收口径\n\n1. 用户可以在右侧结果区切换“按名称排序 / 最新在前 / 最早在前”。\n2. 默认排序为名称排序，且与当前后端约定口径一致。\n3. 文件夹和结果文件按上述口径排序，且不会跨文件夹拉平混排。\n4. 新生成结果出现在目标位置，并按当前排序规则展示。\n5. 空文件夹、无结果文件夹或缺少生成时间的结果排在同类最后。\n6. 用户刷新或重新进入工作台后，右侧结果区恢复默认名称排序。\n\n---\n"},{"title":"任务资源配置支持结果与文件树选择","status":"已上线","module":"任务 / 资源","priority":"归档","desc":"任务配置时可从资源和结果树中选择输入。","judgment":"保留为历史记录，不参与当前排期。","next":"无。","file":"./x 已上线/x 已上线：需求卡-任务资源配置支持结果与文件树选择.md","markdown":"# 任务资源配置支持结果与文件树选择\n\n**产品**：综合分析平台  \n**状态**：已上线  \n**更新**：2026-05-20  \n**关联材料**：`综合分析平台 20260520/` 创建任务弹窗、左侧资源树、右侧结果树\n\n---\n\n## 1. 需求背景\n\n当前创建任务时，任务资源主要从文件、数据库、图谱中选择，文件资源以列表方式展示；但实际审计分析中，任务上下文也可能来自前序分析结果，且文件和结果本身已经在工作台中按树形结构组织。\n\n本次优化重点是让任务资源配置复用已有的文件树和结果树，支持按文件夹批量选择，并补齐各类资源的全选 / 取消全选能力，降低资源较多时的选择成本。\n\n---\n\n## 2. 目标场景\n\n审计人员创建单次任务或跑批任务时，可以选择文件、结果、数据库、图谱作为上下文资源；当文件或结果按文件夹归档时，可以直接选择文件夹；当资源较多时，可以基于当前搜索结果进行全选或取消全选。\n\n---\n\n## 3. 本次做什么\n\n### 3.1 资源来源扩展\n\n创建任务的“选择资源”步骤支持以下资源来源：\n\n| 资源类型 | 展示方式 | 选择方式 |\n| --- | --- | --- |\n| 文件 | 按左侧文件树展示 | 支持选择文件、文件夹 |\n| 结果 | 按右侧结果树展示 | 支持选择结果、结果文件夹 |\n| 数据库 | 保持现有列表展示 | 支持选择单个或多个数据库资源 |\n| 图谱 | 保持现有列表展示 | 支持选择单个或多个图谱资源 |\n\n说明：\n\n- “结果”作为任务输入资源，不等同于“结果输出位置”。\n- 单次任务和跑批任务都支持选择结果资源作为上下文。\n- 文件夹 / 结果文件夹被选中后，已选区展示文件夹本身，不展开为每一个文件或结果。\n- 提交任务时，系统按文件夹关系解析其下符合条件的文件或结果，重复命中的资源只计算一次。\n\n### 3.2 批量选择规则\n\n各类资源支持全选 / 取消全选。\n\n| 操作 | 规则 |\n| --- | --- |\n| 全选 | 选择当前搜索结果范围内的可选资源 |\n| 取消全选 | 移除当前搜索结果范围内已选资源 |\n| 清空 | 清空全部已选资源 |\n\n说明：\n\n- 未输入搜索条件时，当前搜索结果等同于当前资源类型下全部可选资源。\n- 全选只作用于当前资源类型，不影响其他资源类型。\n- 文件和结果只选择可被任务引用的资源；解析中、失败、不可用、无权限或不可读取的资源不进入可选范围。\n- 全选不会重复加入已选资源。\n\n---\n\n## 4. 本次不做什么\n\n1. 不调整工作台左侧文件树和右侧结果树本身的组织规则。\n2. 不改变文件解析、结果生成、任务执行和跑批调度规则。\n3. 不新增资源筛选、排序、权限配置或高级搜索能力。\n4. 不把“结果输出位置”和“结果资源选择”合并为同一个字段。\n5. 不要求已选区展开展示文件夹下的全部文件或结果。\n\n---\n\n## 5. 验收口径\n\n1. 创建任务选择资源时，可以看到文件、结果、数据库、图谱四类资源来源。\n2. 文件资源按文件树展示，支持选择文件或文件夹。\n3. 结果资源按结果树展示，支持选择结果或结果文件夹。\n4. 用户选择文件夹或结果文件夹后，已选区展示对应文件夹，不展开明细。\n5. 用户可以对当前搜索结果范围内的资源执行全选 / 取消全选，且不影响其他资源类型。\n6. 提交任务后，任务详情“引用资源”可以展示本次配置的文件、结果、数据库、图谱及对应文件夹资源。\n\n---\n\n## 关键决策\n\n| 决策点 | 结论 |\n| --- | --- |\n| 结果树文件夹选择 | 支持 |\n| 已选区展示方式 | 展示用户实际选择的文件夹，不展开明细 |\n| 跑批任务上下文 | 允许选择结果资源 |\n| 全选范围 | 按当前搜索结果生效 |\n"},{"title":"左右栏优化","status":"已上线","module":"布局体验","priority":"归档","desc":"审计助手工作区左右栏布局优化。","judgment":"保留为历史记录，不参与当前排期。","next":"无。","file":"./x 已上线/x 已上线：需求卡-左右栏优化.md","markdown":"# 左、右栏优化\n\n**产品**：综合分析平台  \n**状态**：已上线  \n**更新**：2026-05-16\n\n---\n\n## 1. 需求背景\n\n工作台左、右栏已改为树形结构后，资源和结果的层级关系更清晰，但也带来两个问题：\n\n1. 用户无法快速看到当前工作台内各类资源、结果的总量。\n2. 多层级树结构在 3 级以上时，节点名称展示空间不足，影响识别和操作。\n\n本次优化重点是提升工作台左右栏的浏览效率和空间可调性，不改变资源、结果本身的组织方式。\n\n---\n\n## 2. 目标场景\n\n用户进入工作台后，可以快速判断当前工作台中资源和结果的数量分布；当树层级较深或名称较长时，可以通过调整栏宽或分区高度，获得更合适的查看空间。\n\n---\n\n## 3. 本次做什么\n\n### 3.1 资源数量展示\n\n在左侧资源树中增加数量展示：\n\n| 对象 | 展示方式 | 统计口径 |\n| --- | --- | --- |\n| 资源分类 / 抽屉标题 | 名称右侧常驻展示数量 tag | 统计该分类下解析成功的文件数量 |\n| 文件夹节点 | 默认不显示数量 tag；鼠标悬停或键盘聚焦该文件夹行时，在文件夹名称右侧显示数量 tag | 统计该文件夹及所有子级文件夹下解析成功的文件数量 |\n| 数据库分组 | 默认不显示数量 tag；鼠标悬停或键盘聚焦该数据库分组行时，在数据库名称右侧显示数量 tag | 统计该数据库分组下已加入工作台的表数量 |\n\n说明：\n\n- 文件分类标题数量仅统计解析成功的文件。\n- 文件夹数量包含所有子级文件，不只统计当前层级。\n- 数据库分组数量仅统计已加入当前工作台的库表，不统计未加入的外部库表。\n- 排队中、解析中、失败文件仍通过状态区展示，不计入文件树数量。\n- 树内数量 tag 默认不参与视觉占位，显示时不遮挡更多按钮、添加到对话、右键菜单等操作入口。\n- 数量 tag 不改变原有树节点的展开、收起、选择、拖拽和菜单逻辑。\n\n### 3.2 结果数量展示\n\n在右侧结果树中增加数量展示：\n\n| 对象 | 展示方式 | 统计口径 |\n| --- | --- | --- |\n| 结果分类 / 标题 | 名称右侧常驻展示数量 tag | 统计该分类下的结果数量 |\n| 文件夹节点 | 默认不显示数量 tag；鼠标悬停或键盘聚焦该文件夹行时，在文件夹名称右侧显示数量 tag | 统计该文件夹及所有子级文件夹下的结果数量 |\n\n说明：\n\n- 结果标题数量统计当前已进入结果栏的结果。\n- 结果文件夹数量包含所有子级文件夹内的结果，不只统计当前层级。\n- 结果树内数量 tag 默认不参与视觉占位，显示时不遮挡更多按钮、添加到对话、右键菜单等操作入口。\n\n### 3.3 左右栏尺寸调整\n\n支持用户通过拖拽调整工作台布局：\n\n- 支持调整左栏宽度。\n- 支持调整右栏宽度。\n- 支持调整右栏上下分区高度。\n- 拖拽调整时，主要内容区和左右栏内容不应出现明显遮挡或不可操作状态。\n- 本次只在当前页面会话内生效，不做跨刷新记忆，刷新后恢复默认布局。\n\n---\n\n## 4. 本次不做什么\n\n1. 不调整资源和结果的树形层级规则。\n2. 不新增资源或结果的筛选、排序能力。\n3. 不改变文件解析状态的判断逻辑。\n4. 不做数量统计的高级配置，例如按状态、类型、时间范围切换统计口径。\n\n---\n\n## 5. 验收口径\n\n1. 用户进入工作台后，可以常驻看到资源分类 / 抽屉标题、结果分类 / 标题上的数量 tag；资源文件夹、数据库分组、结果文件夹的数量 tag 默认不可见，悬停或键盘聚焦对应行后可见。\n2. 左栏“文件”数量与文件树内可见解析成功文件数量口径一致。\n3. 文件夹数量应包含所有子级文件夹内的文件或结果；数据库分组数量应等于该分组下已加入工作台的表数量。\n4. 左栏和右栏支持横向拖拽，拖拽后宽度发生可见变化。\n5. 右栏任务区和结果区支持纵向拖拽，拖拽后高度发生可见变化。\n6. 树节点层级较深时，用户可以通过调整宽度改善名称展示空间。\n7. 拖拽到边界时不遮挡主要内容，不影响树节点展开、收起、选择、搜索、拖拽、添加到对话和菜单操作。\n"},{"title":"解析中文件操作优化","status":"已上线","module":"资源","priority":"归档","desc":"资料解析中状态下的操作体验。","judgment":"保留为历史记录，不参与当前排期。","next":"无。","file":"./x 已上线/x 已上线：需求卡-解析中文件操作优化.md","markdown":"# 解析中文件操作优化\n\n**产品**：综合分析平台  \n**状态**：已上线  \n**更新**：2026-05-16\n\n## 1. 需求背景\n\n当前上传后的文件在排队中、解析中、失败等状态下，批量操作和单条操作规则不够清晰；同时，文件解析过程和任务执行过程的状态管理方式不一致，增加了用户理解和操作成本。\n\n本次优化重点是统一解析中文件的操作规则，让用户只需要在执行中决定是否中止，在失败后决定是否重跑或清理。\n\n## 2. 目标场景\n\n用户进入工作台后，可以快速查看未解析完成的文件状态。对于排队中和解析中的文件，用户只需要决定是否中止；对于失败文件，用户可以集中处理，选择重跑、删除或清空。\n\n## 3. 本次做什么\n\n### 3.1 文件状态操作\n\n| 文件状态 | 批量操作 | 单条操作 | 操作后状态 |\n| --- | --- | --- | --- |\n| 排队中 | 一键中止 | 中止 | 失败 |\n| 解析中 | 一键中止 | 中止 | 失败 |\n| 失败 | 一键重跑、清空 | 重跑、删除 | 重跑后进入排队中，再进入解析中 |\n\n说明：\n\n- 排队中、解析中的文件不提供重跑和删除，先统一通过中止进入失败状态。\n- 失败文件支持重跑或清理。\n- 清空仅作用于失败文件列表，不影响已解析成功文件。\n\n## 4. 本次不做什么\n\n1. 不调整文件上传和解析引擎本身。\n2. 不新增暂停、继续解析能力。\n3. 不改变已解析成功文件的展示和操作规则。\n4. 不做失败原因分类、自动重试策略配置。\n\n## 5. 验收口径\n\n1. 排队中、解析中文件支持批量中止和单条中止。\n2. 中止后的文件进入失败状态。\n3. 失败文件支持批量重跑、批量清空、单条重跑和单条删除。\n4. 重跑后的文件重新进入排队中，并可继续进入解析中。\n5. 已解析成功文件不受本次操作规则影响。\n"},{"title":"资源、结果与任务批量操作","status":"已上线","module":"批量操作","priority":"归档","desc":"统一资源、结果和任务的批量操作模式。","judgment":"保留为历史记录，不参与当前排期。","next":"无。","file":"./x 已上线/x 已上线：需求卡-资源结果任务批量操作.md","markdown":"# 资源、结果与任务批量操作\n\n**产品**：综合分析平台  \n**状态**：已上线  \n**更新**：2026-05-22  \n**关联材料**：三栏式审计助手工作区；左侧资源栏；右侧结果 / 任务区；`DESIGN.md`\n\n---\n\n## 1. 需求背景\n\n审计助手工作台中的资源、结果、任务都存在批量处理诉求。需要在不破坏三栏紧凑布局和单项操作体验的前提下，为当前区域提供独立多选态和批量操作能力。\n\n---\n\n## 2. 目标场景\n\n用户在资源、结果或任务区域中选择多个对象后，可一次性执行添加到对话、下载、删除、中止、重跑等操作。\n\n---\n\n## 3. 本次做什么\n\n### 3.1 多选入口与行交互\n\n- 多选入口位于各区域顶部工具区，按钮顺序为：搜索、排序、多选、刷新、添加类；当前区域无对应操作时跳过。\n- 资源、结果、任务分别独立进入多选态，不支持跨栏混选。\n- 普通浏览态不展示选择控件，保留对象图标、单项操作和行主行为。\n- 进入多选态后，当前区域可选项在左侧独立槽位展示复选框，样式对齐创建任务弹窗中的资源选择树。\n- 多选按钮在多选态下保持显示并呈现选中底色；再次点击等同“取消选择”。\n- 文件夹主体始终用于展开 / 收起；文件、任务、子任务主体在多选态下可切换选中。\n- 选中文件夹等同于选中其下所有可见子文件夹和文件；取消文件夹时同步取消其子级选择。\n\n### 3.2 可选对象与批量操作\n\n**资源**\n\n| 对象 / 状态 | 可批量操作 |\n| --- | --- |\n| 排队中文件 | 中止、删除 |\n| 解析中文件 | 中止、重跑、删除 |\n| 失败文件 | 重跑、删除 |\n| 已完成文件 | 添加到对话、下载、删除 |\n| 资源文件夹 | 添加到对话、打包下载、删除 |\n| 数据库表 | 删除 |\n\n**结果**\n\n| 对象 | 可批量操作 |\n| --- | --- |\n| 结果文件 | 添加到对话、下载、删除 |\n| 结果文件夹 | 打包下载、删除 |\n\n结果树只展示结果文件和结果文件夹；生成中、排队中、失败等过程状态属于任务执行层，不作为结果对象参与批量操作。\n\n**任务**\n\n| 对象 / 状态 | 可批量操作 |\n| --- | --- |\n| 普通任务：排队中 | 中止、删除 |\n| 普通任务：运行中 | 中止、删除 |\n| 普通任务：失败 | 重跑、删除 |\n| 普通任务：完成 | 删除 |\n| 跑批子任务：排队中 / 运行中 | 中止、删除 |\n| 跑批子任务：失败 | 重跑、删除 |\n| 跑批子任务：完成 | 删除 |\n\n任务列表多选仅覆盖普通任务。跑批任务本身不进入任务列表多选态；跑批子任务只在子任务列表内参与多选。\n\n### 3.3 执行规则\n\n- 批量操作按“至少 1 项可执行”展示；执行时处理可执行项，跳过不可执行项。\n- 删除、中止、重跑前必须二次确认，确认文案需说明“已选 N 项、将执行 X 项、跳过 Y 项”。\n- 跳过原因需可理解，例如“已完成任务无法中止”“当前状态不支持重跑”。\n- 批量移动不放入操作条；资源树和结果树通过多选后拖拽到目标文件夹完成移动。\n\n### 3.4 批量操作条\n\n- 进入多选态后，在当前栏顶部工具区下方或当前页签内容下方展示。\n- 内容包含：全选框、已选 N 项、取消文字链、常用操作、更多操作。\n- “取消选择”放在“已选 N 项”右侧；点击顶部选中态“多选”按钮效果相同。\n- 操作条不使用强调底色，仅保留边框线；宽度遵守所在栏内容区 12px 内边距。\n- 跑批子任务列表的操作条位于子任务状态页签下方。\n\n---\n\n## 4. 范围边界\n\n1. 图谱等其它资源类型不在本需求范围内。\n2. 资源、结果、任务不支持跨栏统一批量操作。\n3. 批量操作条不提供“移动”按钮。\n4. 不做批量编辑。\n5. 跑批任务整体操作沿用行级菜单，不纳入任务列表多选态。\n\n---\n\n## 5. 验收口径\n\n1. 各区域顶部工具区按“搜索、排序、多选、刷新、添加类”顺序展示可用操作。\n2. 点击“多选”后，当前区域进入多选态，按钮保持显示并呈现选中底色。\n3. 再次点击选中态“多选”按钮或点击“取消选择”，当前区域退出多选态。\n4. 多选态下，可选项左侧展示复选框，原对象图标仍保留。\n5. 勾选文件夹时，其可见子级同步选中；取消文件夹时其可见子级同步取消。\n6. 文件夹主体仍可展开 / 收起；文件、任务、子任务主体可切换选中。\n7. 批量操作只展示至少一项可执行的操作，并在确认中说明执行项与跳过项数量。\n8. 跑批任务不进入任务列表多选态；跑批子任务只在子任务列表中多选。\n"},{"title":"跑批任务","status":"已上线","module":"任务","priority":"归档","desc":"批量任务及子任务执行能力。","judgment":"保留为历史记录，不参与当前排期。","next":"无。","file":"./x 已上线/x 已上线：需求卡-跑批任务.md","markdown":"# 跑批任务\n\n**产品**：综合分析平台  \n**状态**：已上线  \n**更新**：2026-05-15\n\n## 1. 需求背景\n\n审计场景中经常需要对成百上千条数据逐行执行同一个技能，例如批量查询企业工商信息。现有单次任务只能一条一条创建，无法支撑高频批量执行；同时，跑批任务会产生多个子任务，任务列表和任务详情也需要对应调整。\n\n## 2. 目标场景\n\n审计用户手头有一份 500 家企业名单，希望上传 Excel 文件，选择技能后一次性提交。系统按文件中的每一行创建子任务，后台逐行调度执行，用户可以在任务列表中查看整体进度、下钻查看子任务，并对失败项进行重跑。\n\n## 3. 本次做什么\n\n### 3.1 创建任务\n\n基于现有“创建任务”弹窗改为步骤引导式。\n\n| 步骤 | 单次任务 | 跑批任务 |\n| --- | --- | --- |\n| 执行方式配置 | 输入任务名称；选择技能；系统生成任务指令，支持人工修改 | 输入任务名称；选择技能；上传 .xlsx 数据源文件；预览前 10 行；选择标识列；系统生成任务指令，支持人工修改 |\n| 选择任务资源 | 可从文件、数据图谱、数据库中选择多个资源 | 可从文件、数据图谱、数据库中选择多个资源 |\n| 创建任务 | 创建 1 个任务 | 创建 1 个父任务和若干子任务 |\n\n说明：\n\n- 跑批任务按数据源文件逐行生成子任务。\n- 标识列用于区分每个子任务对应的数据行。\n- 数据源文件仅支持 `.xlsx`。\n\n### 3.2 任务列表\n\n任务列表兼容单次任务和跑批任务。\n\n| 对象 | 展示与操作 |\n| --- | --- |\n| 跑批父任务 | 展示整体进度；支持下钻进入子任务列表 |\n| 子任务列表 | 顶部展示状态统计页签；点击状态可筛选子任务 |\n| 任务详情 | 根据任务类型展示对应配置和任务指令 |\n\n### 3.3 任务操作\n\n| 对象 | 操作 | 规则 |\n| --- | --- | --- |\n| 跑批父任务 | 中止 | 中止所有排队中和运行中的子任务，中止后子任务进入失败 |\n| 跑批父任务 | 全部重跑 | 重跑全部子任务 |\n| 跑批父任务 | 仅失败重跑 | 仅重跑失败子任务 |\n| 跑批父任务 | 删除 | 删除任务及全部子任务，包含结果 |\n| 子任务 - 排队中 | 中止 | 中止后进入失败 |\n| 子任务 - 运行中 | 中止 | 中止后进入失败 |\n| 子任务 - 成功 | 删除 | 删除该子任务及结果 |\n| 子任务 - 失败 | 重跑、删除 | 重跑后进入排队中，再进入运行中 |\n\n### 3.4 打包下载\n\n结果树中的文件夹增加“打包下载”操作，可将文件夹下的目录和文件打包为 zip 下载。\n\n- 下载文件默认为 Markdown 格式。\n- 支持保留层级打包。\n- 支持剔除层级打包。\n\n## 4. 本次不做什么\n\n1. 不做数据源文件在线编辑。\n2. 不支持 CSV 或其他格式作为数据源文件。\n3. 不支持基于资源或结果作为跑批数据源。\n4. 不做批量执行中的人工暂停或人工干预。\n5. 不做子任务执行优先级配置。\n\n## 5. 验收口径\n\n1. 用户可以选择创建单次任务或跑批任务。\n2. 跑批任务仅支持上传 `.xlsx` 数据源文件。\n3. 上传数据源后可以预览前 10 行，并选择标识列。\n4. 创建跑批任务后，系统生成 1 个父任务和若干子任务。\n5. 跑批父任务可以下钻查看子任务列表。\n6. 子任务列表可以按状态统计和筛选。\n7. 父任务支持中止、全部重跑、仅失败重跑、删除。\n8. 子任务按排队中、运行中、成功、失败展示对应操作。\n9. 结果文件夹支持按保留层级或剔除层级打包下载。"},{"title":"用户用量统计","status":"待开发","module":"系统管理 / 用量统计","priority":"待定","desc":"按时间范围和组织范围统计大模型 Token 用量，支持组织树选择、用户榜单联动、刷新和分表导出。","judgment":"首版聚焦 Token 总量、调用次数、活跃组织和活跃用户，不区分输入输出 Token，不做完整运营分析。","next":"需求和当前原型口径已校准，可进入开发实现。","file":"./3待开发：需求卡-用户用量统计.md","markdown":"# 用户用量统计\n\n**产品**：综合分析平台  \n**状态**：待开发  \n**更新**：2026-06-03  \n**关联材料**：系统管理；信息统计；用户管理；组织管理；模型调用记录；系统日志\n\n---\n\n## 1. 需求背景\n\n政府类客户需要了解平台是否被各单位和用户实际使用。首版不做完整运营分析，重点统计大模型 Token 用量，并按组织和用户两个视角展示。\n\n---\n\n## 2. 目标场景\n\n管理员从系统管理进入用量统计页面后，可以按时间和组织范围查看平台使用情况，判断哪些组织在使用、哪些用户使用较多。\n\n---\n\n## 3. 本次做什么\n\n### 3.1 入口与统计范围\n\n用量统计入口放在系统管理模块。页面支持时间范围和统计组织范围两个筛选。\n\n时间范围支持：\n- 最近 1 周\n- 最近 1 月\n- 最近半年\n\n默认展示最近 1 月。\n\n统计组织范围支持从组织树中选择一个组织，组织树支持按名称搜索。默认使用当前管理员可见组织范围；选择组织后，组织用量统计表按该组织范围展示，用户消耗榜单默认按该组织及其下级组织展示。\n\n支持刷新当前统计数据。\n\n### 3.2 顶部汇总\n\n顶部展示当前时间范围内的平台汇总数据，不随统计组织范围切换。\n\n| 指标 | 口径 |\n| --- | --- |\n| Token 总量 | 当前时间范围内的大模型 Token 消耗，不区分输入 Token 和输出 Token |\n| 活跃组织数 | 当前时间范围内产生过模型调用的组织数 |\n| 活跃用户数 | 当前时间范围内产生过模型调用的用户数 |\n| 调用次数 | 当前时间范围内的大模型调用次数 |\n\n### 3.3 组织用量统计表\n\n组织用量使用树形统计表展示，不使用复杂图表。\n\n| 字段 | 说明 |\n| --- | --- |\n| 组织单位 | 展示组织名称，支持展开 / 收起下级组织 |\n| Token 用量 | 该组织及下级组织的 Token 汇总 |\n| 调用次数 | 该组织及下级组织的大模型调用次数 |\n| 活跃用户占比 | 该组织及下级组织活跃用户数占当前时间范围活跃用户数的比例 |\n\n规则：\n\n- 默认展示当前管理员可见组织；选择统计组织后，展示所选组织的下一级组织。若所选组织没有下级组织，则展示该组织本身。\n- 表格需说明每行统计“本组织及下级组织”的汇总数据。\n- 支持展开下级组织。\n- 点击组织行后，仅将用户消耗榜单切换为该组织及其下级用户；不改变统计组织范围。\n- 用户可属于多个组织；用户归属多个组织时，其 Token 用量、调用次数和活跃用户身份在对应组织及其上级汇总中分别计入。\n- 因多组织用户会在多个组织中分别计入，组织表跨组织相加可能大于顶部平台总量；顶部平台总量仍按实际模型调用去重统计。\n\n### 3.4 用户消耗榜单\n\n用户消耗榜单按 Token 用量倒序展示。\n\n| 字段 | 说明 |\n| --- | --- |\n| 排名 | 当前榜单范围内的用户排名 |\n| 用户 | 用户姓名 / 账号 |\n| 所属组织 | 用户所属组织；多组织用户展示其命中的组织 |\n| Token 用量 | 用户在当前榜单范围内的 Token 消耗 |\n| 调用次数 | 用户在当前榜单范围内的大模型调用次数 |\n\n规则：\n\n- 用户榜单按当前统计组织范围展示。\n- 从组织用量统计表点击某个组织后，用户榜单切换为该组织及下级用户；用户可以取消选中，恢复为统计组织范围。\n- 用户榜单支持分页，并可切换每页展示数量。\n- 用户属于多个组织时，展示其在当前榜单范围内命中的组织。\n\n### 3.5 组织统计导出\n\n组织用量统计表和用户消耗榜单分别提供导出入口，不做整页统一导出。\n\n规则：\n\n- 组织用量统计导出范围由当前时间范围和统计组织范围决定，不受组织表展开 / 收起状态影响。\n- 用户消耗榜单导出范围由当前时间范围和当前用户榜单范围决定，不受分页状态影响。\n\n| 导出入口 | 内容 |\n| --- | --- |\n| 组织用量统计导出 | 当前统计组织范围内的组织单位、Token 用量、调用次数、活跃用户占比 |\n| 用户消耗榜单导出 | 当前用户榜单范围内的用户、所属组织、Token 用量、调用次数 |\n\n---\n\n## 4. 本次不做什么\n\n1. 不统计资源上传量、任务数、结果数等功能使用明细。\n2. 不把创建技能数作为首版核心指标。\n3. 不做复杂趋势图、大屏或多维运营分析。\n4. 不做费用结算、额度扣减或账单管理。\n5. 不按输入 Token、输出 Token 拆分统计。\n6. 不做整页统一导出。\n\n---\n\n## 5. 验收口径\n\n1. 管理员可以从系统管理进入用量统计，并切换时间范围和统计组织范围。\n2. 顶部汇总按当前时间范围展示平台级统计，不随统计组织范围切换。\n3. 顶部可以看到 Token 总量、活跃组织数、活跃用户数、调用次数，Token 总量不区分输入和输出。\n4. 组织用量以树形表格展示，组织行统计本组织及下级组织的汇总用量，并展示活跃用户占比。\n5. 多组织用户的 Token 用量、调用次数和活跃用户身份在对应组织及其上级汇总中分别计入。\n6. 用户可以在统计组织范围选择中按组织名称搜索并选择组织。\n7. 点击组织行后，用户榜单切换为该组织及其下级用户；取消选中后恢复为统计组织范围。\n8. 用户榜单支持分页和每页数量切换。\n9. 用户可以刷新统计数据。\n10. 用户可以分别导出组织用量统计和用户消耗榜单；组织导出按统计组织范围，用户导出按当前用户榜单范围。\n"}]</script>
+
+  <script>
+    const cards = JSON.parse(document.getElementById('cards-data').textContent);
+    const listEl = document.getElementById('req-list');
+    const focusEl = document.getElementById('focus-list');
+    const searchEl = document.getElementById('search');
+    const statusTabsEl = document.getElementById('status-tabs');
+    const priorityTabsEl = document.getElementById('priority-tabs');
+    const moduleFilterEl = document.getElementById('module-filter');
+    const kpiRowEl = document.getElementById('kpi-row');
+    const countEl = document.getElementById('visible-count');
+    const resetEl = document.getElementById('reset-filters');
+    const statusOrder = ['待梳理', '待设计', '待开发', '已上线'];
+    const priorityOrder = ['P1', 'P2', 'P3', '归档'];
+    const state = { status: '全部', priority: '全部', module: '全部', query: '' };
+    let activeIndex = 0;
+
+    function escapeHtml(text) {
+      return String(text ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function inlineMarkdown(text) {
+      let value = escapeHtml(text);
+      value = value.replace(/`([^`]+)`/g, '<code>$1</code>');
+      value = value.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      value = value.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+      return value;
+    }
+
+    function isTableBlock(lines, index) {
+      return index + 1 < lines.length && /^\s*\|.*\|\s*$/.test(lines[index]) && /^\s*\|\s*:?-{3,}/.test(lines[index + 1]);
+    }
+
+    function renderTable(lines, start) {
+      const rows = [];
+      let i = start;
+      while (i < lines.length && /^\s*\|.*\|\s*$/.test(lines[i])) {
+        rows.push(lines[i]);
+        i += 1;
+      }
+      const cells = row => row.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map(cell => inlineMarkdown(cell.trim()));
+      const head = cells(rows[0]);
+      const body = rows.slice(2).map(cells);
+      const thead = '<thead><tr>' + head.map(cell => `<th>${cell}</th>`).join('') + '</tr></thead>';
+      const tbody = '<tbody>' + body.map(row => '<tr>' + row.map(cell => `<td>${cell}</td>`).join('') + '</tr>').join('') + '</tbody>';
+      return { html: `<table>${thead}${tbody}</table>`, next: i };
+    }
+
+    function renderMarkdown(markdown) {
+      const lines = markdown.replace(/\r\n/g, '\n').split('\n');
+      const html = [];
+      let i = 0;
+      while (i < lines.length) {
+        const line = lines[i];
+        if (!line.trim()) { i += 1; continue; }
+        if (/^---+$/.test(line.trim())) { html.push('<hr>'); i += 1; continue; }
+        if (isTableBlock(lines, i)) {
+          const table = renderTable(lines, i);
+          html.push(table.html);
+          i = table.next;
+          continue;
+        }
+        const heading = line.match(/^(#{1,3})\s+(.+)$/);
+        if (heading) {
+          const level = heading[1].length;
+          html.push(`<h${level}>${inlineMarkdown(heading[2])}</h${level}>`);
+          i += 1;
+          continue;
+        }
+        if (/^\d+\.\s+/.test(line)) {
+          const items = [];
+          while (i < lines.length && /^\d+\.\s+/.test(lines[i])) {
+            items.push(lines[i].replace(/^\d+\.\s+/, ''));
+            i += 1;
+          }
+          html.push('<ol>' + items.map(item => `<li>${inlineMarkdown(item)}</li>`).join('') + '</ol>');
+          continue;
+        }
+        if (/^-\s+/.test(line)) {
+          const items = [];
+          while (i < lines.length && /^-\s+/.test(lines[i])) {
+            items.push(lines[i].replace(/^-\s+/, ''));
+            i += 1;
+          }
+          html.push('<ul>' + items.map(item => `<li>${inlineMarkdown(item)}</li>`).join('') + '</ul>');
+          continue;
+        }
+        const paragraph = [line.trim()];
+        i += 1;
+        while (i < lines.length && lines[i].trim() && !/^(#{1,3})\s+/.test(lines[i]) && !/^(-|\d+\.)\s+/.test(lines[i]) && !isTableBlock(lines, i) && !/^---+$/.test(lines[i].trim())) {
+          paragraph.push(lines[i].trim());
+          i += 1;
+        }
+        html.push(`<p>${inlineMarkdown(paragraph.join(' '))}</p>`);
+      }
+      return html.join('\n');
+    }
+
+    function statusClass(status) {
+      return { '待梳理': 's-intake', '待设计': 's-design', '待开发': 's-dev', '已上线': 's-live' }[status] || 's-live';
+    }
+
+    function priorityClass(priority) {
+      return { 'P1': 'p1', 'P2': 'p2', 'P3': 'p3', '归档': 'p4' }[priority] || 'p4';
+    }
+
+    function sortCards(items) {
+      return items.sort((a, b) => {
+        const priorityDelta = priorityOrder.indexOf(a.card.priority) - priorityOrder.indexOf(b.card.priority);
+        if (priorityDelta) return priorityDelta;
+        const statusDelta = statusOrder.indexOf(a.card.status) - statusOrder.indexOf(b.card.status);
+        if (statusDelta) return statusDelta;
+        return a.index - b.index;
+      });
+    }
+
+    function getVisibleCards() {
+      const keyword = state.query.trim().toLowerCase();
+      return sortCards(cards
+        .map((card, index) => ({ card, index }))
+        .filter(({ card }) => state.status === '全部' || card.status === state.status)
+        .filter(({ card }) => state.priority === '全部' || card.priority === state.priority)
+        .filter(({ card }) => state.module === '全部' || card.module === state.module)
+        .filter(({ card }) => !keyword || [card.title, card.module, card.status, card.priority, card.desc, card.judgment, card.next].join(' ').toLowerCase().includes(keyword)));
+    }
+
+    function renderKpis() {
+      const total = cards.length || 1;
+      kpiRowEl.innerHTML = statusOrder.map(status => {
+        const count = cards.filter(card => card.status === status).length;
+        const percent = Math.round((count / total) * 100);
+        return `
+          <button class="metric" type="button" data-status="${escapeHtml(status)}" aria-label="筛选${escapeHtml(status)}需求">
+            <small>${escapeHtml(status)}</small>
+            <strong>${count}</strong>
+            <span>${percent}% / 全部 ${cards.length} 项</span>
+            <span class="metric-bar"><span class="metric-fill" style="width: ${percent}%"></span></span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function renderFilterButtons() {
+      const statuses = ['全部', ...statusOrder];
+      const priorities = ['全部', ...priorityOrder];
+      statusTabsEl.innerHTML = statuses.map(status => `<button class="segment ${state.status === status ? 'active' : ''}" type="button" data-status="${escapeHtml(status)}">${escapeHtml(status)}</button>`).join('');
+      priorityTabsEl.innerHTML = priorities.map(priority => `<button class="segment ${state.priority === priority ? 'active' : ''}" type="button" data-priority="${escapeHtml(priority)}">${escapeHtml(priority)}</button>`).join('');
+    }
+
+    function renderModuleOptions() {
+      const modules = ['全部', ...Array.from(new Set(cards.map(card => card.module))).sort((a, b) => a.localeCompare(b, 'zh-CN'))];
+      moduleFilterEl.innerHTML = modules.map(module => `<option value="${escapeHtml(module)}">${escapeHtml(module)}</option>`).join('');
+      moduleFilterEl.value = state.module;
+    }
+
+    function renderFocusList(visible) {
+      const source = visible.filter(({ card }) => card.status !== '已上线' && ['P1', 'P2'].includes(card.priority));
+      const focus = (source.length ? source : visible).slice(0, 6);
+      focusEl.innerHTML = focus.map(({ card, index }) => `
+        <button class="focus-card ${index === activeIndex ? 'active' : ''}" type="button" data-index="${index}">
+          <strong>${escapeHtml(card.title)}</strong>
+          <span>${escapeHtml(card.priority)} · ${escapeHtml(card.status)} · ${escapeHtml(card.module)}</span>
+        </button>
+      `).join('') || '<div class="empty">当前筛选下没有需求</div>';
+    }
+
+    function renderList() {
+      const visible = getVisibleCards();
+      countEl.textContent = `${visible.length} 项`;
+      listEl.innerHTML = visible.map(({ card, index }) => `
+        <button class="req-item ${index === activeIndex ? 'active' : ''}" type="button" data-index="${index}">
+          <div class="req-main">
+            <div class="req-line">
+              <span class="priority ${priorityClass(card.priority)}">${escapeHtml(card.priority)}</span>
+              <span class="req-name">${escapeHtml(card.title)}</span>
+            </div>
+            <div class="req-desc">${escapeHtml(card.desc)}</div>
+          </div>
+          <div class="req-meta">
+            <span class="badge ${statusClass(card.status)}">${escapeHtml(card.status)}</span>
+            <span class="badge s-live req-module">${escapeHtml(card.module)}</span>
+          </div>
+          <div class="req-next">下一步：${escapeHtml(card.next)}</div>
+        </button>
+      `).join('') || '<div class="empty">没有匹配的需求</div>';
+      renderFocusList(visible);
+      return visible;
+    }
+
+    function renderPreview(index = activeIndex) {
+      activeIndex = index;
+      const card = cards[index];
+      if (!card) {
+        document.getElementById('preview-title').textContent = '未选择需求';
+        document.getElementById('preview-subtitle').textContent = '';
+        document.getElementById('summary-judgment').textContent = '当前筛选条件下暂无需求。';
+        document.getElementById('summary-next').textContent = '请重置筛选或调整关键词。';
+        document.getElementById('summary-file').textContent = '-';
+        document.getElementById('markdown').innerHTML = '<div class="empty">没有可预览的需求卡</div>';
+        return;
+      }
+      document.getElementById('preview-title').textContent = card.title;
+      document.getElementById('preview-subtitle').innerHTML = `<span class="priority ${priorityClass(card.priority)}">${escapeHtml(card.priority)}</span><span class="badge ${statusClass(card.status)}">${escapeHtml(card.status)}</span><span class="badge s-live">${escapeHtml(card.module)}</span>`;
+      document.getElementById('source-link').href = card.file;
+      document.getElementById('summary-judgment').textContent = card.judgment;
+      document.getElementById('summary-next').textContent = card.next;
+      document.getElementById('summary-file').textContent = card.file.replace(/^\.\//, '');
+      const markdownEl = document.getElementById('markdown');
+      markdownEl.innerHTML = renderMarkdown(card.markdown);
+      fetch(card.file, { cache: 'no-store' })
+        .then(response => response.ok ? response.text() : card.markdown)
+        .then(text => {
+          if (activeIndex === index) markdownEl.innerHTML = renderMarkdown(text);
+        })
+        .catch(() => {});
+    }
+
+    function applyFilters() {
+      const visible = renderList();
+      if (!visible.some(({ index }) => index === activeIndex)) {
+        activeIndex = visible.length ? visible[0].index : -1;
+      }
+      renderFilterButtons();
+      renderModuleOptions();
+      renderPreview(activeIndex);
+      renderList();
+    }
+
+    function selectCard(index) {
+      activeIndex = index;
+      renderPreview(index);
+      renderList();
+    }
+
+    listEl.addEventListener('click', event => {
+      const item = event.target.closest('.req-item');
+      if (!item) return;
+      selectCard(Number(item.dataset.index));
+    });
+
+    focusEl.addEventListener('click', event => {
+      const item = event.target.closest('.focus-card');
+      if (!item) return;
+      selectCard(Number(item.dataset.index));
+    });
+
+    statusTabsEl.addEventListener('click', event => {
+      const item = event.target.closest('[data-status]');
+      if (!item) return;
+      state.status = item.dataset.status;
+      applyFilters();
+    });
+
+    priorityTabsEl.addEventListener('click', event => {
+      const item = event.target.closest('[data-priority]');
+      if (!item) return;
+      state.priority = item.dataset.priority;
+      applyFilters();
+    });
+
+    kpiRowEl.addEventListener('click', event => {
+      const item = event.target.closest('[data-status]');
+      if (!item) return;
+      state.status = item.dataset.status;
+      applyFilters();
+    });
+
+    moduleFilterEl.addEventListener('change', () => {
+      state.module = moduleFilterEl.value;
+      applyFilters();
+    });
+
+    resetEl.addEventListener('click', () => {
+      state.status = '全部';
+      state.priority = '全部';
+      state.module = '全部';
+      state.query = '';
+      searchEl.value = '';
+      applyFilters();
+    });
+
+    searchEl.addEventListener('input', () => {
+      state.query = searchEl.value;
+      applyFilters();
+    });
+
+    renderKpis();
+    renderFilterButtons();
+    renderModuleOptions();
+    applyFilters();
+  </script>
+</body>
+</html>

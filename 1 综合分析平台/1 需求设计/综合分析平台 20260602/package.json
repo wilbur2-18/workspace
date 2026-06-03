@@ -1,0 +1,8 @@
+{
+  "name": "comprehensive-analysis-demo-20260517",
+  "private": true,
+  "description": "Dev-only tooling for IconPark subset build",
+  "devDependencies": {
+    "@icon-park/svg": "^1.4.2"
+  }
+}

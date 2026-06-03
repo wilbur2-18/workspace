@@ -1,0 +1,4 @@
+interface:
+  display_name: "PM Ask Me"
+  short_description: "Ask one PM clarification question at a time."
+  default_prompt: "Ask me the next most important question to clarify this product plan or requirement."

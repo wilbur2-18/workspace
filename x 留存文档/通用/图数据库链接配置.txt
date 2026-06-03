@@ -1,0 +1,18 @@
+# Neo4j Aura 图数据库链接配置（两套实例，勿提交版本库）
+
+## 实例一：work-note-memory（当前 MCP 使用）
+# 控制台显示名 work-note-memory，用于记忆体系
+NEO4J_URI=neo4j+s://584587ff.databases.neo4j.io
+NEO4J_USERNAME=584587ff
+NEO4J_PASSWORD=vlDMG4__I0swYYRXOT5T79da_sAjijDScwO4HT_vTNg
+NEO4J_DATABASE=584587ff
+AURA_INSTANCEID=584587ff
+AURA_INSTANCENAME=work-note-memory
+
+## 实例二：Instance01
+NEO4J_URI=neo4j+s://ee352d0d.databases.neo4j.io
+NEO4J_USERNAME=neo4j
+NEO4J_PASSWORD=aDG-Q7FgYUOiCKSi46ogm8udu4DbhA1bnvsCLRKOPOk
+NEO4J_DATABASE=neo4j
+AURA_INSTANCEID=ee352d0d
+AURA_INSTANCENAME=Instance01

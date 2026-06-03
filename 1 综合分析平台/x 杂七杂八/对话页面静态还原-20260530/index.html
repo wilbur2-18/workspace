@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>对话页面静态还原</title>
+  <style>
+    :root {
+      --ds-c-primary: #1677ff;
+      --ds-c-success: #169c34;
+      --ds-c-warning: #b96b00;
+      --ds-c-error: #d83a3a;
+      --ds-bg-layout: #eaf3ff;
+      --ds-bg-container: #ffffff;
+      --ds-bg-soft: #f5f7fb;
+      --ds-bg-primary-soft: #eaf3ff;
+      --ds-border: #d7e1ef;
+      --ds-border-subtle: #edf1f7;
+      --ds-text-1: #171717;
+      --ds-text-2: #525252;
+      --ds-text-3: #737373;
+      --ds-radius-standard: 8px;
+      --ds-radius-lg: 16px;
+      --ds-shadow-card: 0 2px 8px rgba(15, 23, 42, 0.06);
+      --font-main: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      color: var(--ds-text-1);
+      background: var(--ds-bg-layout);
+      font-family: var(--font-main);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      pointer-events: none;
+      cursor: default;
+    }
+
+    .svg-icon {
+      width: 1em;
+      height: 1em;
+      display: inline-block;
+      flex: 0 0 auto;
+      color: currentColor;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vertical-align: -0.12em;
+    }
+
+    .app-shell {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      min-width: 0;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .app-sidebar {
+      width: 324px;
+      flex: 0 0 324px;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid #e5e7eb;
+      background: #f7f7f8;
+      color: #2f343b;
+    }
+
+    .sidebar-nav,
+    .sidebar-section,
+    .sidebar-tasks {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .sidebar-nav {
+      gap: 2px;
+      padding: 8px 10px 0;
+      flex: 0 0 auto;
+    }
+
+    .sidebar-controls {
+      height: 34px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0 14px 2px;
+      color: #334155;
+    }
+
+    .sidebar-controls .svg-icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    .side-item {
+      height: 42px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 14px;
+      min-width: 0;
+      color: #30343a;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .side-item--create {
+      margin-bottom: 4px;
+      color: #1677ff;
+      background: #eaf3ff;
+    }
+
+    .side-item--active {
+      color: #1677ff;
+      background: #eaf3ff;
+      box-shadow: inset 0 0 0 1px #1677ff;
+    }
+
+    .side-item .svg-icon {
+      width: 18px;
+      height: 18px;
+      stroke-width: 3.5;
+      color: #333840;
+    }
+
+    .sidebar-section {
+      padding: 26px 10px 0;
+      gap: 2px;
+      flex: 0 0 auto;
+    }
+
+    .side-label {
+      padding: 0 12px 8px;
+      color: #9ca3af;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .side-row {
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 12px;
+      color: #32363c;
+      min-width: 0;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .side-row--nested {
+      margin-left: 30px;
+      padding-left: 12px;
+      font-weight: 500;
+      color: #3f434a;
+    }
+
+    .side-row--active {
+      background: #ececef;
+      color: #15171a;
+    }
+
+    .side-text {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .side-time {
+      max-width: 58px;
+      flex: 0 0 auto;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      color: #85888d;
+      font-weight: 500;
+    }
+
+    .sidebar-spacer {
+      flex: 1;
+      min-height: 24px;
+    }
+
+    .sidebar-footer {
+      height: 54px;
+      padding: 0 18px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      color: #2f343b;
+      flex: 0 0 auto;
+    }
+
+    .sidebar-footer__main {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      min-width: 0;
+    }
+
+    .sidebar-footer .svg-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .page {
+      flex: 1 1 auto;
+      min-width: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #dcecff;
+    }
+
+    .workbench {
+      flex: 1;
+      min-height: 0;
+      min-width: 0;
+      display: grid;
+      grid-template-columns: minmax(240px, 301px) minmax(0, 1fr) minmax(260px, 340px);
+      gap: 8px;
+      padding: 1px 8px 8px;
+      background: #dbeafe;
+    }
+
+    .panel {
+      min-height: 0;
+      min-width: 0;
+      overflow: hidden;
+      background: var(--ds-bg-container);
+      border-radius: var(--ds-radius-standard);
+    }
+
+    .rail {
+      display: none;
+    }
+
+    .icon-btn {
+      width: 28px;
+      height: 28px;
+      border: 0;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #334155;
+      background: transparent;
+      padding: 0;
+      font-size: 16px;
+    }
+
+    .icon-btn .svg-icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    .icon-btn--primary {
+      color: var(--ds-c-primary);
+    }
+
+    .count-badge {
+      min-width: 22px;
+      height: 18px;
+      padding: 0 6px;
+      border-radius: 7px;
+      background: #e5e7eb;
+      color: #525252;
+      font-size: 12px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .left-panel,
+    .right-panel {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .tabs {
+      height: 40px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 16px;
+      font-weight: 600;
+      flex: 0 0 auto;
+    }
+
+    .tabs span {
+      color: #171717;
+    }
+
+    .tabs span.active {
+      color: var(--ds-c-primary);
+    }
+
+    .left-scroll,
+    .result-scroll {
+      min-height: 0;
+      overflow: hidden;
+      padding: 0 12px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .drawer-title {
+      height: 34px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 4px;
+      color: #171717;
+      font-weight: 600;
+    }
+
+    .drawer-title__main {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .drawer-title__actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      color: #475569;
+    }
+
+    .status-strip {
+      height: 34px;
+      border: 1px solid var(--ds-c-primary);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      color: #171717;
+      font-size: 13px;
+      margin: 1px 4px 8px;
+      background: #f8fbff;
+    }
+
+    .status-strip b {
+      font-weight: 600;
+      margin-left: 2px;
+    }
+
+    .status-strip .queue { color: #d97706; }
+    .status-strip .parse { color: #1677ff; }
+    .status-strip .fail { color: #d83a3a; }
+
+    .notice {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #737373;
+      font-size: 12px;
+      padding: 0 6px 2px;
+      white-space: nowrap;
+      min-width: 0;
+    }
+
+    .notice span:last-child,
+    .drawer-title__main span:nth-child(2),
+    .tool-line > span:nth-child(2),
+    .diff-card__file span:last-child,
+    .right-title,
+    .chat-title {
+      flex: 1 1 auto;
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .tree {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      overflow: hidden;
+    }
+
+    .tree-row {
+      height: 32px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 6px;
+      padding: 0 4px;
+      color: #171717;
+      min-width: 0;
+      flex: 0 0 auto;
+    }
+
+    .tree-row--folder {
+      font-weight: 500;
+    }
+
+    .tree-row__icon {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      color: #334155;
+    }
+
+    .tree-row__icon .svg-icon,
+    .mini-icon .svg-icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    .file-xlsx { color: #16a34a; }
+    .file-doc { color: #2563eb; }
+    .file-pdf { color: #ef4444; }
+    .file-img { color: #64748b; }
+    .file-json { color: #6d28d9; }
+    .file-txt { color: #525252; }
+
+    .tree-row__text {
+      min-width: 0;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .pill {
+      height: 22px;
+      padding: 0 7px;
+      border-radius: 7px;
+      display: inline-flex;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 500;
+      flex: 0 0 auto;
+    }
+
+    .pill--red { color: #d83a3a; background: #fff0f0; }
+    .pill--blue { color: #1677ff; background: #e8f2ff; }
+    .pill--amber { color: #b96b00; background: #fff7e6; }
+    .pill--green { color: #169c34; background: #eaf8ee; }
+
+    .left-bottom {
+      margin-top: auto;
+      border-top: 1px solid var(--ds-border-subtle);
+      padding-top: 4px;
+    }
+
+    .center-panel {
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+    }
+
+    .chat-header {
+      height: 48px;
+      padding: 8px 16px 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex: 0 0 auto;
+    }
+
+    .chat-title {
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 24px;
+    }
+
+    .chat-actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: #525252;
+      font-size: 12px;
+      flex: 0 0 auto;
+    }
+
+    .chat-action {
+      height: 28px;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: #525252;
+      padding: 0 6px;
+    }
+
+    .chat-action .svg-icon {
+      width: 14px;
+      height: 14px;
+    }
+
+    .messages {
+      flex: 1;
+      min-height: 0;
+      min-width: 0;
+      overflow: hidden;
+      padding: 0 clamp(24px, 5vw, 80px) 12px;
+      color: #171717;
+    }
+
+    .message-inner {
+      max-width: 800px;
+      min-width: 0;
+      margin: 0 auto;
+      transform: translateY(-12px);
+    }
+
+    .top-clipped {
+      height: 38px;
+      overflow: hidden;
+      color: #171717;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .thinking-line,
+    .tool-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 32px;
+      color: #525252;
+      font-size: 14px;
+    }
+
+    .thinking-line {
+      color: #171717;
+      margin-top: 2px;
+    }
+
+    .check {
+      width: 16px;
+      height: 16px;
+      color: #20b455;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 16px;
+    }
+
+    .cross {
+      width: 16px;
+      height: 16px;
+      color: #ef4444;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 16px;
+    }
+
+    .check .svg-icon,
+    .cross .svg-icon {
+      width: 16px;
+      height: 16px;
+      stroke-width: 4;
+    }
+
+    .chev {
+      color: #525252;
+      padding-left: 2px;
+    }
+
+    .chev .svg-icon {
+      width: 12px;
+      height: 12px;
+    }
+
+    .para {
+      margin: 6px 0 14px;
+      color: #171717;
+      line-height: 1.65;
+      font-size: 14px;
+    }
+
+    .diff-card {
+      border: 1px solid var(--ds-border);
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: var(--ds-shadow-card);
+      margin: 8px 0 28px;
+    }
+
+    .diff-card__head {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      border-bottom: 1px solid var(--ds-border);
+      background: #f8fafc;
+      font-weight: 600;
+    }
+
+    .diff-card__file {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .diff-card__stats {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+    }
+
+    .stat-add {
+      color: #16a34a;
+      background: #dcfce7;
+      padding: 1px 7px;
+      border-radius: 5px;
+    }
+
+    .stat-del {
+      color: #ef4444;
+      background: #fee2e2;
+      padding: 1px 7px;
+      border-radius: 5px;
+    }
+
+    .code-row {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      line-height: 22px;
+      min-height: 22px;
+    }
+
+    .code-row .ln {
+      text-align: right;
+      padding-right: 10px;
+      color: #64748b;
+      background: #f8fafc;
+      border-right: 1px solid #e2e8f0;
+    }
+
+    .code-row .code {
+      padding: 0 12px;
+      white-space: pre;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .code-row--del .code,
+    .code-row--del .ln { background: #fde8e8; }
+    .code-row--add .code,
+    .code-row--add .ln { background: #dcf5df; }
+
+    .composer-wrap {
+      width: min(calc(100% - 32px), 800px);
+      min-width: 0;
+      margin: 0 auto;
+      padding: 0 0 2px;
+      flex: 0 0 auto;
+    }
+
+    .composer {
+      height: 106px;
+      border: 1px solid var(--ds-border);
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.10);
+      display: flex;
+      flex-direction: column;
+      padding: 12px;
+    }
+
+    .composer textarea {
+      flex: 1;
+      resize: none;
+      border: 0;
+      outline: 0;
+      color: #171717;
+      background: transparent;
+      padding: 0;
+      font-size: 14px;
+      min-height: 38px;
+    }
+
+    .composer textarea::placeholder {
+      color: #737373;
+    }
+
+    .composer-bar {
+      height: 34px;
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+    }
+
+    .composer-bar .attach {
+      width: 32px;
+      height: 32px;
+      border: 0;
+      border-radius: 6px;
+      background: #f3f4f6;
+      color: #525252;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .composer-bar .attach .svg-icon,
+    .send .svg-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .send {
+      width: 32px;
+      height: 32px;
+      border: 0;
+      border-radius: 6px;
+      background: #1677ff;
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .disclaimer {
+      height: 20px;
+      text-align: center;
+      color: #737373;
+      font-size: 12px;
+      flex: 0 0 auto;
+    }
+
+    .right-section {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      background: #fff;
+      border-radius: var(--ds-radius-standard);
+      overflow: hidden;
+    }
+
+    .right-section--result {
+      flex: 1;
+    }
+
+    .right-head {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 14px 0 16px;
+      flex: 0 0 auto;
+    }
+
+    .right-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      min-width: 0;
+    }
+
+    .right-actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex: 0 0 auto;
+    }
+
+    .task-list,
+    .result-list {
+      padding: 4px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .task-row,
+    .result-row {
+      height: 22px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .task-name,
+    .result-name {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .status {
+      height: 22px;
+      min-width: 44px;
+      border-radius: 7px;
+      padding: 0 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .status--progress { color: #1677ff; background: #eaf3ff; }
+    .status--fail { color: #d83a3a; background: #fff0f0; }
+    .status--done { color: #169c34; background: #eaf8ee; }
+
+    .mini-icon {
+      width: 16px;
+      height: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #525252;
+      flex: 0 0 16px;
+      font-size: 13px;
+    }
+
+    .result-row .mini-icon {
+      color: #16a34a;
+    }
+
+    .result-row--folder .mini-icon {
+      color: #525252;
+    }
+
+    @media (max-width: 1280px) {
+      .app-sidebar {
+        width: 280px;
+        flex-basis: 280px;
+      }
+
+      .workbench {
+        grid-template-columns: minmax(220px, 280px) minmax(0, 1fr) minmax(240px, 320px);
+      }
+
+      .messages {
+        padding-left: 40px;
+        padding-right: 40px;
+      }
+    }
+
+    @media (max-width: 1100px) {
+      .app-sidebar {
+        width: 248px;
+        flex-basis: 248px;
+      }
+
+      .workbench {
+        grid-template-columns: minmax(200px, 260px) minmax(0, 1fr) minmax(220px, 280px);
+      }
+
+      .messages {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+    <symbol id="icon-arrow-left" viewBox="0 0 48 48">
+      <path d="M5.8 24H41.8" />
+      <path d="M17.8 36 5.8 24 17.8 12" />
+    </symbol>
+    <symbol id="icon-left-bar" viewBox="0 0 48 48">
+      <rect x="6" y="6" width="36" height="36" rx="3" />
+      <path d="M16 6v36" />
+      <path d="M13 42h6M13 6h6" />
+    </symbol>
+    <symbol id="icon-right-bar" viewBox="0 0 48 48">
+      <rect x="6" y="6" width="36" height="36" rx="3" />
+      <path d="M32 6v36" />
+      <path d="M29 42h6M29 6h6" />
+    </symbol>
+    <symbol id="icon-workbench" viewBox="0 0 48 48">
+      <path d="M12 33H4V7h40v26h-8H12Z" />
+      <path d="M16 22v4M24 18v21M32 14v12M12 41h24" />
+    </symbol>
+    <symbol id="icon-more" viewBox="0 0 48 48">
+      <circle cx="12" cy="24" r="3" fill="currentColor" stroke="none" />
+      <circle cx="24" cy="24" r="3" fill="currentColor" stroke="none" />
+      <circle cx="36" cy="24" r="3" fill="currentColor" stroke="none" />
+    </symbol>
+    <symbol id="icon-search" viewBox="0 0 48 48">
+      <circle cx="21" cy="21" r="13" />
+      <path d="M31 31 42 42" />
+    </symbol>
+    <symbol id="icon-edit" viewBox="0 0 48 48">
+      <path d="M7 42h34" />
+      <path d="M11 31.5 32.5 10a5 5 0 0 1 7 7L18 38l-9 2 2-8.5Z" />
+    </symbol>
+    <symbol id="icon-plugin" viewBox="0 0 48 48">
+      <path d="M20 7h8v10h6a7 7 0 0 1 0 14h-6v10h-8V31h-6a7 7 0 0 1 0-14h6V7Z" />
+    </symbol>
+    <symbol id="icon-clock" viewBox="0 0 48 48">
+      <circle cx="24" cy="24" r="18" />
+      <path d="M24 13v12l8 5" />
+    </symbol>
+    <symbol id="icon-settings" viewBox="0 0 48 48">
+      <path d="M20.5 6h7l1.4 6a14 14 0 0 1 3.5 2l5.9-1.8 3.5 6.1-4.5 4.2a14 14 0 0 1 0 4l4.5 4.2-3.5 6.1-5.9-1.8a14 14 0 0 1-3.5 2l-1.4 6h-7l-1.4-6a14 14 0 0 1-3.5-2l-5.9 1.8-3.5-6.1 4.5-4.2a14 14 0 0 1 0-4l-4.5-4.2 3.5-6.1 5.9 1.8a14 14 0 0 1 3.5-2L20.5 6Z" />
+      <circle cx="24" cy="24" r="5" />
+    </symbol>
+    <symbol id="icon-device" viewBox="0 0 48 48">
+      <rect x="15" y="5" width="18" height="38" rx="3" />
+      <path d="M21 37h6" />
+    </symbol>
+    <symbol id="icon-layout-list" viewBox="0 0 48 48">
+      <path d="M10 12h8M24 12h14M10 24h8M24 24h14M10 36h8M24 36h14" />
+      <circle cx="14" cy="12" r="3" />
+      <circle cx="14" cy="24" r="3" />
+      <circle cx="14" cy="36" r="3" />
+    </symbol>
+    <symbol id="icon-window" viewBox="0 0 48 48">
+      <rect x="8" y="10" width="32" height="28" rx="3" />
+      <path d="M8 19h32" />
+    </symbol>
+    <symbol id="icon-check-square" viewBox="0 0 48 48">
+      <path d="M42 20v19a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3V9a3 3 0 0 1 3-3h21" />
+      <path d="M16 20 26 28 41 7" />
+    </symbol>
+    <symbol id="icon-refresh" viewBox="0 0 48 48">
+      <path d="M42 24a18 18 0 0 1-31.4 12" />
+      <path d="M6 24A18 18 0 0 1 37.4 12" />
+      <path d="M37 4v8h-8M11 44v-8h8" />
+    </symbol>
+    <symbol id="icon-plus" viewBox="0 0 48 48">
+      <path d="M24 10v28M10 24h28" />
+    </symbol>
+    <symbol id="icon-chevron-right" viewBox="0 0 48 48">
+      <path d="M19 12 31 24 19 36" />
+    </symbol>
+    <symbol id="icon-chevron-down" viewBox="0 0 48 48">
+      <path d="M12 19 24 31 36 19" />
+    </symbol>
+    <symbol id="icon-info" viewBox="0 0 48 48">
+      <circle cx="24" cy="24" r="20" />
+      <path d="M24 22v12M24 14v1" />
+    </symbol>
+    <symbol id="icon-file-excel" viewBox="0 0 48 48">
+      <path d="M10 4h20l10 10v28a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" />
+      <path d="M29 18H19v16h10M29 26H19" />
+    </symbol>
+    <symbol id="icon-file-word" viewBox="0 0 48 48">
+      <path d="M10 4h20l10 10v28a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" />
+      <path d="M16 20 20 34 24 24 28 34 32 20" />
+    </symbol>
+    <symbol id="icon-file-pdf" viewBox="0 0 48 48">
+      <path d="M10 4h20l10 10v28a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" />
+      <path d="M16 33V21h5a4 4 0 0 1 0 8h-5M27 33V21h3a6 6 0 0 1 0 12h-3" />
+    </symbol>
+    <symbol id="icon-file-image" viewBox="0 0 48 48">
+      <path d="M8 8h32v32H8Z" />
+      <circle cx="18" cy="18" r="3" />
+      <path d="M12 36 22 26l6 6 4-5 6 9" />
+    </symbol>
+    <symbol id="icon-file-text" viewBox="0 0 48 48">
+      <path d="M10 4h20l10 10v28a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" />
+      <path d="M16 22h16M16 30h16" />
+    </symbol>
+    <symbol id="icon-file-code" viewBox="0 0 48 48">
+      <path d="M10 4h20l10 10v28a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" />
+      <path d="M20 22 15 27l5 5M28 22l5 5-5 5" />
+    </symbol>
+    <symbol id="icon-folder" viewBox="0 0 48 48">
+      <path d="M5 12h14l4 5h20v23H5Z" />
+    </symbol>
+    <symbol id="icon-tips" viewBox="0 0 48 48">
+      <path d="M40 20c0 6.8-4.3 12.6-10.2 14.9H18.2C12.3 32.6 8 26.8 8 20 8 11.2 15.2 4 24 4s16 7.2 16 16Z" />
+      <path d="m29.8 34.9-.7 8.2a1 1 0 0 1-1 .9h-8.2a1 1 0 0 1-1-.9l-.7-8.2" />
+      <path d="M18 17v6l6-3 6 3v-6" />
+    </symbol>
+    <symbol id="icon-history" viewBox="0 0 48 48">
+      <path d="M24 8a16 16 0 1 1-15 10.5" />
+      <path d="M8 8v11h11M24 15v10l7 4" />
+    </symbol>
+    <symbol id="icon-send" viewBox="0 0 48 48">
+      <path d="M43 5 29.7 43l-7.6-17.1L5 18.3 43 5Z" />
+      <path d="M43 5 22.1 25.9" />
+    </symbol>
+    <symbol id="icon-paperclip" viewBox="0 0 48 48">
+      <path d="M26.1 37.4s11.3-11.3 14.2-14.1c2.8-2.8 4.2-9.9-.7-14.9-5-4.9-12.1-3.5-14.9-.7L5.6 26.8c-1.4 1.4-3.5 6.4.7 10.6s9.2 2.1 10.6.7l18.4-18.4c1.4-1.4 2.1-4.9 0-7.1-2.1-2.1-5.7-1.4-7.1 0L14.8 26.1" />
+    </symbol>
+    <symbol id="icon-check-circle" viewBox="0 0 48 48">
+      <circle cx="24" cy="24" r="20" />
+      <path d="M16 24 22 30 34 18" />
+    </symbol>
+    <symbol id="icon-close-circle" viewBox="0 0 48 48">
+      <circle cx="24" cy="24" r="20" />
+      <path d="M18.3 18.3 29.7 29.7M29.7 18.3 18.3 29.7" />
+    </symbol>
+    <symbol id="icon-download" viewBox="0 0 48 48">
+      <path d="M24 6v25" />
+      <path d="M14 22 24 32 34 22" />
+      <path d="M8 40h32" />
+    </symbol>
+    <symbol id="icon-sort" viewBox="0 0 48 48">
+      <path d="M14 8v32M8 14l6-6 6 6M34 40V8M28 34l6 6 6-6" />
+    </symbol>
+    <symbol id="icon-folder-plus" viewBox="0 0 48 48">
+      <path d="M5 12h14l4 5h20v23H5Z" />
+      <path d="M24 24v10M19 29h10" />
+    </symbol>
+    <symbol id="icon-database" viewBox="0 0 48 48">
+      <ellipse cx="24" cy="10" rx="16" ry="6" />
+      <path d="M8 10v28c0 3.3 7.2 6 16 6s16-2.7 16-6V10" />
+      <path d="M8 24c0 3.3 7.2 6 16 6s16-2.7 16-6" />
+    </symbol>
+    <symbol id="icon-notes" viewBox="0 0 48 48">
+      <path d="M8 6a2 2 0 0 1 2-2h20l10 10v28a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2V6Z" />
+      <path d="M16 20h16M16 28h16" />
+    </symbol>
+    <symbol id="icon-table" viewBox="0 0 48 48">
+      <rect x="4" y="8" width="40" height="32" rx="2" />
+      <path d="M4 19h40M4 29h40M17 19v21M31 19v21" />
+    </symbol>
+  </svg>
+  <div class="app-shell">
+    <aside class="app-sidebar" aria-label="静态应用侧边栏">
+      <nav class="sidebar-nav" aria-label="主导航占位">
+        <div class="sidebar-controls">
+          <span><svg class="svg-icon"><use href="#icon-arrow-left"></use></svg></span>
+          <span><svg class="svg-icon"><use href="#icon-left-bar"></use></svg></span>
+        </div>
+        <div class="side-item side-item--create"><svg class="svg-icon"><use href="#icon-edit"></use></svg><span class="side-text">新建对话</span></div>
+        <div class="side-item side-item--create"><svg class="svg-icon"><use href="#icon-check-square"></use></svg><span class="side-text">新建任务</span></div>
+        <div class="side-item side-item--active"><svg class="svg-icon"><use href="#icon-folder"></use></svg><span class="side-text">资源</span></div>
+        <div class="side-item"><svg class="svg-icon"><use href="#icon-tips"></use></svg><span class="side-text">技能</span></div>
+        <div class="side-item"><svg class="svg-icon"><use href="#icon-notes"></use></svg><span class="side-text">结果</span></div>
+      </nav>
+
+      <section class="sidebar-section sidebar-dialogs" aria-label="对话列表占位">
+        <div class="side-label">对话</div>
+        <div class="side-row"><span class="side-text">图谱平台原型设计</span><span class="side-time">1 周</span></div>
+        <div class="side-row"><span class="side-text">综合分析平台PM</span><span class="side-time">5 小时</span></div>
+        <div class="side-row"><span class="side-text">产品文档写作</span><span class="side-time">2 天</span></div>
+      </section>
+
+      <section class="sidebar-section sidebar-tasks" aria-label="任务列表占位">
+        <div class="side-label">任务</div>
+        <div class="side-row"><span class="mini-icon"><svg class="svg-icon"><use href="#icon-tips"></use></svg></span><span class="task-name">往来函证抽样核对</span><span class="status status--progress">执行中</span></div>
+        <div class="side-row"><span class="mini-icon"><svg class="svg-icon"><use href="#icon-table"></use></svg></span><span class="task-name">企业工商信息批量查询</span><span class="status status--progress">50%</span></div>
+        <div class="side-row"><span class="mini-icon"><svg class="svg-icon"><use href="#icon-check-square"></use></svg></span><span class="task-name">采购异常专项扫描</span><span class="status status--fail">失败</span></div>
+        <div class="side-row"><span class="mini-icon"><svg class="svg-icon"><use href="#icon-download"></use></svg></span><span class="task-name">审计结果打包下载</span><span class="status status--done">完成</span></div>
+        <div class="side-row"><span class="mini-icon"><svg class="svg-icon"><use href="#icon-check-square"></use></svg></span><span class="task-name">预算与对标分析</span><span class="status status--done">完成</span></div>
+        <div class="side-row"><span class="mini-icon"><svg class="svg-icon"><use href="#icon-check-square"></use></svg></span><span class="task-name">付款与验收追踪</span><span class="status status--done">完成</span></div>
+        <div class="side-row"><span class="mini-icon"><svg class="svg-icon"><use href="#icon-check-square"></use></svg></span><span class="task-name">合同与发票专项核对</span><span class="status status--done">完成</span></div>
+      </section>
+
+      <div class="sidebar-spacer"></div>
+      <div class="sidebar-footer">
+        <div class="sidebar-footer__main"><svg class="svg-icon"><use href="#icon-settings"></use></svg><span class="side-text">设置</span></div>
+      </div>
+    </aside>
+
+    <div class="page">
+    <main class="workbench" aria-label="静态对话页面还原">
+      <aside class="panel left-panel">
+        <div class="tabs"><span class="active">资源</span><span>技能</span></div>
+        <div class="left-scroll">
+          <div class="drawer-title">
+            <div class="drawer-title__main"><span><svg class="svg-icon"><use href="#icon-chevron-down"></use></svg></span><span>文件</span><span class="count-badge">42</span></div>
+            <div class="drawer-title__actions">
+              <span class="icon-btn"><svg class="svg-icon"><use href="#icon-search"></use></svg></span>
+              <span class="icon-btn"><svg class="svg-icon"><use href="#icon-check-square"></use></svg></span>
+              <span class="icon-btn"><svg class="svg-icon"><use href="#icon-refresh"></use></svg></span>
+              <span class="icon-btn icon-btn--primary"><svg class="svg-icon"><use href="#icon-plus"></use></svg></span>
+            </div>
+          </div>
+          <div class="status-strip">
+            <span>排队中<b class="queue">4</b></span>
+            <span>解析中<b class="parse">7</b></span>
+            <span>失败<b class="fail">4</b></span>
+          </div>
+          <div class="notice"><span><svg class="svg-icon"><use href="#icon-info"></use></svg></span><span>注意，文件未完成解析时无法引用完整内容！</span></div>
+          <div class="tree">
+            <div class="tree-row tree-row--folder"><span class="tree-row__icon"><svg class="svg-icon"><use href="#icon-chevron-right"></use></svg></span><span class="tree-row__text">二零二六年度工程项目合同与财务资...</span></div>
+            <div class="tree-row tree-row--folder"><span class="tree-row__icon"><svg class="svg-icon"><use href="#icon-chevron-right"></use></svg></span><span class="tree-row__text">进度与验收</span></div>
+            <div class="tree-row"><span class="tree-row__icon file-xlsx"><svg class="svg-icon"><use href="#icon-file-excel"></use></svg></span><span class="tree-row__text">银行流水-解析失败.xlsx</span><span class="pill pill--red">失败</span></div>
+            <div class="tree-row"><span class="tree-row__icon file-img"><svg class="svg-icon"><use href="#icon-file-image"></use></svg></span><span class="tree-row__text">现场签证照片.png</span></div>
+            <div class="tree-row"><span class="tree-row__icon file-doc"><svg class="svg-icon"><use href="#icon-file-word"></use></svg></span><span class="tree-row__text">整改说明.wps</span></div>
+            <div class="tree-row"><span class="tree-row__icon file-xlsx"><svg class="svg-icon"><use href="#icon-file-excel"></use></svg></span><span class="tree-row__text">银行流水导出.csv</span></div>
+            <div class="tree-row"><span class="tree-row__icon file-txt"><svg class="svg-icon"><use href="#icon-file-text"></use></svg></span><span class="tree-row__text">访谈纪要补充.txt</span></div>
+            <div class="tree-row"><span class="tree-row__icon file-json"><svg class="svg-icon"><use href="#icon-file-code"></use></svg></span><span class="tree-row__text">合同抽取字段.json</span></div>
+            <div class="tree-row"><span class="tree-row__icon file-json"><svg class="svg-icon"><use href="#icon-file-code"></use></svg></span><span class="tree-row__text">发票接口回执.xml</span></div>
+            <div class="tree-row"><span class="tree-row__icon file-doc"><svg class="svg-icon"><use href="#icon-file-word"></use></svg></span><span class="tree-row__text">会议纪要-资料-01.docx</span></div>
+            <div class="tree-row"><span class="tree-row__icon file-xlsx"><svg class="svg-icon"><use href="#icon-file-excel"></use></svg></span><span class="tree-row__text">总账明细-资料-05.xlsx</span><span class="pill pill--blue">60%</span></div>
+            <div class="tree-row"><span class="tree-row__icon file-pdf"><svg class="svg-icon"><use href="#icon-file-pdf"></use></svg></span><span class="tree-row__text">审批单-资料-06.pdf</span></div>
+            <div class="tree-row"><span class="tree-row__icon file-xlsx"><svg class="svg-icon"><use href="#icon-file-excel"></use></svg></span><span class="tree-row__text">项目台账-资料-07.xlsx</span><span class="pill pill--amber">第3位</span></div>
+            <div class="tree-row"><span class="tree-row__icon file-pdf"><svg class="svg-icon"><use href="#icon-file-pdf"></use></svg></span><span class="tree-row__text">往来函证-资料-09.pdf</span><span class="pill pill--red">失败</span></div>
+            <div class="tree-row"><span class="tree-row__icon file-pdf"><svg class="svg-icon"><use href="#icon-file-pdf"></use></svg></span><span class="tree-row__text">银行流水-资料-12.pdf</span></div>
+            <div class="tree-row"><span class="tree-row__icon file-pdf"><svg class="svg-icon"><use href="#icon-file-pdf"></use></svg></span><span class="tree-row__text">合同-资料-13.pdf</span></div>
+            <div class="tree-row"><span class="tree-row__icon file-doc"><svg class="svg-icon"><use href="#icon-file-word"></use></svg></span><span class="tree-row__text">验收报告-资料-10.docx</span><span class="pill pill--blue">25%</span></div>
+            <div class="tree-row"><span class="tree-row__icon file-pdf"><svg class="svg-icon"><use href="#icon-file-pdf"></use></svg></span><span class="tree-row__text">发票-资料-14.pdf</span><span class="pill pill--amber">第2位</span></div>
+          </div>
+          <div class="left-bottom">
+            <div class="drawer-title"><div class="drawer-title__main"><span><svg class="svg-icon"><use href="#icon-chevron-right"></use></svg></span><span>数据库表</span><span class="count-badge">0</span></div><span class="icon-btn icon-btn--primary"><svg class="svg-icon"><use href="#icon-plus"></use></svg></span></div>
+            <div class="drawer-title"><div class="drawer-title__main"><span><svg class="svg-icon"><use href="#icon-chevron-right"></use></svg></span><span>数据图谱</span><span class="count-badge">0</span></div><span class="icon-btn icon-btn--primary"><svg class="svg-icon"><use href="#icon-plus"></use></svg></span></div>
+            <div class="drawer-title"><div class="drawer-title__main"><span><svg class="svg-icon"><use href="#icon-chevron-right"></use></svg></span><span>知识库</span><span class="count-badge">0</span></div></div>
+          </div>
+        </div>
+      </aside>
+
+      <div class="rail"></div>
+
+      <section class="panel center-panel">
+        <div class="chat-header">
+          <div class="chat-title">对话</div>
+          <div class="chat-actions">
+            <button class="chat-action"><svg class="svg-icon"><use href="#icon-tips"></use></svg>生成技能</button>
+            <button class="chat-action"><svg class="svg-icon"><use href="#icon-history"></use></svg>历史</button>
+            <button class="chat-action"><svg class="svg-icon"><use href="#icon-plus"></use></svg>会话</button>
+          </div>
+        </div>
+
+        <div class="messages">
+          <div class="message-inner">
+            <div class="top-clipped">
+              并初步形成《审计备忘录-疑点摘录.md》的差异草案，下面是可继续复核的关键片段。
+            </div>
+
+            <div class="thinking-line">思考 1秒 <span class="chev"><svg class="svg-icon"><use href="#icon-chevron-right"></use></svg></span></div>
+            <div class="tool-line"><span class="check"><svg class="svg-icon"><use href="#icon-check-circle"></use></svg></span><span>阅读 《银行流水-解析失败.xlsx》 L10-L30</span><span class="chev"><svg class="svg-icon"><use href="#icon-chevron-right"></use></svg></span></div>
+            <p class="para">这一段同时出现付款节点、比例与「尾款」表述，和发票开具金额、审批流水里的实际支付时点可能对不上。下面在资料与结果里分多轮关键词检索，缩小需要人工核对的片段。</p>
+
+            <div class="tool-line"><span class="check"><svg class="svg-icon"><use href="#icon-check-circle"></use></svg></span><span>查询 总结当前工作台中的主要疑点</span><span class="chev"><svg class="svg-icon"><use href="#icon-chevron-right"></use></svg></span></div>
+            <div class="tool-line"><span class="check"><svg class="svg-icon"><use href="#icon-check-circle"></use></svg></span><span>查询 尾款 · 付款节点 · 合同 50%</span><span class="chev"><svg class="svg-icon"><use href="#icon-chevron-right"></use></svg></span></div>
+            <div class="tool-line"><span class="cross"><svg class="svg-icon"><use href="#icon-close-circle"></use></svg></span><span>查询 应付账款 · 银行流水 · 实际支付日期</span><span class="chev"><svg class="svg-icon"><use href="#icon-chevron-right"></use></svg></span></div>
+            <div class="tool-line"><span class="check"><svg class="svg-icon"><use href="#icon-check-circle"></use></svg></span><span>查询 采购审批单 · 发票号码 · 价税合计</span><span class="chev"><svg class="svg-icon"><use href="#icon-chevron-right"></use></svg></span></div>
+            <p class="para">检索命中若干段落：从金额、日期、科目三个维度相对齐后，把仍无法解释的差额标成待核实项。接下来调用结构化技能做归纳与引用编号，再由技能要求驱动后续落地步骤。</p>
+
+            <div class="tool-line"><span class="check"><svg class="svg-icon"><use href="#icon-check-circle"></use></svg></span><span>调用 疑点归纳与交叉核对 技能</span><span class="chev"><svg class="svg-icon"><use href="#icon-chevron-right"></use></svg></span></div>
+            <p class="para">技能先给出检查框架与疑点口径（金额口径、时点先后、主体一致性）。下面按技能规则把核查动作拆成任务，先执行检索与回读，再统一产出结构化中间结果。</p>
+
+            <div class="tool-line"><span class="check"><svg class="svg-icon"><use href="#icon-check-circle"></use></svg></span><span>分析 银行流水-解析失败.xlsx、现场签证照片.png、整改说明.wps</span><span class="chev"><svg class="svg-icon"><use href="#icon-chevron-right"></use></svg></span></div>
+            <p class="para">核查任务已完成并生成中间结果：疑点条目、证据引用与风险分级已结构化。现在把可读结论同步写入审计备忘录草案，便于你继续追问或直接保存到结果。</p>
+
+            <div class="diff-card">
+              <div class="diff-card__head">
+                <div class="diff-card__file"><span class="check"><svg class="svg-icon"><use href="#icon-check-circle"></use></svg></span><span>审计备忘录-疑点摘录.md</span></div>
+                <div class="diff-card__stats"><span class="stat-add">+2</span><span class="stat-del">-1</span></div>
+              </div>
+              <div class="code-row code-row--del"><div class="ln">1</div><div class="code">- 待核实：合同金额与已开发票差异（演示）</div></div>
+              <div class="code-row code-row--add"><div class="ln">2</div><div class="code">+ 待核实：合同金额与已开发票差异［高风险］（演示）</div></div>
+              <div class="code-row code-row--add"><div class="ln">3</div><div class="code">+ 建议：补充 2024Q4 对账单及剩余发票复印件</div></div>
+              <div class="code-row"><div class="ln">4</div><div class="code">（上下文）第四条 付款方式按进度支付，尾款 50%。</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="composer-wrap">
+          <div class="composer">
+            <textarea aria-label="对话输入" placeholder="输入问题；@ 引用资料或结果，/ 选择技能；Enter 发送"></textarea>
+            <div class="composer-bar">
+              <button class="attach" aria-label="上传附件"><svg class="svg-icon"><use href="#icon-paperclip"></use></svg></button>
+              <button class="send" aria-label="发送"><svg class="svg-icon"><use href="#icon-send"></use></svg></button>
+            </div>
+          </div>
+        </div>
+        <div class="disclaimer">系统生成内容需人工核查，审计结论以人工确认为准。</div>
+      </section>
+
+      <div class="rail"></div>
+
+      <aside class="right-panel">
+        <section class="right-section right-section--result">
+          <div class="right-head">
+            <div class="right-title">结果 <span class="count-badge">10</span></div>
+            <div class="right-actions">
+              <span class="icon-btn"><svg class="svg-icon"><use href="#icon-search"></use></svg></span>
+              <span class="icon-btn"><svg class="svg-icon"><use href="#icon-sort"></use></svg></span>
+              <span class="icon-btn"><svg class="svg-icon"><use href="#icon-check-square"></use></svg></span>
+              <span class="icon-btn"><svg class="svg-icon"><use href="#icon-refresh"></use></svg></span>
+              <span class="icon-btn"><svg class="svg-icon"><use href="#icon-folder-plus"></use></svg></span>
+            </div>
+          </div>
+          <div class="result-list">
+            <div class="result-row result-row--folder"><span class="mini-icon"><svg class="svg-icon"><use href="#icon-chevron-right"></use></svg></span><span class="result-name">付款与验收追踪</span></div>
+            <div class="result-row result-row--folder"><span class="mini-icon"><svg class="svg-icon"><use href="#icon-chevron-right"></use></svg></span><span class="result-name">合同与发票专项核对</span></div>
+            <div class="result-row result-row--folder"><span class="mini-icon"><svg class="svg-icon"><use href="#icon-chevron-right"></use></svg></span><span class="result-name">会话纪要夹</span></div>
+            <div class="result-row result-row--folder"><span class="mini-icon"><svg class="svg-icon"><use href="#icon-chevron-right"></use></svg></span><span class="result-name">预算与对标分析</span></div>
+            <div class="result-row"><span class="mini-icon"><svg class="svg-icon"><use href="#icon-file-excel"></use></svg></span><span class="result-name">杭州城建集团有限公司工商信息摘要</span></div>
+            <div class="result-row"><span class="mini-icon"><svg class="svg-icon"><use href="#icon-file-text"></use></svg></span><span class="result-name">宁波港务投资有限公司工商信息摘要</span></div>
+          </div>
+        </section>
+      </aside>
+    </main>
+    </div>
+  </div>
+</body>
+</html>

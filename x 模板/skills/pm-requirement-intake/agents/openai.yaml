@@ -1,0 +1,4 @@
+interface:
+  display_name: "PM Requirement Intake"
+  short_description: "Capture rough product needs while preserving original context."
+  default_prompt: "Record this new requirement, preserve the original wording, collect related context, and draft a lightweight 待梳理 card."

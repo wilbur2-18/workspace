@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>数据图谱平台 - 图查询交互重构 Demo</title>
+  <script src="./assets/lib/dayjs.min.js"></script>
+  <script src="./assets/lib/dayjs-plugins.js"></script>
+  <script src="./assets/lib/vue.global.prod.js"></script>
+  <link rel="stylesheet" href="./assets/lib/reset.css" />
+  <script src="./assets/lib/antd.min.js"></script>
+  <script src="./assets/lib/echarts.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./ui/runtime-ui.css?v=20260520-token-sync" />
+  <link rel="stylesheet" href="./assets/demo-icon.css" />
+  <link rel="stylesheet" href="./assets/demo-app.css" />
+  <link rel="stylesheet" href="./assets/css/workbench/workbench.css?v=20260520-token-sync" />
+  <link rel="stylesheet" href="./assets/css/workbench/layout.css" />
+  <link rel="stylesheet" href="./assets/css/workbench/nlm-chat-panel.css" />
+  <link rel="stylesheet" href="./assets/css/graph-query.css?v=20260521-ribbon-dropdown-fix" />
+</head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+    <symbol id="left-bar" viewBox="0 0 48 48">
+      <rect x="6" y="6" width="36" height="36" rx="3" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M16 6V42" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M13 42H19" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M13 6H19" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="right-bar" viewBox="0 0 48 48">
+      <rect x="6" y="6" width="36" height="36" rx="3" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M32 6V42" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M29 42H35" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M29 6H35" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="bottom-bar" viewBox="0 0 48 48">
+      <rect x="6" y="6" width="36" height="36" rx="3" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M6 32H42" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M6 29V35" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M42 29V35" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="arrow-left" viewBox="0 0 48 48">
+      <path d="M5.79889 24H41.7989" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M17.7988 36L5.79883 24L17.7988 12" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="connect" viewBox="0 0 48 48">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M8 12C10.2091 12 12 10.2091 12 8C12 5.79086 10.2091 4 8 4C5.79086 4 4 5.79086 4 8C4 10.2091 5.79086 12 8 12Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M10 42C13.3137 42 16 39.3137 16 36C16 32.6863 13.3137 30 10 30C6.68629 30 4 32.6863 4 36C4 39.3137 6.68629 42 10 42Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M38 44C41.3137 44 44 41.3137 44 38C44 34.6863 41.3137 32 38 32C34.6863 32 32 34.6863 32 38C32 41.3137 34.6863 44 38 44Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M22 28C26.4183 28 30 24.4183 30 20C30 15.5817 26.4183 12 22 12C17.5817 12 14 15.5817 14 20C14 24.4183 17.5817 28 22 28Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M34 12C36.2091 12 38 10.2091 38 8C38 5.79086 36.2091 4 34 4C31.7909 4 30 5.79086 30 8C30 10.2091 31.7909 12 34 12Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M11 11L15 15" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M30 12L28 14" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M34 33.5L28 26" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M14 31L18 27" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="six-points" viewBox="0 0 48 48">
+      <path d="M23.9999 24V12M23.9999 24L13.5 30.0621M23.9999 24L34.4998 30.0621" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M14 16C14 18.2091 12.2091 20 10 20C7.79086 20 6 18.2091 6 16C6 13.7909 7.79086 12 10 12C12.2091 12 14 13.7909 14 16Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M14 32C14 34.2091 12.2091 36 10 36C7.79086 36 6 34.2091 6 32C6 29.7909 7.79086 28 10 28C12.2091 28 14 29.7909 14 32Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M28 40C28 42.2091 26.2091 44 24 44C21.7909 44 20 42.2091 20 40C20 37.7909 21.7909 36 24 36C26.2091 36 28 37.7909 28 40Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M42 32C42 34.2091 40.2091 36 38 36C35.7909 36 34 34.2091 34 32C34 29.7909 35.7909 28 38 28C40.2091 28 42 29.7909 42 32Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M42 16C42 18.2091 40.2091 20 38 20C35.7909 20 34 18.2091 34 16C34 13.7909 35.7909 12 38 12C40.2091 12 42 13.7909 42 16Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M28 8C28 10.2091 26.2091 12 24 12C21.7909 12 20 10.2091 20 8C20 5.79086 21.7909 4 24 4C26.2091 4 28 5.79086 28 8Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="map-draw" viewBox="0 0 48 48">
+      <path d="M17 12L4 6V36L17 42L31 36L44 42V12L31 6L17 12Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M31 6V36" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M17 12V42" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M10.5 9L17 12L31 6L37.5 9" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M10.5 39L17 42L31 36L37.5 39" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="avatar" viewBox="0 0 48 48">
+      <path d="M5.00372 42.2311C5.00372 42.6557 5.35807 42.9999 5.79521 42.9999L42.2023 43C42.6394 43 42.9938 42.6558 42.9938 42.2313V41.3131C43.012 41.0364 43.049 39.6555 42.1388 38.1289C41.5648 37.1663 40.7318 36.3347 39.6628 35.6573C38.3696 34.8378 36.7245 34.244 34.7347 33.8865C34.72 33.8846 33.2446 33.689 31.7331 33.303C29.101 32.6307 28.8709 32.0357 28.8694 32.0299C28.8539 31.9711 28.8315 31.9146 28.8028 31.8615C28.7813 31.7505 28.7281 31.3328 28.8298 30.2136C29.088 27.371 30.6128 25.691 31.838 24.3412C32.2244 23.9155 32.5893 23.5134 32.8704 23.1191C34.0827 21.4181 34.1952 19.4839 34.2003 19.364C34.2003 19.1211 34.1724 18.9214 34.1127 18.7363C33.9937 18.3659 33.7698 18.1351 33.6063 17.9666L33.6052 17.9654C33.564 17.923 33.5251 17.8828 33.4933 17.8459C33.4812 17.8318 33.449 17.7945 33.4783 17.603C33.5859 16.8981 33.6505 16.3079 33.6815 15.7456C33.7367 14.7438 33.7798 13.2456 33.5214 11.7875C33.4895 11.5385 33.4347 11.2755 33.3494 10.9622C33.0764 9.95814 32.6378 9.09971 32.0284 8.39124C31.9236 8.27722 29.3756 5.5928 21.9788 5.04201C20.956 4.96586 19.9449 5.00688 18.9496 5.05775C18.7097 5.06961 18.3812 5.08589 18.0738 5.16554C17.3101 5.36337 17.1063 5.84743 17.0528 6.11834C16.9641 6.56708 17.12 6.91615 17.2231 7.14718C17.2381 7.18072 17.2566 7.22213 17.2243 7.32997C17.0526 7.59588 16.7825 7.83561 16.5071 8.06273C16.4275 8.13038 14.5727 9.72968 14.4707 11.8189C14.1957 13.4078 14.2165 15.8834 14.5417 17.5944C14.5606 17.6889 14.5885 17.8288 14.5432 17.9233C14.1935 18.2367 13.7971 18.5919 13.7981 19.4024C13.8023 19.4839 13.9148 21.4181 15.1272 23.1191C15.408 23.5131 15.7726 23.9149 16.1587 24.3403C17.3848 25.6911 18.9095 27.371 19.1678 30.2135C19.2694 31.3327 19.2162 31.7505 19.1947 31.8614C19.166 31.9145 19.1436 31.971 19.1282 32.0298C19.1266 32.0356 18.8974 32.6287 16.2772 33.2996C14.7656 33.6867 13.2775 33.8845 13.2331 33.8909C11.2994 34.2173 9.66438 34.7963 8.37351 35.6115C7.30813 36.2844 6.47354 37.1175 5.89289 38.0877C4.96517 39.6379 4.99025 41.0497 5.00372 41.3074V42.2311Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="link-one" viewBox="0 0 48 48">
+      <path d="M26.2401 16.373L17.1001 7.23303C14.4388 4.57168 10.0653 4.6303 7.33158 7.36397C4.59791 10.0976 4.53929 14.4712 7.20064 17.1325L15.1359 25.0678" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M32.9027 23.0031L40.838 30.9384C43.4994 33.5998 43.4407 37.9733 40.7071 40.707C37.9734 43.4407 33.5999 43.4993 30.9385 40.8379L21.7985 31.6979" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="connection-point-two" viewBox="0 0 48 48">
+      <path d="M36 8L13 8C10 8 4 10 4 16C4 22 10 24 13 24H35C38 24 44 26 44 32C44 38 38 40 35 40H12" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M40 12C42.2091 12 44 10.2091 44 8C44 5.79086 42.2091 4 40 4C37.7909 4 36 5.79086 36 8C36 10.2091 37.7909 12 40 12Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M8 44C10.2091 44 12 42.2091 12 40C12 37.7909 10.2091 36 8 36C5.79086 36 4 37.7909 4 40C4 42.2091 5.79086 44 8 44Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="notes" viewBox="0 0 48 48">
+      <path d="M8 6C8 4.89543 8.89543 4 10 4H30L40 14V42C40 43.1046 39.1046 44 38 44H10C8.89543 44 8 43.1046 8 42V6Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M16 20H32" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M16 28H32" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="book-open" viewBox="0 0 48 48">
+      <path d="M5 7H16C20.4183 7 24 10.5817 24 15V42C24 38.6863 21.3137 36 18 36H5V7Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M43 7H32C27.5817 7 24 10.5817 24 15V42C24 38.6863 26.6863 36 30 36H43V7Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="whole-site-accelerator" viewBox="0 0 48 48">
+      <circle cx="22" cy="40" r="4" fill="none" stroke="currentColor" stroke-width="4"/>
+      <circle cx="26" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="4"/>
+      <circle cx="36" cy="24" r="4" fill="none" stroke="currentColor" stroke-width="4"/>
+      <circle cx="12" cy="24" r="4" fill="none" stroke="currentColor" stroke-width="4"/>
+      <path d="M32 24L16 24" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M23 11L15 21" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M32.9998 27L24.9987 37" stroke="currentColor" stroke-width="4"/>
+    </symbol>
+  </svg>
+  <div id="app"></div>
+  <script src="./ui/runtime-theme.antdv.js"></script>
+  <script src="./js/core/demo-runtime.js"></script>
+  <script src="./js/data/graph-audit-scenario-100.js?v=20260520-layout-cases-50-2"></script>
+  <script src="./js/data/graph-data.js?v=20260521-real-types-cases-1"></script>
+  <script src="./js/graph-query/graph-layout-engine.js?v=20260521-real-types-cases-1"></script>
+  <script src="./js/graph-query/graph-canvas-visual.js?v=20260521-real-types-cases-1"></script>
+  <script src="./js/graph-query/graph-canvas-display-policy.js?v=20260521-label-default-visible-1"></script>
+  <script src="./js/graph-query/index.js"></script>
+  <script src="./assets/lib/iconpark-subset.js?v=20260520-toolbar-icons"></script>
+  <script src="./js/demo-icon-map.js?v=20260520-toolbar-icons"></script>
+  <script src="./js/demo-cmp-icon.js"></script>
+  <script src="./ui/components/ui-info-control-rail.js"></script>
+  <script src="./js/graph-query/graph-home-list.js?v=20260521-real-types-cases-1"></script>
+  <script src="./js/graph-query/entity-confirm-modal.js"></script>
+  <script src="./js/graph-query/template-variable-form.js"></script>
+  <script src="./js/graph-query/template-query-modal.js?v=20260521-template-status-removed-1"></script>
+  <script src="./js/graph-query/quick-query-form.js?v=20260521-real-types-cases-1"></script>
+  <script src="./js/graph-query/quick-query-modal.js?v=20260521-real-types-cases-1"></script>
+  <script src="./js/graph-query/graph-workbench-layout.js"></script>
+  <script src="./js/graph-query/graph-canvas-chart.js?v=20260521-edge-width-unified-1"></script>
+  <script src="./js/graph-query/graph-canvas-legend.js?v=20260520-config-analysis-removed-1"></script>
+  <script src="./js/graph-query/graph-workbench.js?v=20260521-real-types-cases-1"></script>
+  <script src="./js/graph-query/module-placeholder.js"></script>
+  <script src="./js/core/demo-app-root.js?v=20260521-real-types-cases-1"></script>
+  <script src="./js/core/demo-boot.js"></script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+  <!-- IconPark Outline  LeftBar  stroke-width 4 -->
+  <symbol id="left-bar" viewBox="0 0 48 48">
+    <rect x="6" y="6" width="36" height="36" rx="3" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M16 6V42" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M13 42H19" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M13 6H19" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="right-bar" viewBox="0 0 48 48">
+    <rect x="6" y="6" width="36" height="36" rx="3" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M32 6V42" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M29 42H35" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M29 6H35" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="arrow-left" viewBox="0 0 48 48">
+    <path d="M5.79889 24H41.7989" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M17.7988 36L5.79883 24L17.7988 12" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="form" viewBox="0 0 48 48">
+    <rect x="4" y="8" width="40" height="32" rx="2" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M4 29H44" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M4 19H44" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M17 40V19" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M4 38V17" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M44 38V17" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M31 40V19" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M9 40H39" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="workbench" viewBox="0 0 48 48">
+    <path d="M12 33H4V7H44V33H36H12Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M16 22V26" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M24 33V39" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M24 18V26" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M32 14V26" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M12 41H36" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="send" viewBox="0 0 48 48">
+    <path d="M43 5L29.7 43L22.1 25.9L5 18.3L43 5Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M43.0001 5L22.1001 25.9" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="connect" viewBox="0 0 48 48">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M8 12C10.2091 12 12 10.2091 12 8C12 5.79086 10.2091 4 8 4C5.79086 4 4 5.79086 4 8C4 10.2091 5.79086 12 8 12Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M10 42C13.3137 42 16 39.3137 16 36C16 32.6863 13.3137 30 10 30C6.68629 30 4 32.6863 4 36C4 39.3137 6.68629 42 10 42Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M38 44C41.3137 44 44 41.3137 44 38C44 34.6863 41.3137 32 38 32C34.6863 32 32 34.6863 32 38C32 41.3137 34.6863 44 38 44Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M22 28C26.4183 28 30 24.4183 30 20C30 15.5817 26.4183 12 22 12C17.5817 12 14 15.5817 14 20C14 24.4183 17.5817 28 22 28Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M34 12C36.2091 12 38 10.2091 38 8C38 5.79086 36.2091 4 34 4C31.7909 4 30 5.79086 30 8C30 10.2091 31.7909 12 34 12Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M11 11L15 15" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M30 12L28 14" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M34 33.5L28 26" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M14 31L18 27" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="link-one" viewBox="0 0 48 48">
+    <path d="M26.2401 16.373L17.1001 7.23303C14.4388 4.57168 10.0653 4.6303 7.33158 7.36397C4.59791 10.0976 4.53929 14.4712 7.20064 17.1325L15.1359 25.0678" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M32.9027 23.0031L40.838 30.9384C43.4994 33.5998 43.4407 37.9733 40.7071 40.707C37.9734 43.4407 33.5999 43.4993 30.9385 40.8379L21.7985 31.6979" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M26.1093 26.1416C28.843 23.4079 28.9016 19.0344 26.2403 16.373" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M21.7989 21.7984C19.0652 24.5321 19.0066 28.9056 21.6679 31.5669" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="book" viewBox="0 0 48 48">
+    <path d="M8 40C8 36 8 10 8 10C8 6.68629 10.8654 4 14.4 4H40V36C40 36 19.9815 36 14.4 36C9.36225 36 8 36.6842 8 40Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 44H40V36H12C9.79086 36 8 37.7909 8 40C8 42.2091 9.79086 44 12 44Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="tool" viewBox="0 0 48 48">
+    <path d="M44 16C44 22.6274 38.6274 28 32 28C29.9733 28 28.0639 27.4975 26.3896 26.6104L9 44L4 39L21.3896 21.6104C20.5025 19.9361 20 18.0267 20 16C20 9.37258 25.3726 4 32 4C34.0267 4 35.9361 4.50245 37.6104 5.38959L30 13L35 18L42.6104 10.3896C43.4975 12.0639 44 13.9733 44 16Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="tips" viewBox="0 0 48 48">
+    <path d="M40 20C40 26.8077 35.7484 32.6224 29.7555 34.9336H24H18.2445C12.2516 32.6224 8 26.8077 8 20C8 11.1634 15.1634 4 24 4C32.8366 4 40 11.1634 40 20Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M29.7557 34.9336L29.0766 43.0831C29.0334 43.6014 28.6001 44 28.08 44H19.9203C19.4002 44 18.9669 43.6014 18.9238 43.0831L18.2446 34.9336" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M18 17V23L24 20L30 23V17" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="file-excel" viewBox="0 0 48 48">
+    <path d="M10 4H30L40 14V42C40 43.1046 39.1046 44 38 44H10C8.89543 44 8 43.1046 8 42V6C8 4.89543 8.89543 4 10 4Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M29 18H19V34H29" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M29 26H19" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="notes" viewBox="0 0 48 48">
+    <path d="M8 6C8 4.89543 8.89543 4 10 4H30L40 14V42C40 43.1046 39.1046 44 38 44H10C8.89543 44 8 43.1046 8 42V6Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M16 20H32" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M16 28H32" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="book-open" viewBox="0 0 48 48">
+    <path d="M5 7H16C20.4183 7 24 10.5817 24 15V42C24 38.6863 21.3137 36 18 36H5V7Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M43 7H32C27.5817 7 24 10.5817 24 15V42C24 38.6863 26.6863 36 30 36H43V7Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="skill" viewBox="0 0 48 48">
+    <path d="M8 40C8 36 8 10 8 10C8 6.68629 10.8654 4 14.4 4H40V36C40 36 19.9815 36 14.4 36C9.36225 36 8 36.6842 8 40Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 44H40V36H12C9.79086 36 8 37.7909 8 40C8 42.2091 9.79086 44 12 44Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <g transform="translate(26 22) scale(0.38) translate(-24 -24)" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M44 16C44 22.6274 38.6274 28 32 28C29.9733 28 28.0639 27.4975 26.3896 26.6104L9 44L4 39L21.3896 21.6104C20.5025 19.9361 20 18.0267 20 16C20 9.37258 25.3726 4 32 4C34.0267 4 35.9361 4.50245 37.6104 5.38959L30 13L35 18L42.6104 10.3896C43.4975 12.0639 44 13.9733 44 16Z"/>
+    </g>
+  </symbol>
+  <symbol id="pause" viewBox="0 0 48 48">
+    <path d="M16 12V36" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M32 12V36" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="close-small" viewBox="0 0 48 48">
+    <path d="M14 14L34 34" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M14 34L34 14" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="check-one" viewBox="0 0 48 48">
+    <path d="M24 44C29.5228 44 34.5228 41.7614 38.1421 38.1421C41.7614 34.5228 44 29.5228 44 24C44 18.4772 41.7614 13.4772 38.1421 9.85786C34.5228 6.23858 29.5228 4 24 4C18.4772 4 13.4772 6.23858 9.85786 9.85786C6.23858 13.4772 4 18.4772 4 24C4 29.5228 6.23858 34.5228 9.85786 38.1421C13.4772 41.7614 18.4772 44 24 44Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M16 24L22 30L34 18" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="close-one" viewBox="0 0 48 48">
+    <path d="M24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M29.6567 18.3432L18.343 29.6569" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M18.3433 18.3432L29.657 29.6569" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="loading-four" viewBox="0 0 48 48">
+    <path d="M4 24C4 35.0457 12.9543 44 24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="loading-one" viewBox="0 0 48 48">
+    <path d="M24 4V8" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M34 6.6795L32 10.1436" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M41.3203 14L37.8562 16" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M44 24H40" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M41.3203 34L37.8562 32" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M34 41.3205L32 37.8564" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M24 44V40" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M14 41.3205L16 37.8564" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M6.67969 34L10.1438 32" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M4 24H8" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M6.67969 14L10.1438 16" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M14 6.6795L16 10.1436" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+</svg>

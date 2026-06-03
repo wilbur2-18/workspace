@@ -1,0 +1,640 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background-color: var(--ds-bg-layout);
+  background-image: var(--ds-gradient-shell-mesh);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: var(--ds-text-1);
+  font-family: var(--ds-font-family);
+  font-size: var(--ds-type-body-fs);
+  line-height: 1.5;
+  font-weight: var(--ds-type-body-fw);
+  font-feature-settings: "lnum" 1;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#app {
+  height: 100%;
+  min-height: 0;
+  min-width: 1024px;
+}
+
+.app-shell.ant-layout {
+  background: transparent !important;
+}
+
+.graph-canvas-view {
+  --nlm-chat-messages-max-width: 100%;
+  --nlm-chat-input-max-width: 100%;
+  --nlm-user-bubble: var(--ds-bg-primary-soft);
+}
+
+.dgp-app-shell {
+  --dgp-l1-graph-bg:
+    linear-gradient(
+      180deg,
+      var(--ds-ctx-l1-hero-deep) 0,
+      var(--ds-ctx-l1-hero-deep) 112px,
+      transparent 260px
+    ),
+    var(--ds-ctx-l1-hero-deep)
+    url("./generated/l1-data-graph-shell-bg.png")
+    center top / cover
+    no-repeat;
+
+  height: 100%;
+  min-height: 0;
+  display: flex !important;
+  flex-direction: column !important;
+  background: transparent !important;
+}
+
+.dgp-header {
+  height: 60px !important;
+  min-height: 60px !important;
+  max-height: 60px !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--ds-space-m) !important;
+  background: var(--ds-ctx-l1-hero-deep) !important;
+  background-image: none !important;
+  border-bottom: none;
+  box-shadow: none !important;
+  line-height: normal !important;
+  position: relative;
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.dgp-header-brand {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.dgp-logo {
+  width: 33px;
+  height: 34px;
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-c-primary);
+  color: var(--ds-bg-container);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--ds-type-caption-fs);
+  font-weight: var(--ds-type-caption-fw);
+  line-height: 1;
+  box-shadow: var(--ds-shadow-card);
+}
+
+.dgp-header-nav {
+  display: flex;
+  gap: var(--ds-space-m);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.dgp-header-nav a {
+  color: var(--ds-text-1);
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: var(--ds-type-body-fw);
+  line-height: 1.33;
+  position: relative;
+  padding: 20px 0;
+  transition: color var(--ds-transition-fast);
+}
+
+.dgp-header-nav a:hover,
+.dgp-header-nav a.active,
+.dgp-header-nav a.is-active {
+  color: var(--ds-c-primary);
+}
+
+.dgp-header-nav a.active,
+.dgp-header-nav a.is-active {
+  font-weight: var(--ds-type-caption-fw);
+}
+
+.dgp-header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-s);
+  color: var(--ds-text-2);
+  margin-left: auto;
+  flex-shrink: 0;
+  flex: 0 0 auto;
+  width: auto;
+}
+
+.header-logo-area {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-s);
+  color: var(--ds-text-1);
+  text-decoration: none;
+  font-size: var(--ds-type-nav-fs);
+  font-weight: var(--ds-type-nav-fw);
+  line-height: 1.33;
+}
+
+.header-logo-area > span {
+  font-size: 16px;
+  font-weight: var(--ds-type-caption-fw);
+}
+
+.header-avatar {
+  background: var(--ds-c-primary);
+}
+
+.header-user-name {
+  font-size: var(--ds-type-body-fs);
+  font-weight: 400;
+  line-height: 1.33;
+}
+
+.dgp-main {
+  flex: 1;
+  height: calc(100% - 60px);
+  min-height: 0;
+  background: var(--dgp-l1-graph-bg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.dgp-scroll {
+  height: 100%;
+  overflow: auto;
+}
+
+.dgp-page {
+  max-width: var(--ds-layout-content-max-width);
+  margin: 0 auto;
+  padding: var(--ds-layout-content-pad-y) var(--ds-layout-content-pad-x);
+}
+
+.dgp-card {
+  background: var(--ds-bg-container);
+  border: 1px solid var(--ds-border-subtle);
+  border-radius: var(--ds-radius-standard);
+  box-shadow: var(--ds-shadow-card);
+}
+
+.dgp-muted {
+  color: var(--ds-text-3);
+}
+
+.dgp-row {
+  display: flex;
+  align-items: center;
+}
+
+.dgp-row-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-s);
+}
+
+.dgp-minw-0 {
+  min-width: 0;
+}
+
+.dgp-section-title {
+  margin: 0;
+  font-size: var(--ds-type-subheading-fs);
+  line-height: 1.23;
+  font-weight: var(--ds-type-subheading-fw);
+}
+
+.dgp-section-desc {
+  margin: var(--ds-space-xxs) 0 0;
+  color: var(--ds-text-2);
+}
+
+.dgp-app-shell--immersive .dgp-main {
+  height: 100%;
+}
+
+.dgp-main--canvas {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0;
+  background: var(--ds-ctx-l1-hero-deep);
+  background-image: none;
+}
+
+.dgp-main--canvas .graph-canvas-view {
+  flex: 1;
+  min-height: 0;
+}
+
+.main-container {
+  max-width: var(--ds-layout-content-max-width);
+  margin: 0 auto;
+  padding: var(--ds-layout-content-pad-y) var(--ds-layout-content-pad-x);
+}
+    /* 一级工具条即时搜索：前缀图标示意即可，无右侧「搜索」触发块（与 a-input-search 区分） */
+    .ds-input-inline-search.ant-input-affix-wrapper .ds-input-inline-search__icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ds-text-2);
+      opacity: 0.78;
+      font-size: var(--ds-type-caption-fs);
+      pointer-events: none;
+    }
+    .ds-input-inline-search.ant-input-affix-wrapper-lg .ds-input-inline-search__icon {
+      font-size: var(--ds-type-nav-fs);
+    }
+    .ds-page-subpanel {
+      padding: 0;
+      margin: 0;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+    }
+    /* ========================================================================
+     * R3.1-0 同步标注（2026-04-20）· info-control-rail 完整命名空间
+     * ------------------------------------------------------------------------
+     * 本段（行 2508~2899）约 40 条规则已同步迁入 DS canonical：
+     *   pm-ui-prototype-kit/components/toolbar.md / ui/runtime-ui.css
+     *
+     * 包括：根容器双命名空间（.ds-info-control-rail / .ds-l1-control-rail）、
+     *       子元素（__left / __stats / __ops / __display）、slot 修饰符、
+     *       filter-sort-bar / tag-filter-group、tag-picker-trigger + __count、
+     *       sort-wrap / sort-select / sort-dropdown / sort-menu-item-label、
+     *       field-label、stat-line（独立/L1/双类 三态）+ __sep、
+     *       filter-selected-hint、rail 内 antdv 覆盖（ant-btn / ant-select）、
+     *       @media (max-width:768px) 响应式。
+     *
+     * 原型继续使用本文件此段作渲染源（demo.html 未 link DS 组件层 css）。
+     * ⚠ 未来业务改动：需同时修改原型此段 + DS 单一真源，二者保持一致。
+     * ⚠ 不迁本段（归属他组件或待 R3.1-a 处理）：
+     *    .ds-trigger-btn* (buttons.css)、.ds-trigger-menu-item-label (menus.css)、
+     *    .ds-input-inline-search / .ds-page-subpanel、
+     *    .skill-filter-popover-* / .ds-l1-popover-* (R3.1-a/a3 已抽至 skill-filter-popover.css)、
+     *    .template-center-shell / .project-detail-*-control-rail 级联覆盖（业务层私有）。
+     * ======================================================================== */
+
+    /* 无侧栏一级页 · 第 3 行：统计（左）+ 列表操作（中）+ 展示控制（右，筛选/排序等） */
+    .ds-l1-control-rail {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      /* 信息轨：主分区之间横向 8px（与轨内控件间距一致） */
+      gap: var(--ds-space-xs);
+      margin: 0;
+      padding: 0;
+    }
+    .ds-l1-control-rail__stats {
+      flex: 0 1 auto;
+      min-width: 0;
+      max-width: 100%;
+    }
+    /* 与 .ds-page-hero--l1 .ds-page-hero__subtitle 同级：勿叠全局 .tabular-nums（会整段换成等宽字体导致与介绍语不像同一套字） */
+    .ds-l1-stat-line {
+      display: inline;
+      font-size: var(--ds-type-caption-fs);
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--ds-text-2);
+      font-variant-numeric: tabular-nums;
+    }
+    /* 控制轨内统计/辅助说明：与同行「筛选、排序」等字段标签同阶，数字不单独启用 tabular 字形 */
+    .ds-l1-control-rail .ds-l1-stat-line {
+      font-size: var(--ds-type-micro-fs);
+      font-weight: 400;
+      line-height: 1.5;
+      letter-spacing: 0.01em;
+      color: var(--ds-text-2);
+      font-variant-numeric: normal;
+    }
+    .ds-l1-stat-line__sep {
+      margin: 0 0.35em;
+      opacity: 0.65;
+      font-weight: 400;
+    }
+    .ds-l1-control-rail__ops {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--ds-space-xs);
+      flex: 1 1 120px;
+      min-width: 0;
+    }
+    .ds-l1-control-rail__display {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      flex: 1 1 280px;
+      min-width: 0;
+      margin-left: auto;
+    }
+    /* 统一信息操作区组件 InfoControlRail：左区 total+selection；右条 query→filter→sort；槽壳 display:contents 参与 flex */
+    .ds-info-control-rail__left {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--ds-space-xs);
+      flex: 1 1 120px;
+      min-width: 0;
+    }
+    /* query / toggle 用 contents 让输入框、切换项直接参与簇内 flex；filter / sort 保留壳体，避免 gap 在 Popover/Dropdown 与 display:contents 组合下塌缩 */
+    .ds-info-control-rail__filter-sort-bar .ds-info-control-rail__slot--query,
+    .ds-info-control-rail__filter-sort-bar .ds-info-control-rail__slot--toggle {
+      display: contents;
+    }
+    .ds-info-control-rail__filter-sort-bar .ds-info-control-rail__slot--filter,
+    .ds-info-control-rail__filter-sort-bar .ds-info-control-rail__slot--sort {
+      display: inline-flex;
+      align-items: center;
+      min-width: 0;
+      flex-shrink: 0;
+    }
+    /* InfoControlRail：高度随内容；换行过多时封顶滚动（--ds-slot-l1-rail-max-h） */
+    .ds-info-control-rail.ds-l1-control-rail {
+      min-height: 0;
+      max-height: var(--ds-slot-l1-rail-max-h);
+      /* 仅纵滚：oy=auto 时 ox 默认为 auto，子项偶发横向溢出会画出横滚条（见 debug-6c77d2 rail ox/oy） */
+      overflow-x: hidden;
+      overflow-y: auto;
+      box-sizing: border-box;
+      align-items: center;
+    }
+    .ds-info-control-rail .ds-info-control-rail__total.ds-l1-control-rail__stats,
+    .ds-info-control-rail .ds-l1-control-rail__display {
+      min-height: 0;
+      display: flex;
+      align-items: center;
+    }
+    .ds-info-control-rail .ds-l1-control-display-cluster {
+      min-height: 0;
+    }
+    /* 双写选择器：压过仅 .ds-l1-control-rail 的 12px 统计行，并避免其它区域误伤 */
+    .ds-info-control-rail.ds-l1-control-rail .ds-l1-stat-line {
+      font-size: var(--ds-type-caption-fs);
+      line-height: 30px;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      color: var(--ds-text-2);
+      font-variant-numeric: normal;
+    }
+    .ds-info-control-rail .ds-l1-field-label {
+      font-size: var(--ds-type-caption-fs);
+      line-height: 30px;
+      font-weight: 400;
+    }
+    .ds-info-control-rail .skill-filter-empty {
+      font-size: var(--ds-type-caption-fs);
+      line-height: 30px;
+      font-weight: 400;
+    }
+    /* 压过 #app :is(...) .ant-btn-default / .ant-btn-primary 的 nav 字阶与 500 字重，轨内次按钮与主 CTA 文案统一 14px / 400 */
+    #app .ds-info-control-rail .ant-btn {
+      font-size: var(--ds-type-body-fs) !important;
+      font-weight: 400 !important;
+    }
+    .ds-info-control-rail .ant-btn-sm:not(.ant-btn-link) {
+      height: 30px;
+      line-height: 1;
+      padding: 0 12px;
+    }
+    .ds-info-control-rail .ds-l1-tag-picker-trigger.ant-btn-sm {
+      line-height: 1;
+    }
+    /* 项目详情「资料 / 技能 / 结果」批量操作：中档次按钮（32h、--ds-btn-font-size-md、字重 400 与全站中档次线框一致）——
+       压过 `.ds-info-control-rail .ant-btn` 的 caption 回退、以及 1556 行对 default 的 nav 字阶 */
+    #app
+      .ds-info-control-rail
+      .project-detail-material-batch-ops
+      .ant-btn.ant-btn-default:not(.ant-btn-link):not(.ant-btn-text):not(.ant-btn-background-ghost):not(.ant-btn-dangerous),
+    #app
+      .ds-info-control-rail
+      .project-detail-material-batch-ops
+      .ant-btn.ant-btn-default.ant-btn-dangerous:not(.ant-btn-link):not(.ant-btn-text):not(.ant-btn-background-ghost) {
+      font-size: var(--ds-btn-font-size-md) !important;
+      font-weight: var(--ds-type-body-fw) !important;
+      line-height: calc(var(--ds-control-height-standard) - 2px) !important;
+      min-height: var(--ds-control-height-standard) !important;
+      height: var(--ds-control-height-standard) !important;
+      padding: 0 12px !important;
+    }
+    .ds-info-control-rail .ds-l1-sort-wrap {
+      min-height: 0;
+      align-items: center;
+    }
+    /* L1 信息轨：#query + #sort 同一行（组件根为 l1-rail-query-sort-cluster；技能库旧写法仍用 l1-rail-sort-search-cluster） */
+    .l1-rail-query-sort-cluster,
+    .l1-rail-sort-search-cluster {
+      display: inline-flex;
+      align-items: center;
+      flex-wrap: nowrap;
+      gap: var(--ds-space-xs);
+      column-gap: var(--ds-space-xs);
+      min-width: 0;
+    }
+    .l1-rail-query-sort-cluster .ds-l1-sort-wrap,
+    .l1-rail-sort-search-cluster .ds-l1-sort-wrap {
+      margin-left: 0;
+      flex-shrink: 0;
+    }
+    /* 信息轨：query 簇勿 flex-grow:1 占满 filter-sort-bar（日志 cluster fl=1 1 auto + cw=bar 宽 → 子项 flex-start 显左对齐）；保留 ml:auto 贴右 + 搜索 min-width 防压条 */
+    .ds-info-control-rail .l1-rail-query-sort-cluster,
+    .ds-info-control-rail .l1-rail-sort-search-cluster {
+      flex: 0 1 auto;
+      min-width: 0;
+      max-width: 100%;
+      margin-left: auto;
+    }
+    /* 信息轨内触发器：字阶与 DS 全局 .ds-trigger-btn 一致（底/悬停走 token，不叠白底以免与次级透明按钮冲突） */
+    .ds-info-control-rail .ds-trigger-btn.ds-trigger-btn--icon-text {
+      font-size: var(--ds-type-caption-fs);
+      font-weight: 400;
+      line-height: 30px;
+    }
+    .ds-info-control-rail .template-batch-ops__count {
+      font-size: var(--ds-type-caption-fs);
+      font-weight: 400;
+      line-height: 30px;
+    }
+    #app .l1-rail-inline-search.ant-input-affix-wrapper {
+      flex: 0 1 320px;
+      width: min(100%, 320px) !important;
+      min-width: 0;
+      max-width: 320px !important;
+      min-height: var(--ds-control-height-standard) !important;
+      height: var(--ds-control-height-standard) !important;
+      max-height: var(--ds-control-height-standard) !important;
+      box-sizing: border-box;
+    }
+    /* 信息轨内列表搜索：透明底 + 与 ds-trigger-btn--icon-text 同口径线框，与轨内次按钮视觉一致 */
+    /* 与 #query 同簇为 nowrap 时，全局 flex:0 1 320px + min-width:0 会把输入压成细条；轨内改为可长、不可缩过 200px */
+    #app .ds-info-control-rail .l1-rail-inline-search.ant-input-affix-wrapper {
+      flex: 1 0 200px !important;
+      min-width: 200px !important;
+      max-width: 320px !important;
+      width: min(100%, 320px) !important;
+      background: transparent !important;
+      border: 1px solid var(--ds-border) !important;
+      box-shadow: none !important;
+    }
+    #app .ds-info-control-rail .l1-rail-inline-search.ant-input-affix-wrapper:hover,
+    #app .ds-info-control-rail .l1-rail-inline-search.ant-input-affix-wrapper-focused,
+    #app .ds-info-control-rail .l1-rail-inline-search.ant-input-affix-wrapper:focus-within {
+      border-color: var(--ds-border) !important;
+      box-shadow: none !important;
+    }
+    #app .l1-rail-inline-search.ant-input-affix-wrapper .ant-input {
+      line-height: calc(var(--ds-control-height-standard) - 2px) !important;
+    }
+    #app .ds-info-control-rail .l1-rail-inline-search.ant-input-affix-wrapper .ant-input {
+      font-size: var(--ds-type-caption-fs) !important;
+      font-weight: 400 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+    }
+    /* #app 前缀：压过 #app .ant-select-single … .ant-select-selection-item 的全局 body 字阶 */
+    #app .ds-info-control-rail .ds-l1-sort-select.ant-select .ant-select-selector {
+      min-height: 32px !important;
+      height: 32px !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      /* 与同行「排序」标签同字阶（ds-l1-field-label / caption） */
+      font-size: var(--ds-type-caption-fs) !important;
+      line-height: 30px !important;
+    }
+    #app .ds-info-control-rail .ds-l1-sort-select.ant-select .ant-select-selection-item,
+    #app .ds-info-control-rail .ds-l1-sort-select.ant-select .ant-select-selection-placeholder {
+      line-height: 30px !important;
+      font-size: var(--ds-type-caption-fs) !important;
+      font-weight: 400 !important;
+    }
+    #app .ds-info-control-rail .ds-l1-sort-select.ant-select .ant-select-selection-search-input {
+      height: 30px !important;
+      font-size: var(--ds-type-caption-fs) !important;
+      line-height: 30px !important;
+      font-weight: 400 !important;
+    }
+    /* 排序下拉选项（popup 挂到 body，用 popupClassName 命中） */
+    .ds-l1-sort-dropdown.ant-select-dropdown .ant-select-item,
+    .ds-l1-sort-dropdown.ant-select-dropdown .ant-select-item-option-content {
+      font-size: var(--ds-type-caption-fs) !important;
+      line-height: 30px !important;
+      font-weight: 400 !important;
+    }
+    .ds-l1-control-display-cluster {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      gap: var(--ds-space-xs);
+      width: 100%;
+    }
+    .ds-l1-sort-wrap {
+      display: inline-flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--ds-space-xs);
+      margin-left: auto;
+    }
+    .ds-l1-sort-wrap .ant-dropdown {
+      display: inline-flex;
+      align-items: center;
+    }
+    /* 组件壳：可复用于排序/筛选/展示等「图标 + 文字」触发器 */
+    .ds-trigger-btn {
+      height: var(--ds-trigger-btn-height);
+      min-height: var(--ds-trigger-btn-height);
+      padding: 0 var(--ds-trigger-btn-pad-x);
+      border: 1px solid var(--ds-trigger-btn-border);
+      border-radius: var(--ds-trigger-btn-radius);
+      background: var(--ds-trigger-btn-bg);
+      color: var(--ds-trigger-btn-fg);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--ds-trigger-btn-gap);
+      cursor: pointer;
+      font-size: var(--ds-type-caption-fs);
+      line-height: 30px;
+      box-shadow: none;
+      transition: color var(--ds-transition-fast), background var(--ds-transition-fast), border-color var(--ds-transition-fast);
+    }
+    .ds-trigger-btn:hover,
+    .ds-trigger-btn:focus-visible {
+      color: var(--ds-trigger-btn-hover-fg);
+      background: var(--ds-trigger-btn-hover-bg);
+      border-color: var(--ds-trigger-btn-border-hover);
+      outline: none;
+      box-shadow: none;
+    }
+    .ds-trigger-btn.is-active,
+    .ds-trigger-btn.is-open,
+    .ds-trigger-btn[aria-expanded="true"] {
+      color: var(--ds-trigger-btn-selected-fg);
+      background: var(--ds-trigger-btn-active-bg);
+      border-color: var(--ds-trigger-btn-border-active);
+      box-shadow: none;
+    }
+    .ds-trigger-btn__icon,
+    .ds-trigger-btn__chev {
+      font-size: max(var(--ds-type-icon-inline-fs), var(--ds-icon-min-size, 14px));
+      line-height: 1;
+    }
+    .ds-trigger-btn__icon--status {
+      margin-left: -4px;
+    }
+    .ds-trigger-btn__text {
+      font-size: var(--ds-type-caption-fs);
+      font-weight: 400;
+      line-height: 30px;
+      white-space: nowrap;
+    }
+    /* 图标+文字触发器：独立边框（与搜索输入框同口径），hover/selected 保持同色边框 */
+    .ds-trigger-btn.ds-trigger-btn--icon-text {
+      border: 1px solid var(--ds-border);
+    }
+    .ds-trigger-btn.ds-trigger-btn--icon-text:hover,
+    .ds-trigger-btn.ds-trigger-btn--icon-text:focus-visible,
+    .ds-trigger-btn.ds-trigger-btn--icon-text.is-active,
+    .ds-trigger-btn.ds-trigger-btn--icon-text.is-open,
+    .ds-trigger-btn.ds-trigger-btn--icon-text[aria-expanded="true"] {
+      border-color: var(--ds-border);
+    }
+    /* 触发器壳：纯图标（返回/折叠等） */
+    .ds-trigger-btn--icon-only {
+      width: var(--ds-trigger-btn-height);
+      min-width: var(--ds-trigger-btn-height);
+      padding: 0;
+      justify-content: center;
+    }
+    .ds-trigger-menu-item-label,
+    .ds-l1-sort-menu-item-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+    }
+    .ds-page-empty-block--l1 {
+      padding-top: 0;
+      padding-bottom: 0;
+      min-height: clamp(280px, 52vh, 560px);
+      justify-content: center;
+    }
+    .ds-l1-control-rail + .ds-page-empty-block--l1,
+    .ds-l1-list + .ds-page-empty-block--l1 {
+      padding-top: 0;
+    }
