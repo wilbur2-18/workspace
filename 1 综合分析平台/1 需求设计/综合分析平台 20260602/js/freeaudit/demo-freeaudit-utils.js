@@ -2,7 +2,7 @@
   function getFreeAuditQuery() {
     const raw = (window.location.hash || '').replace(/^#/, '');
     const base = raw.split('?')[0];
-    if (base !== 'freeaudit') return {};
+    if (base !== 'freeaudit' && base !== 'freeaudit-v2') return {};
     const q = raw.includes('?') ? raw.split('?')[1] : '';
     const params = new URLSearchParams(q || '');
     return {

@@ -354,6 +354,12 @@
                                               <span>上传文件</span>
                                             </span>
                                           </a-menu-item>
+                                          <a-menu-item key="cross-workbench-import" @click.stop="onWorkbenchMaterialFolderMenu('cross-workbench-import', d)">
+                                            <span class="wb-menu-action-item">
+                                              <ds-icon class="wb-menu-action-item__icon" :name="workbenchMenuItemIcon('cross-workbench-import')" aria-hidden="true" />
+                                              <span>引入文件</span>
+                                            </span>
+                                          </a-menu-item>
                                           <a-menu-item key="new-folder">
                                             <span class="wb-menu-action-item">
                                               <ds-icon class="wb-menu-action-item__icon" :name="workbenchMenuItemIcon('new-folder')" aria-hidden="true" />
@@ -384,6 +390,12 @@
                                     <span class="wb-menu-action-item">
                                       <ds-icon class="wb-menu-action-item__icon" :name="workbenchMenuItemIcon('upload-file')" aria-hidden="true" />
                                       <span>上传文件</span>
+                                    </span>
+                                  </a-menu-item>
+                                  <a-menu-item key="cross-workbench-import" @click.stop="onWorkbenchFileTreeFolderContextMenu('cross-workbench-import', d)">
+                                    <span class="wb-menu-action-item">
+                                      <ds-icon class="wb-menu-action-item__icon" :name="workbenchMenuItemIcon('cross-workbench-import')" aria-hidden="true" />
+                                      <span>引入文件</span>
                                     </span>
                                   </a-menu-item>
                                   <a-menu-item key="new-folder">
@@ -3653,7 +3665,7 @@
           </a-modal>
           <a-modal
             v-model:open="wbCrossWorkbenchImportOpen"
-            title="从其他工作台引入"
+            title="引入文件"
             width="960"
             wrapClassName="modal-w-960 modal-wb-cross-import"
             centered
@@ -3661,95 +3673,154 @@
             :maskClosable="false"
             @cancel="closeCrossWorkbenchImportModal"
           >
-            <div class="wb-cross-import">
-              <div class="wb-cross-import__layout">
-                <aside class="wb-cross-import__source">
-                  <div class="wb-cross-import__section-head">
-                    <div>
-                      <div class="wb-cross-import__section-title">来源工作台</div>
-                      <div class="wb-cross-import__section-sub">仅展示当前用户可访问的工作台</div>
-                    </div>
-                  </div>
-                  <div class="wb-cross-import__source-list" role="listbox" aria-label="来源工作台">
-                    <button
-                      v-for="item in crossWorkbenchImportSourceProjects()"
-                      :key="item.id"
-                      type="button"
-                      class="wb-cross-import__source-item"
-                      :class="{ 'is-active': wbCrossWorkbenchImportSourceProjectId === item.id }"
-                      @click="onCrossWorkbenchImportSourceChange(item.id)"
-                    >
-                      <span class="wb-cross-import__source-name">{{ item.name }}</span>
-                      <span class="wb-cross-import__source-meta">文件 {{ item.fileCount }} · 结果 {{ item.resultCount }}</span>
-                    </button>
-                    <a-empty v-if="!crossWorkbenchImportSourceProjects().length" description="暂无可引入的工作台" />
-                  </div>
-                </aside>
-                <section class="wb-cross-import__main">
-                  <div class="wb-cross-import__toolbar">
-                    <a-tabs
-                      v-model:activeKey="wbCrossWorkbenchImportTab"
-                      size="small"
-                      class="wb-cross-import__tabs"
-                      @change="onCrossWorkbenchImportTabChange"
-                    >
-                      <a-tab-pane key="file" tab="文件"></a-tab-pane>
-                      <a-tab-pane key="result" tab="结果"></a-tab-pane>
-                    </a-tabs>
-                    <a-input
-                      v-model:value="wbCrossWorkbenchImportQuery"
-                      allow-clear
-                      class="ds-input-inline-search wb-cross-import__search"
-                      placeholder="搜索文件、结果或文件夹"
-                      @change="syncCrossWorkbenchImportExpandedKeys"
-                    >
-                      <template #prefix><ds-icon name="search" aria-hidden="true" /></template>
-                    </a-input>
-                  </div>
-                  <div class="wb-cross-import__tree-card">
-                    <a-tree
-                      v-if="crossWorkbenchImportTreeData().length"
-                      v-model:checkedKeys="wbCrossWorkbenchImportSelectedKeys"
-                      v-model:expandedKeys="wbCrossWorkbenchImportExpandedKeys"
-                      checkable
-                      block-node
-                      :tree-data="crossWorkbenchImportTreeData()"
-                      class="wb-cross-import__tree"
-                    >
-                      <template #title="d">
-                        <span class="wb-cross-import__tree-title" :class="{ 'is-folder': d.isFolder }">
-                          <ds-icon
-                            :name="d.isFolder ? 'folder' : (wbCrossWorkbenchImportTab === 'result' ? 'file-text' : 'file-lines')"
-                            class="wb-cross-import__tree-icon"
-                            :class="{ 'is-result': wbCrossWorkbenchImportTab === 'result' }"
-                            aria-hidden="true"
-                          />
-                          <span class="wb-cross-import__tree-text">{{ d.title }}</span>
-                          <span v-if="d.isFolder && d.descendantFileCount != null" class="wb-cross-import__tree-count">{{ d.descendantFileCount }}</span>
-                        </span>
-                      </template>
-                    </a-tree>
-                    <a-empty v-else description="当前来源下暂无可引入内容" />
-                  </div>
-                  <div class="wb-cross-import__notice">
-                    <ds-icon name="shield" aria-hidden="true" />
-                    <span>引入后将在当前工作台生成独立副本；来源权限变化、来源删除和当前删除互不影响。</span>
-                  </div>
-                </section>
-              </div>
-              <div class="wb-cross-import__target">
-                <div class="wb-cross-import__target-main">
-                  <span class="wb-cross-import__target-label">引入到</span>
-                  <a-tree-select
-                    v-model:value="wbCrossWorkbenchImportTargetFolderId"
-                    :tree-data="crossWorkbenchImportTargetTreeData()"
-                    class="wb-cross-import__target-select"
-                    placeholder="请选择目标文件夹"
-                    tree-default-expand-all
-                  />
-                  <span class="wb-cross-import__target-hint">目标：{{ crossWorkbenchImportTargetLabel() }}</span>
+            <div class="wb-cross-import wb-task-create-modal__body">
+              <section
+                class="wb-task-create-modal__resources wb-cross-import__resources"
+                aria-labelledby="wb-cross-import-resources-heading"
+              >
+                <div id="wb-cross-import-resources-heading" class="wb-task-create-modal__resources-heading">
+                  <span>请选择要引入的资源</span>
                 </div>
-                <div class="wb-cross-import__selected">{{ crossWorkbenchImportSelectedSummary() }}</div>
+                <div class="wb-cross-import__source-bar">
+                  <span class="wb-cross-import__source-label">来源工作台</span>
+                  <a-select
+                    v-model:value="wbCrossWorkbenchImportSourceProjectId"
+                    :options="crossWorkbenchImportSourceOptions()"
+                    class="wb-cross-import__source-select"
+                    placeholder="请选择来源工作台"
+                    @change="onCrossWorkbenchImportSourceChange"
+                  />
+                </div>
+                <div class="wb-task-create-transfer wb-cross-import__transfer">
+                  <section class="wb-task-create-transfer__panel">
+                    <div class="wb-task-create-transfer__panel-head">
+                      <a-tabs
+                        v-model:activeKey="wbCrossWorkbenchImportTab"
+                        size="small"
+                        class="wb-task-create-transfer__tabs"
+                        @change="onCrossWorkbenchImportTabChange"
+                      >
+                        <a-tab-pane key="file" tab="文件"></a-tab-pane>
+                        <a-tab-pane key="result" tab="结果"></a-tab-pane>
+                      </a-tabs>
+                    </div>
+                    <div class="wb-task-create-transfer__panel-body">
+                      <div class="wb-task-create-transfer__tools">
+                        <a-input
+                          v-model:value="wbCrossWorkbenchImportQuery"
+                          allow-clear
+                          class="ds-input-inline-search ds-input-inline-search--compact wb-task-create-transfer__search"
+                          placeholder="搜索资源名称"
+                          @change="syncCrossWorkbenchImportExpandedKeys"
+                        >
+                          <template #prefix><ds-icon name="search" class="ds-input-inline-search__icon" aria-hidden="true" /></template>
+                        </a-input>
+                        <div class="wb-task-create-transfer__batch-actions">
+                          <a-button size="small" class="wb-task-create-transfer__batch-btn" :disabled="!crossWorkbenchImportCurrentSelectableResources().length" @click="selectAllCrossWorkbenchImportCurrentResources">全选</a-button>
+                          <a-button size="small" class="wb-task-create-transfer__batch-btn" :disabled="!crossWorkbenchImportCurrentSelectedCount()" @click="cancelAllCrossWorkbenchImportCurrentResources">取消全选</a-button>
+                        </div>
+                      </div>
+                      <div class="wb-task-create-transfer__scroll wb-material-file-drawer">
+                        <div v-if="crossWorkbenchImportTreeData().length" class="nlm-cards-wrap nlm-tree-wrap wb-task-create-resource-tree-wrap">
+                          <a-tree
+                            class="wb-material-file-tree wb-task-create-resource-tree"
+                            block-node
+                            :show-line="{ showLeafIcon: false }"
+                            :show-icon="false"
+                            :tree-data="crossWorkbenchImportTreeData()"
+                            v-model:expanded-keys="wbCrossWorkbenchImportExpandedKeys"
+                          >
+                            <template #switcherIcon><span aria-hidden="true"></span></template>
+                            <template #title="d">
+                              <div
+                                v-if="d.isFolder"
+                                :class="['nlm-tree-leaf', 'nlm-tree-leaf--folder']"
+                                @click.stop="toggleCrossWorkbenchImportTreeNodeExpanded(d)"
+                              >
+                                <span class="wb-task-create-tree-check" @click.stop>
+                                  <a-checkbox
+                                    :checked="isCrossWorkbenchImportTreeNodeChecked(d)"
+                                    :indeterminate="isCrossWorkbenchImportTreeNodeIndeterminate(d)"
+                                    @change="toggleCrossWorkbenchImportTreeNodeSelection(d)"
+                                  />
+                                </span>
+                                <span class="nlm-tree-leaf-icon nlm-tree-leaf-icon--folder-toggle" aria-hidden="true">
+                                  <ds-icon
+                                    name="chevron-right"
+                                    class="nlm-resource-drawer__chevron wb-material-file-tree-switcher-chev"
+                                    :class="{ 'wb-material-file-tree-switcher-chev--expanded': (wbCrossWorkbenchImportExpandedKeys || []).includes(String(d.key)) }"
+                                  />
+                                </span>
+                                <div class="nlm-tree-leaf-title-wrap">
+                                  <div class="nlm-tree-leaf-col nlm-tree-leaf-col--folder">
+                                    <span class="nlm-stat-count-label-row">
+                                      <div class="nlm-tree-leaf-title">{{ d.title }}</div>
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                v-else
+                                :class="['nlm-tree-leaf', { 'nlm-tree-leaf--analysis': wbCrossWorkbenchImportTab === 'result' }]"
+                              >
+                                <span class="wb-task-create-tree-check" @click.stop>
+                                  <a-checkbox
+                                    :checked="isCrossWorkbenchImportTreeNodeChecked(d)"
+                                    @change="toggleCrossWorkbenchImportTreeNodeSelection(d)"
+                                  />
+                                </span>
+                                <span class="nlm-tree-leaf-icon">
+                                  <ds-icon
+                                    :name="crossWorkbenchImportTreeNodeIconMeta(d).iconClass"
+                                    :class="crossWorkbenchImportTreeNodeIconMeta(d).iconToneClass"
+                                    aria-hidden="true"
+                                  />
+                                </span>
+                                <div class="nlm-tree-leaf-title-wrap">
+                                  <div class="nlm-tree-leaf-col">
+                                    <div class="nlm-tree-leaf-title">{{ d.title }}</div>
+                                  </div>
+                                </div>
+                              </div>
+                            </template>
+                          </a-tree>
+                        </div>
+                        <a-empty v-else description="当前来源下暂无可引入内容" />
+                      </div>
+                    </div>
+                  </section>
+                  <section class="wb-task-create-transfer__panel wb-task-create-transfer__panel--selected">
+                    <div class="wb-task-create-transfer__selected-head">
+                      <span>已选内容（{{ crossWorkbenchImportSelectedRows().length }}）</span>
+                      <a-button
+                        v-if="crossWorkbenchImportSelectedRows().length"
+                        type="link"
+                        size="small"
+                        @click="clearCrossWorkbenchImportResources"
+                      >清空</a-button>
+                    </div>
+                    <div class="wb-task-create-transfer__panel-body">
+                      <div class="wb-task-create-transfer__scroll">
+                        <div v-if="crossWorkbenchImportSelectedRows().length" class="wb-task-create-transfer__list">
+                          <FreeAuditTaskCreateResourceRow
+                            v-for="item in crossWorkbenchImportSelectedRows()"
+                            :key="'cross-sel-' + item.key"
+                            :item="item"
+                            selected-mode
+                            @remove="removeCrossWorkbenchImportResource"
+                          />
+                        </div>
+                        <a-empty v-else description="请从左侧添加资源" />
+                      </div>
+                    </div>
+                  </section>
+                </div>
+              </section>
+              <div class="wb-cross-import__target-bar">
+                <div class="wb-task-create-instruction-hint" role="note" aria-label="引入说明">
+                  <ds-icon name="circle-info" class="wb-task-create-instruction-hint__icon" aria-hidden="true" />
+                  <span class="wb-task-create-instruction-hint__text">引入后将在当前工作台生成独立副本；来源权限变化、来源删除和当前删除互不影响。</span>
+                </div>
               </div>
             </div>
             <template #footer>

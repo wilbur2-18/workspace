@@ -69,13 +69,29 @@
             </span>
           </div>
           <div class="ds-card-foot" @click.stop>
-            <a-button class="ds-trigger-btn ds-trigger-btn--icon-text" @click.stop="$emit('open-detail', project.id)">
-              <ds-icon name="play" class="ds-trigger-btn__icon" aria-hidden="true" /><span class="ds-trigger-btn__text">继续审计</span>
-            </a-button>
+            <div class="project-center-card-actions">
+              <a
+                class="workbench-v2-card-entry"
+                :href="workbenchV2Href(project.id)"
+                target="_blank"
+                rel="noopener"
+                title="新页面打开新版工作台"
+                aria-label="新页面打开新版工作台"
+                @click.stop
+              >V2</a>
+              <a-button class="ds-trigger-btn ds-trigger-btn--icon-text" @click.stop="$emit('open-detail', project.id)">
+                <ds-icon name="play" class="ds-trigger-btn__icon" aria-hidden="true" /><span class="ds-trigger-btn__text">继续审计</span>
+              </a-button>
+            </div>
           </div>
         </div>
       </div>
     `,
+    methods: {
+      workbenchV2Href(projectId) {
+        return './demo.html#freeaudit-v2?projectId=' + encodeURIComponent(projectId);
+      },
+    },
   });
 
   app.component('ProjectTemplatePickerPanel', {

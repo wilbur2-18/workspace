@@ -40,6 +40,10 @@
                 v-if="currentView === VIEW_IDS.FREE_AUDIT"
                 @navigate="navigate"
               />
+              <free-audit-workbench-v2
+                v-if="currentView === VIEW_IDS.FREE_AUDIT_V2"
+                @navigate="navigate"
+              />
               <template-center-view
                 v-if="currentView === VIEW_IDS.TEMPLATE"
               />
@@ -91,19 +95,19 @@
           showNewProjectModal: false,
           newProjectForm: { name: '', description: '', visibility: 'private', sharedUserIds: [], sharedDeptIds: [] },
           /** 曾进入审计助手或工作台后保持挂载 ProjectCenterView，供助手侧调用「引用技能」与工作台同一弹窗 */
-          projectAssistShellMounted: initialView === VIEW_IDS.PROJECT || initialView === VIEW_IDS.FREE_AUDIT,
+          projectAssistShellMounted: initialView === VIEW_IDS.PROJECT || initialView === VIEW_IDS.FREE_AUDIT || initialView === VIEW_IDS.FREE_AUDIT_V2,
         };
       },
       computed: {
         showGlobalHeader() {
-          return this.currentView !== VIEW_IDS.FREE_AUDIT;
+          return this.currentView !== VIEW_IDS.FREE_AUDIT && this.currentView !== VIEW_IDS.FREE_AUDIT_V2;
         },
       },
       watch: {
         currentView: {
           immediate: true,
           handler(v) {
-            if (v === VIEW_IDS.PROJECT || v === VIEW_IDS.FREE_AUDIT) this.projectAssistShellMounted = true;
+            if (v === VIEW_IDS.PROJECT || v === VIEW_IDS.FREE_AUDIT || v === VIEW_IDS.FREE_AUDIT_V2) this.projectAssistShellMounted = true;
           },
         },
         'newProjectForm.visibility'(v) {
@@ -120,6 +124,7 @@
           const base = curHash.split('?')[0];
           if (viewId === VIEW_IDS.PROJECT && curHash.startsWith('project/')) return;
           if (viewId === VIEW_IDS.FREE_AUDIT && base === 'freeaudit') return;
+          if (viewId === VIEW_IDS.FREE_AUDIT_V2 && base === 'freeaudit-v2') return;
           window.location.hash = VIEW_TO_HASH[viewId] || 'project';
         },
         openNewProjectModal() {

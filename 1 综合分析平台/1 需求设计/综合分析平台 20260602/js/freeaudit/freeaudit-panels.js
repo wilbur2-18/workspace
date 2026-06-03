@@ -159,7 +159,7 @@
           <template #overlay>
             <a-menu @click="({ key }) => onWorkbenchMaterialAddMenu(key, '')">
               <a-menu-item key="upload-file"><span class="wb-menu-action-item"><ds-icon class="wb-menu-action-item__icon" :name="workbenchMenuItemIcon('upload-file')" aria-hidden="true" /><span>上传文件</span></span></a-menu-item>
-              <a-menu-item key="cross-workbench-import"><span class="wb-menu-action-item"><ds-icon class="wb-menu-action-item__icon" :name="workbenchMenuItemIcon('cross-workbench-import')" aria-hidden="true" /><span>从其他工作台引入</span></span></a-menu-item>
+              <a-menu-item key="cross-workbench-import"><span class="wb-menu-action-item"><ds-icon class="wb-menu-action-item__icon" :name="workbenchMenuItemIcon('cross-workbench-import')" aria-hidden="true" /><span>引入文件</span></span></a-menu-item>
               <a-menu-item key="new-folder"><span class="wb-menu-action-item"><ds-icon class="wb-menu-action-item__icon" :name="workbenchMenuItemIcon('new-folder')" aria-hidden="true" /><span>新建文件夹</span></span></a-menu-item>
             </a-menu>
           </template>

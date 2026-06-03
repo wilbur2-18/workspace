@@ -37,7 +37,7 @@
         workbenchMenuItemIcon(key) {
           const map = {
             'upload-file': 'upload',
-            'cross-workbench-import': 'file-import',
+            'cross-workbench-import': 'inbox-out',
             'new-folder': 'folder-plus',
             new: 'plus',
             library: 'book-open',

@@ -102,7 +102,7 @@
             this.toggleWorkbenchMaterialFolderInChat(d);
             return;
           }
-          if (key === 'upload-file' || key === 'new-folder') {
+          if (key === 'upload-file' || key === 'cross-workbench-import' || key === 'new-folder') {
             this.onWorkbenchMaterialAddMenu(key, d && d.folderId);
             return;
           }

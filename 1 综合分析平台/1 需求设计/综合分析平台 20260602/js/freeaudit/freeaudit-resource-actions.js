@@ -1349,6 +1349,12 @@
             };
           }).filter((row) => row.fileCount + row.resultCount > 0);
         },
+        crossWorkbenchImportSourceOptions() {
+          return this.crossWorkbenchImportSourceProjects().map((row) => ({
+            label: row.name,
+            value: row.id,
+          }));
+        },
         openCrossWorkbenchImportModal(targetFolderId) {
           const pid = this.workbenchProjectId;
           if (!pid || typeof demoProjectMaterialsById === 'undefined') {
@@ -1432,6 +1438,252 @@
             searchQuery: query,
           }).treeData || [];
         },
+        crossWorkbenchImportSourceMaterialRowById(id) {
+          const sourcePid = String(this.wbCrossWorkbenchImportSourceProjectId || '');
+          const rid = String(id || '').trim();
+          if (!sourcePid || !rid) return null;
+          if (this.wbCrossWorkbenchImportTab === 'result') {
+            const rows = typeof demoProjectAnalysisResultsById !== 'undefined' ? (demoProjectAnalysisResultsById[sourcePid] || []) : [];
+            return rows.find((row) => String(row.id) === rid) || null;
+          }
+          const rows = typeof demoProjectMaterialsById !== 'undefined' ? (demoProjectMaterialsById[sourcePid] || []) : [];
+          return rows.find((row) => String(row.id) === rid) || null;
+        },
+        crossWorkbenchImportTreeNodeIconMeta(node) {
+          const tab = String(this.wbCrossWorkbenchImportTab || 'file');
+          if (!node) return { iconClass: 'file-lines', iconToneClass: '' };
+          if (node.isFolder) return { iconClass: 'folder', iconToneClass: tab === 'result' ? 'is-result' : '' };
+          const row = this.crossWorkbenchImportSourceMaterialRowById(node.materialId);
+          if (tab === 'result') {
+            const vm = row ? { ...row, type: 'analysis', title: row.name || node.title } : { type: 'analysis', title: node.title };
+            return {
+              iconClass: this.getMaterialIcon(vm),
+              iconToneClass: this.getMaterialIconColorClass(vm),
+            };
+          }
+          const vm = row ? { ...row, type: row.type || 'raw', title: row.name || node.title } : { type: 'raw', title: node.title };
+          return {
+            iconClass: this.getMaterialIcon(vm),
+            iconToneClass: this.getMaterialIconColorClass(vm),
+          };
+        },
+        crossWorkbenchImportTreeNodeToResource(node, tab) {
+          if (!node) return null;
+          const t = String(tab || this.wbCrossWorkbenchImportTab || 'file');
+          if (t === 'result') {
+            if (node.isFolder) {
+              const id = String(node.userFolderId || node.key || '').trim();
+              if (!id) return null;
+              return {
+                key: `result-folder:${id}`,
+                type: 'result-folder',
+                typeLabel: '结果文件夹',
+                id,
+                name: String(node.title || node.folderName || '未命名结果文件夹'),
+                iconClass: 'folder',
+                iconToneClass: 'is-result',
+                coveredResourceKeys: this.crossWorkbenchImportTreeNodeCoveredKeys(node, t),
+              };
+            }
+            const id = String(node.materialId || '').trim();
+            if (!id) return null;
+            const meta = this.crossWorkbenchImportTreeNodeIconMeta(node);
+            return {
+              key: `result:${id}`,
+              type: 'result',
+              typeLabel: '结果',
+              id,
+              name: String(node.title || '未命名结果'),
+              iconClass: meta.iconClass,
+              iconToneClass: meta.iconToneClass,
+            };
+          }
+          if (node.isFolder) {
+            const id = String(node.folderId || '').trim();
+            if (!id) return null;
+            return {
+              key: `file-folder:${id}`,
+              type: 'file-folder',
+              typeLabel: '文件夹',
+              id,
+              name: String(node.title || '未命名文件夹'),
+              iconClass: 'folder',
+              iconToneClass: '',
+              coveredResourceKeys: this.crossWorkbenchImportTreeNodeCoveredKeys(node, t),
+            };
+          }
+          const id = String(node.materialId || '').trim();
+          if (!id) return null;
+          const meta = this.crossWorkbenchImportTreeNodeIconMeta(node);
+          return {
+            key: `file:${id}`,
+            type: 'file',
+            typeLabel: '文件',
+            id,
+            name: String(node.title || '未命名文件'),
+            iconClass: meta.iconClass,
+            iconToneClass: meta.iconToneClass,
+          };
+        },
+        crossWorkbenchImportTreeNodeCoveredKeys(node, tab) {
+          const t = String(tab || this.wbCrossWorkbenchImportTab || 'file');
+          const keys = [];
+          const walk = (n) => {
+            if (!n) return;
+            (n.children || []).forEach((child) => {
+              const mapped = this.crossWorkbenchImportTreeNodeToResource(child, t);
+              if (mapped && mapped.key) keys.push(mapped.key);
+              walk(child);
+            });
+          };
+          walk(node);
+          return Array.from(new Set(keys));
+        },
+        crossWorkbenchImportTreeNodeLeafResources(node, tab) {
+          const t = String(tab || this.wbCrossWorkbenchImportTab || 'file');
+          const out = [];
+          const walk = (n) => {
+            if (!n) return;
+            if (n.isFolder) {
+              (n.children || []).forEach(walk);
+              return;
+            }
+            const mapped = this.crossWorkbenchImportTreeNodeToResource(n, t);
+            if (mapped && mapped.key) out.push(mapped);
+          };
+          walk(node);
+          const byKey = new Map();
+          out.forEach((item) => {
+            if (item && item.key && !byKey.has(item.key)) byKey.set(item.key, item);
+          });
+          return Array.from(byKey.values());
+        },
+        crossWorkbenchImportSelectedKeySet() {
+          const keys = new Set();
+          (this.crossWorkbenchImportSelectedRows() || []).forEach((item) => {
+            if (!item || !item.key) return;
+            keys.add(item.key);
+            (item.coveredResourceKeys || []).forEach((key) => {
+              if (key) keys.add(key);
+            });
+          });
+          return keys;
+        },
+        isCrossWorkbenchImportTreeNodeChecked(node) {
+          const mapped = this.crossWorkbenchImportTreeNodeToResource(node);
+          if (!mapped || !mapped.key) return false;
+          const covered = this.crossWorkbenchImportSelectedKeySet();
+          if (!node.isFolder) return covered.has(mapped.key);
+          const childKeys = mapped.coveredResourceKeys || [];
+          return covered.has(mapped.key) || (!!childKeys.length && childKeys.every((key) => covered.has(key)));
+        },
+        isCrossWorkbenchImportTreeNodeIndeterminate(node) {
+          if (!node || !node.isFolder || this.isCrossWorkbenchImportTreeNodeChecked(node)) return false;
+          const mapped = this.crossWorkbenchImportTreeNodeToResource(node);
+          const childKeys = (mapped && mapped.coveredResourceKeys) || [];
+          if (!childKeys.length) return false;
+          const covered = this.crossWorkbenchImportSelectedKeySet();
+          return childKeys.some((key) => covered.has(key));
+        },
+        toggleCrossWorkbenchImportTreeNodeExpanded(node) {
+          if (!node || !node.isFolder || node.key == null) return;
+          const key = String(node.key);
+          const expanded = new Set((this.wbCrossWorkbenchImportExpandedKeys || []).map(String));
+          if (expanded.has(key)) expanded.delete(key);
+          else expanded.add(key);
+          this.wbCrossWorkbenchImportExpandedKeys = Array.from(expanded);
+        },
+        addCrossWorkbenchImportResource(item) {
+          if (!item || !item.key) return;
+          const exists = (this.wbCrossWorkbenchImportSelectedKeys || []).some((key) => key === item.key);
+          if (exists) return;
+          this.wbCrossWorkbenchImportSelectedKeys = [...(this.wbCrossWorkbenchImportSelectedKeys || []), item.key];
+        },
+        removeCrossWorkbenchImportResource(key) {
+          this.wbCrossWorkbenchImportSelectedKeys = (this.wbCrossWorkbenchImportSelectedKeys || []).filter((itemKey) => itemKey !== key);
+        },
+        clearCrossWorkbenchImportResources() {
+          this.wbCrossWorkbenchImportSelectedKeys = [];
+        },
+        toggleCrossWorkbenchImportTreeNodeSelection(node) {
+          const mapped = this.crossWorkbenchImportTreeNodeToResource(node);
+          if (!mapped || !mapped.key) return;
+          const checked = this.isCrossWorkbenchImportTreeNodeChecked(node);
+          if (checked) {
+            this.removeCrossWorkbenchImportResource(mapped.key);
+            return;
+          }
+          this.addCrossWorkbenchImportResource(mapped);
+        },
+        crossWorkbenchImportResourceByKey(key) {
+          const needle = String(key || '').trim();
+          if (!needle) return null;
+          let hit = null;
+          const walk = (node) => {
+            if (!node || hit) return;
+            const mapped = this.crossWorkbenchImportTreeNodeToResource(node);
+            if (mapped && mapped.key === needle) {
+              hit = mapped;
+              return;
+            }
+            (node.children || []).forEach(walk);
+          };
+          (this.crossWorkbenchImportTreeData() || []).forEach(walk);
+          return hit;
+        },
+        crossWorkbenchImportSelectedRows() {
+          const rows = (this.wbCrossWorkbenchImportSelectedKeys || [])
+            .map((key) => this.crossWorkbenchImportResourceByKey(key))
+            .filter(Boolean);
+          const byKey = new Map();
+          rows.forEach((row) => {
+            if (row && row.key && !byKey.has(row.key)) byKey.set(row.key, row);
+          });
+          return Array.from(byKey.values());
+        },
+        crossWorkbenchImportCurrentSelectableResources() {
+          const q = String(this.wbCrossWorkbenchImportQuery || '').trim().toLowerCase();
+          const out = [];
+          const visit = (node) => {
+            if (!node) return;
+            const titleMatches = !q || String(node.title || '').toLowerCase().includes(q);
+            if (node.isFolder) {
+              if (!q || titleMatches) {
+                this.crossWorkbenchImportTreeNodeLeafResources(node).forEach((item) => out.push(item));
+                return;
+              }
+              (node.children || []).forEach(visit);
+              return;
+            }
+            if (!q || titleMatches) {
+              const mapped = this.crossWorkbenchImportTreeNodeToResource(node);
+              if (mapped) out.push(mapped);
+            }
+          };
+          (this.crossWorkbenchImportTreeData() || []).forEach(visit);
+          const byKey = new Map();
+          out.forEach((item) => {
+            if (item && item.key && !byKey.has(item.key)) byKey.set(item.key, item);
+          });
+          return Array.from(byKey.values());
+        },
+        crossWorkbenchImportCurrentSelectedCount() {
+          const keys = new Set((this.crossWorkbenchImportCurrentSelectableResources() || []).map((item) => item && item.key).filter(Boolean));
+          const covered = this.crossWorkbenchImportSelectedKeySet();
+          return Array.from(keys).filter((key) => covered.has(key)).length;
+        },
+        selectAllCrossWorkbenchImportCurrentResources() {
+          (this.crossWorkbenchImportCurrentSelectableResources() || []).forEach((item) => this.addCrossWorkbenchImportResource(item));
+        },
+        cancelAllCrossWorkbenchImportCurrentResources() {
+          const keys = new Set((this.crossWorkbenchImportCurrentSelectableResources() || []).map((item) => item && item.key).filter(Boolean));
+          const keep = (this.crossWorkbenchImportSelectedRows() || []).filter((item) => {
+            if (!item || !item.key) return false;
+            if (keys.has(item.key)) return false;
+            return !(item.coveredResourceKeys || []).some((key) => keys.has(key));
+          });
+          this.wbCrossWorkbenchImportSelectedKeys = keep.map((item) => item.key);
+        },
         crossWorkbenchImportTargetTreeData() {
           const root = {
             title: '根目录',
@@ -1462,24 +1714,11 @@
           return [root];
         },
         crossWorkbenchImportSelectedDescriptors() {
-          const selected = new Set(this.wbCrossWorkbenchImportSelectedKeys || []);
-          const out = [];
-          const tab = String(this.wbCrossWorkbenchImportTab || 'file');
-          const walk = (node) => {
-            if (!node) return;
-            if (selected.has(String(node.key))) {
-              if (tab === 'result') {
-                if (node.isFolder) out.push({ kind: 'result-folder', id: String(node.userFolderId || ''), title: String(node.title || '结果文件夹'), node });
-                else out.push({ kind: 'result', id: String(node.materialId || ''), title: String(node.title || '结果文件'), node });
-              } else {
-                if (node.isFolder) out.push({ kind: 'file-folder', id: String(node.folderId || ''), title: String(node.title || '文件夹'), node });
-                else out.push({ kind: 'file', id: String(node.materialId || ''), title: String(node.title || '文件'), node });
-              }
-            }
-            (node.children || []).forEach(walk);
-          };
-          (this.crossWorkbenchImportTreeData() || []).forEach(walk);
-          return out.filter((item) => item.id);
+          return (this.crossWorkbenchImportSelectedRows() || []).map((item) => ({
+            kind: item.type,
+            id: String(item.id || ''),
+            title: String(item.name || '资料'),
+          })).filter((item) => item.id);
         },
         crossWorkbenchImportSelectedSummary() {
           const list = this.crossWorkbenchImportSelectedDescriptors();
@@ -2036,7 +2275,7 @@
             this.startWorkbenchBulkSelection(this.workbenchBulkMaterialFolderDescriptor(d));
             return;
           }
-          if (key === 'upload-file' || key === 'new-folder') {
+          if (key === 'upload-file' || key === 'cross-workbench-import' || key === 'new-folder') {
             this.onWorkbenchMaterialAddMenu(key, d.folderId);
             return;
           }

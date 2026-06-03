@@ -8,7 +8,7 @@
         if (typeof console !== 'undefined' && console.debug) console.debug('[demo-telemetry]', row);
       } catch (err) { /* ignore */ }
     }
-    const VIEW_IDS = { PROJECT: 'project', TEMPLATE: 'template', SETTINGS: 'settings', FREE_AUDIT: 'freeaudit' };
+    const VIEW_IDS = { PROJECT: 'project', TEMPLATE: 'template', SETTINGS: 'settings', FREE_AUDIT: 'freeaudit', FREE_AUDIT_V2: 'freeaudit-v2' };
     /** 色种与 Ant token 来源：`./ui/runtime-theme.antdv.js`（须先于本文件加载）。 */
     const F = globalThis.DS_FOUNDATION;
     if (!F) {
@@ -32,6 +32,7 @@
       template: VIEW_IDS.TEMPLATE,
       settings: VIEW_IDS.SETTINGS,
       freeaudit: VIEW_IDS.FREE_AUDIT,
+      'freeaudit-v2': VIEW_IDS.FREE_AUDIT_V2,
     });
     const VIEW_TO_HASH = Object.freeze(
       Object.fromEntries(Object.entries(HASH_TO_VIEW).map(([hash, viewId]) => [viewId, hash]))
@@ -41,6 +42,7 @@
       [VIEW_IDS.TEMPLATE]: 'TemplateCenterView',
       [VIEW_IDS.SETTINGS]: 'SettingsView',
       [VIEW_IDS.FREE_AUDIT]: 'FreeAuditView',
+      [VIEW_IDS.FREE_AUDIT_V2]: 'FreeAuditWorkbenchV2',
     });
     const MOCK_AUDIT_TEMPLATES = Object.freeze([
       { id: 't1', name: '城建项目-标准技能', description: '适用于城市基础设施建设类审计' },
