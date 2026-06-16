@@ -1,0 +1,12 @@
+Purpose: basic editable text carrier, not a polished presentation.
+
+Layout system:
+- Cover and content pages use the same restrained text-first frame.
+- Long pages automatically split into two text columns.
+- Short pages stay in one large text box.
+- Page label and page number are added for navigation during later manual layout.
+
+QA focus:
+- Confirm 38 source pages become 38 PPT slides.
+- Confirm every source page title is present in the exported PPTX.
+- Confirm the deck exports and renders previews without fatal errors.

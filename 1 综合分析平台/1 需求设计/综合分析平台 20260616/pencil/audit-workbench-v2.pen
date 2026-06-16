@@ -1,0 +1,1789 @@
+{
+  "version": "2.13",
+  "children": [
+    {
+      "type": "frame",
+      "id": "pageRoot",
+      "x": 0,
+      "y": 0,
+      "name": "审计工作台 v2 · 对话模式",
+      "clip": true,
+      "width": 1600,
+      "height": 900,
+      "fill": "#f5f5f5ff",
+      "layout": "horizontal",
+      "children": [
+        {
+          "type": "frame",
+          "id": "sidebar",
+          "name": "左侧栏",
+          "width": 260,
+          "height": "fill_container",
+          "fill": "#f5f5f5ff",
+          "layout": "vertical",
+          "gap": 8,
+          "padding": [
+            12,
+            12,
+            12,
+            12
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "brand",
+              "name": "品牌区",
+              "width": "fill_container",
+              "height": 48,
+              "gap": 10,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "brandMark",
+                  "name": "Logo",
+                  "width": 32,
+                  "height": 32,
+                  "fill": "#1677ffff",
+                  "cornerRadius": 8,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "i1",
+                      "name": "工作台",
+                      "width": 16,
+                      "height": 16,
+                      "icon": "landmark",
+                      "library": "lucide",
+                      "fill": "#ffffffff"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "brandText",
+                  "name": "品牌文字",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 2,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "t2",
+                      "name": "品牌名",
+                      "fill": "#171717ff",
+                      "content": "浙江审计综合分析",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "t3",
+                      "name": "副标题",
+                      "fill": "#737373ff",
+                      "content": "Audit Analytics",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "400"
+                    }
+                  ]
+                },
+                {
+                  "type": "icon",
+                  "id": "i4",
+                  "name": "收起",
+                  "width": 16,
+                  "height": 16,
+                  "icon": "panel-left-close",
+                  "library": "lucide",
+                  "fill": "#525252ff"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "sidebarActions",
+              "name": "主操作",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 4,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "sa5",
+                  "name": "新建会话",
+                  "height": 32,
+                  "width": "fill_container",
+                  "cornerRadius": 8,
+                  "gap": 8,
+                  "padding": [
+                    0,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "fill": "#00000000",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "i6",
+                      "name": "新建会话图标",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "square-pen",
+                      "library": "lucide",
+                      "fill": "#333840ff"
+                    },
+                    {
+                      "type": "text",
+                      "id": "t7",
+                      "name": "新建会话",
+                      "fill": "#30343aff",
+                      "content": "新建会话",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "sa8",
+                  "name": "新建任务",
+                  "height": 32,
+                  "width": "fill_container",
+                  "cornerRadius": 8,
+                  "gap": 8,
+                  "padding": [
+                    0,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "fill": "#00000000",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "i9",
+                      "name": "新建任务图标",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "file-plus-2",
+                      "library": "lucide",
+                      "fill": "#333840ff"
+                    },
+                    {
+                      "type": "text",
+                      "id": "t10",
+                      "name": "新建任务",
+                      "fill": "#30343aff",
+                      "content": "新建任务",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "sa11",
+                  "name": "搜索",
+                  "height": 32,
+                  "width": "fill_container",
+                  "cornerRadius": 8,
+                  "gap": 8,
+                  "padding": [
+                    0,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "fill": "#00000000",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "i12",
+                      "name": "搜索图标",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "search",
+                      "library": "lucide",
+                      "fill": "#333840ff"
+                    },
+                    {
+                      "type": "text",
+                      "id": "t13",
+                      "name": "搜索",
+                      "fill": "#30343aff",
+                      "content": "搜索",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "sa14",
+                  "name": "技能",
+                  "height": 32,
+                  "width": "fill_container",
+                  "cornerRadius": 8,
+                  "gap": 8,
+                  "padding": [
+                    0,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "fill": "#00000000",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "i15",
+                      "name": "技能图标",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "book-open",
+                      "library": "lucide",
+                      "fill": "#333840ff"
+                    },
+                    {
+                      "type": "text",
+                      "id": "t16",
+                      "name": "技能",
+                      "fill": "#30343aff",
+                      "content": "技能",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "convList",
+              "name": "历史对话和任务",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "t17",
+                  "name": "项目标题",
+                  "fill": "#171717ff",
+                  "content": "A市城建集团年度经济责任审计",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container"
+                },
+                {
+                  "type": "frame",
+                  "id": "historyGroup",
+                  "name": "对话分组",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 4,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "t18",
+                      "name": "对话标签",
+                      "fill": "#737373ff",
+                      "content": "对话",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "cv23",
+                      "name": "初始化引导样例",
+                      "width": "fill_container",
+                      "height": 36,
+                      "cornerRadius": 8,
+                      "gap": 8,
+                      "padding": [
+                        0,
+                        8
+                      ],
+                      "alignItems": "center",
+                      "fill": "#00000000",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "i19",
+                          "name": "对话图标",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "message-square",
+                          "library": "lucide",
+                          "fill": "#525252ff"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "cm20",
+                          "name": "标题区",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "t21",
+                              "name": "标题",
+                              "fill": "#30343aff",
+                              "content": "初始化引导样例",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "400",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "t22",
+                          "name": "时间",
+                          "fill": "#737373ff",
+                          "content": "6 小时",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "400"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "cv28",
+                      "name": "请帮我删除结果树里「预算测算草稿」下的预算偏差临时表",
+                      "width": "fill_container",
+                      "height": 36,
+                      "cornerRadius": 8,
+                      "gap": 8,
+                      "padding": [
+                        0,
+                        8
+                      ],
+                      "alignItems": "center",
+                      "fill": "#00000000",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "i24",
+                          "name": "对话图标",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "message-square",
+                          "library": "lucide",
+                          "fill": "#525252ff"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "cm25",
+                          "name": "标题区",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "t26",
+                              "name": "标题",
+                              "fill": "#30343aff",
+                              "content": "请帮我删除结果树里「预算测算草稿」下的预算偏差临时表",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "400",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "t27",
+                          "name": "时间",
+                          "fill": "#737373ff",
+                          "content": "7 小时",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "400"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "cv33",
+                      "name": "梳理合同付款节点与发票开具的差异",
+                      "width": "fill_container",
+                      "height": 36,
+                      "cornerRadius": 8,
+                      "gap": 8,
+                      "padding": [
+                        0,
+                        8
+                      ],
+                      "alignItems": "center",
+                      "fill": "#00000000",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "i29",
+                          "name": "对话图标",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "message-square",
+                          "library": "lucide",
+                          "fill": "#525252ff"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "cm30",
+                          "name": "标题区",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "t31",
+                              "name": "标题",
+                              "fill": "#30343aff",
+                              "content": "梳理合同付款节点与发票开具的差异",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "400",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "t32",
+                          "name": "时间",
+                          "fill": "#737373ff",
+                          "content": "8 小时",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "400"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "cv38",
+                      "name": "总结当前工作台中的主要疑点",
+                      "width": "fill_container",
+                      "height": 36,
+                      "cornerRadius": 8,
+                      "gap": 8,
+                      "padding": [
+                        0,
+                        8
+                      ],
+                      "alignItems": "center",
+                      "fill": "#ebebebff",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "i34",
+                          "name": "对话图标",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "message-square",
+                          "library": "lucide",
+                          "fill": "#525252ff"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "cm35",
+                          "name": "标题区",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "t36",
+                              "name": "标题",
+                              "fill": "#171717ff",
+                              "content": "总结当前工作台中的主要疑点",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "600",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "t37",
+                          "name": "时间",
+                          "fill": "#737373ff",
+                          "content": "1 周",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "400"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "taskGroup",
+                  "name": "任务分组",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 4,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "t39",
+                      "name": "任务标签",
+                      "fill": "#737373ff",
+                      "content": "任务",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "tk45",
+                      "name": "往来函证抽样核对",
+                      "width": "fill_container",
+                      "height": 36,
+                      "cornerRadius": 8,
+                      "gap": 8,
+                      "padding": [
+                        0,
+                        8
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "i41",
+                          "name": "任务图标",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "file-text",
+                          "library": "lucide",
+                          "fill": "#525252ff"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "tm42",
+                          "name": "任务标题区",
+                          "width": "fill_container",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "t43",
+                              "name": "任务标题",
+                              "fill": "#30343aff",
+                              "content": "往来函证抽样核对",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "400",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "icon",
+                          "id": "i40",
+                          "name": "运行",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "loader-circle",
+                          "library": "lucide",
+                          "fill": "#2563ebff"
+                        },
+                        {
+                          "type": "icon",
+                          "id": "i44",
+                          "name": "更多",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "ellipsis",
+                          "library": "lucide",
+                          "fill": "#737373ff"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "tk51",
+                      "name": "企业工商信息批量查询",
+                      "width": "fill_container",
+                      "height": 36,
+                      "cornerRadius": 8,
+                      "gap": 8,
+                      "padding": [
+                        0,
+                        8
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "i47",
+                          "name": "任务图标",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "file-text",
+                          "library": "lucide",
+                          "fill": "#525252ff"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "tm48",
+                          "name": "任务标题区",
+                          "width": "fill_container",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "t49",
+                              "name": "任务标题",
+                              "fill": "#30343aff",
+                              "content": "企业工商信息批量查询",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "400",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "icon",
+                          "id": "i46",
+                          "name": "完成",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "circle-check",
+                          "library": "lucide",
+                          "fill": "#16a34aff"
+                        },
+                        {
+                          "type": "icon",
+                          "id": "i50",
+                          "name": "更多",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "ellipsis",
+                          "library": "lucide",
+                          "fill": "#737373ff"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "tk57",
+                      "name": "采购异常专项扫描",
+                      "width": "fill_container",
+                      "height": 36,
+                      "cornerRadius": 8,
+                      "gap": 8,
+                      "padding": [
+                        0,
+                        8
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "i53",
+                          "name": "任务图标",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "file-text",
+                          "library": "lucide",
+                          "fill": "#525252ff"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "tm54",
+                          "name": "任务标题区",
+                          "width": "fill_container",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "t55",
+                              "name": "任务标题",
+                              "fill": "#30343aff",
+                              "content": "采购异常专项扫描",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "400",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "icon",
+                          "id": "i52",
+                          "name": "失败",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "circle-x",
+                          "library": "lucide",
+                          "fill": "#dc2626ff"
+                        },
+                        {
+                          "type": "icon",
+                          "id": "i56",
+                          "name": "更多",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "ellipsis",
+                          "library": "lucide",
+                          "fill": "#737373ff"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "tk63",
+                      "name": "审计结果打包下载",
+                      "width": "fill_container",
+                      "height": 36,
+                      "cornerRadius": 8,
+                      "gap": 8,
+                      "padding": [
+                        0,
+                        8
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "i58",
+                          "name": "任务图标",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "file-text",
+                          "library": "lucide",
+                          "fill": "#525252ff"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "tm59",
+                          "name": "任务标题区",
+                          "width": "fill_container",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "t60",
+                              "name": "任务标题",
+                              "fill": "#30343aff",
+                              "content": "审计结果打包下载",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "400",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "t61",
+                          "name": "时间",
+                          "fill": "#737373ff",
+                          "content": "4 小时",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "400"
+                        },
+                        {
+                          "type": "icon",
+                          "id": "i62",
+                          "name": "更多",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "ellipsis",
+                          "library": "lucide",
+                          "fill": "#737373ff"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "tk69",
+                      "name": "预算与对标分析",
+                      "width": "fill_container",
+                      "height": 36,
+                      "cornerRadius": 8,
+                      "gap": 8,
+                      "padding": [
+                        0,
+                        8
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "i64",
+                          "name": "任务图标",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "file-text",
+                          "library": "lucide",
+                          "fill": "#525252ff"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "tm65",
+                          "name": "任务标题区",
+                          "width": "fill_container",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "t66",
+                              "name": "任务标题",
+                              "fill": "#30343aff",
+                              "content": "预算与对标分析",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "400",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "t67",
+                          "name": "时间",
+                          "fill": "#737373ff",
+                          "content": "2 天",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "400"
+                        },
+                        {
+                          "type": "icon",
+                          "id": "i68",
+                          "name": "更多",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "ellipsis",
+                          "library": "lucide",
+                          "fill": "#737373ff"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "tk75",
+                      "name": "付款与验收追踪",
+                      "width": "fill_container",
+                      "height": 36,
+                      "cornerRadius": 8,
+                      "gap": 8,
+                      "padding": [
+                        0,
+                        8
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "i70",
+                          "name": "任务图标",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "file-text",
+                          "library": "lucide",
+                          "fill": "#525252ff"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "tm71",
+                          "name": "任务标题区",
+                          "width": "fill_container",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "t72",
+                              "name": "任务标题",
+                              "fill": "#30343aff",
+                              "content": "付款与验收追踪",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "400",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "t73",
+                          "name": "时间",
+                          "fill": "#737373ff",
+                          "content": "3 天",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "400"
+                        },
+                        {
+                          "type": "icon",
+                          "id": "i74",
+                          "name": "更多",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "ellipsis",
+                          "library": "lucide",
+                          "fill": "#737373ff"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "tk81",
+                      "name": "合同与发票专项核对",
+                      "width": "fill_container",
+                      "height": 36,
+                      "cornerRadius": 8,
+                      "gap": 8,
+                      "padding": [
+                        0,
+                        8
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "i76",
+                          "name": "任务图标",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "file-text",
+                          "library": "lucide",
+                          "fill": "#525252ff"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "tm77",
+                          "name": "任务标题区",
+                          "width": "fill_container",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "t78",
+                              "name": "任务标题",
+                              "fill": "#30343aff",
+                              "content": "合同与发票专项核对",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "400",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "t79",
+                          "name": "时间",
+                          "fill": "#737373ff",
+                          "content": "4 天",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "400"
+                        },
+                        {
+                          "type": "icon",
+                          "id": "i80",
+                          "name": "更多",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "ellipsis",
+                          "library": "lucide",
+                          "fill": "#737373ff"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "sa82",
+              "name": "设置",
+              "height": 32,
+              "width": "fill_container",
+              "cornerRadius": 8,
+              "gap": 8,
+              "padding": [
+                0,
+                10
+              ],
+              "alignItems": "center",
+              "fill": "#00000000",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "i83",
+                  "name": "设置图标",
+                  "width": 18,
+                  "height": 18,
+                  "icon": "settings",
+                  "library": "lucide",
+                  "fill": "#333840ff"
+                },
+                {
+                  "type": "text",
+                  "id": "t84",
+                  "name": "设置",
+                  "fill": "#30343aff",
+                  "content": "设置",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "main",
+          "name": "主工作区",
+          "width": "fill_container",
+          "height": "fill_container",
+          "fill": "#ffffffff",
+          "cornerRadius": 8,
+          "layout": "vertical",
+          "children": [
+            {
+              "type": "frame",
+              "id": "header",
+              "name": "顶栏",
+              "width": "fill_container",
+              "height": 48,
+              "padding": [
+                0,
+                16
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "t85",
+                  "name": "页面标题",
+                  "fill": "#171717ff",
+                  "content": "总结当前工作台中的主要疑点",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "600",
+                  "textGrowth": "fixed-width-height",
+                  "width": "fill_container",
+                  "height": 20
+                },
+                {
+                  "type": "frame",
+                  "id": "genSkillBtn",
+                  "name": "生成技能",
+                  "height": 28,
+                  "cornerRadius": 6,
+                  "gap": 4,
+                  "padding": [
+                    0,
+                    8
+                  ],
+                  "alignItems": "center",
+                  "fill": "#00000000",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "i86",
+                      "name": "灯泡",
+                      "width": 13,
+                      "height": 13,
+                      "icon": "lightbulb",
+                      "library": "lucide",
+                      "fill": "#525252ff"
+                    },
+                    {
+                      "type": "text",
+                      "id": "t87",
+                      "name": "生成技能文字",
+                      "fill": "#525252ff",
+                      "content": "生成技能",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "500"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "chatArea",
+              "name": "对话区",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "padding": [
+                0,
+                24,
+                12,
+                24
+              ],
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "userBubble",
+                  "name": "用户消息",
+                  "width": "fill_container",
+                  "justifyContent": "end",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "userBubbleInner",
+                      "name": "用户气泡",
+                      "fill": "#1677ffff",
+                      "cornerRadius": 12,
+                      "padding": [
+                        10,
+                        14
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "t88",
+                          "name": "用户提问",
+                          "fill": "#ffffffff",
+                          "content": "总结当前工作台中的主要疑点",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "assistantIntro",
+                  "name": "助手开场",
+                  "width": "fill_container",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "t89",
+                      "name": "助手说明",
+                      "fill": "#30343aff",
+                      "content": "针对「总结当前工作台中的主要疑点」，先对齐本次要用的资料范围与期望产出（疑点描述、证据指向、后续核查建议）。",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "textGrowth": "fixed-width",
+                      "width": 900,
+                      "lineHeight": 1.45
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "st90",
+                  "name": "阅读 《银行流水-解析失败.xlsx》 L10-",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "padding": [
+                    4,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "i91",
+                      "name": "状态",
+                      "width": 14,
+                      "height": 14,
+                      "icon": "circle-check",
+                      "library": "lucide",
+                      "fill": "#16a34aff"
+                    },
+                    {
+                      "type": "text",
+                      "id": "t92",
+                      "name": "步骤",
+                      "fill": "#30343aff",
+                      "content": "阅读 《银行流水-解析失败.xlsx》 L10-L30",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container"
+                    },
+                    {
+                      "type": "icon",
+                      "id": "i93",
+                      "name": "展开",
+                      "width": 14,
+                      "height": 14,
+                      "icon": "chevron-right",
+                      "library": "lucide",
+                      "fill": "#737373ff"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "st94",
+                  "name": "这一段同时出现付款节点、比例与「尾款」表述，和发",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "padding": [
+                    4,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "i95",
+                      "name": "状态",
+                      "width": 14,
+                      "height": 14,
+                      "icon": "circle-check",
+                      "library": "lucide",
+                      "fill": "#16a34aff"
+                    },
+                    {
+                      "type": "text",
+                      "id": "t96",
+                      "name": "步骤",
+                      "fill": "#30343aff",
+                      "content": "这一段同时出现付款节点、比例与「尾款」表述，和发票开具金额、审批流水里的实际支付时点可能对不上。",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container"
+                    },
+                    {
+                      "type": "icon",
+                      "id": "i97",
+                      "name": "展开",
+                      "width": 14,
+                      "height": 14,
+                      "icon": "chevron-right",
+                      "library": "lucide",
+                      "fill": "#737373ff"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "st98",
+                  "name": "查询 总结当前工作台中的主要疑点",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "padding": [
+                    4,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "i99",
+                      "name": "状态",
+                      "width": 14,
+                      "height": 14,
+                      "icon": "circle-check",
+                      "library": "lucide",
+                      "fill": "#16a34aff"
+                    },
+                    {
+                      "type": "text",
+                      "id": "t100",
+                      "name": "步骤",
+                      "fill": "#30343aff",
+                      "content": "查询 总结当前工作台中的主要疑点",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container"
+                    },
+                    {
+                      "type": "icon",
+                      "id": "i101",
+                      "name": "展开",
+                      "width": 14,
+                      "height": 14,
+                      "icon": "chevron-right",
+                      "library": "lucide",
+                      "fill": "#737373ff"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "st102",
+                  "name": "查询 尾款 · 付款节点 · 合同 50%",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "padding": [
+                    4,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "i103",
+                      "name": "状态",
+                      "width": 14,
+                      "height": 14,
+                      "icon": "circle-check",
+                      "library": "lucide",
+                      "fill": "#16a34aff"
+                    },
+                    {
+                      "type": "text",
+                      "id": "t104",
+                      "name": "步骤",
+                      "fill": "#30343aff",
+                      "content": "查询 尾款 · 付款节点 · 合同 50%",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container"
+                    },
+                    {
+                      "type": "icon",
+                      "id": "i105",
+                      "name": "展开",
+                      "width": 14,
+                      "height": 14,
+                      "icon": "chevron-right",
+                      "library": "lucide",
+                      "fill": "#737373ff"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "st106",
+                  "name": "调用 疑点归纳与交叉核对 技能",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "padding": [
+                    4,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "i107",
+                      "name": "状态",
+                      "width": 14,
+                      "height": 14,
+                      "icon": "circle-check",
+                      "library": "lucide",
+                      "fill": "#16a34aff"
+                    },
+                    {
+                      "type": "text",
+                      "id": "t108",
+                      "name": "步骤",
+                      "fill": "#30343aff",
+                      "content": "调用 疑点归纳与交叉核对 技能",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container"
+                    },
+                    {
+                      "type": "icon",
+                      "id": "i109",
+                      "name": "展开",
+                      "width": 14,
+                      "height": 14,
+                      "icon": "chevron-right",
+                      "library": "lucide",
+                      "fill": "#737373ff"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "diffCard",
+                  "name": "差异卡片",
+                  "width": "fill_container",
+                  "fill": "#fafafaff",
+                  "cornerRadius": 8,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#e5e5e5ff"
+                  },
+                  "layout": "vertical",
+                  "gap": 8,
+                  "padding": [
+                    12,
+                    12
+                  ],
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "diffHead",
+                      "name": "差异标题",
+                      "width": "fill_container",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "i110",
+                          "name": "完成",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "circle-check",
+                          "library": "lucide",
+                          "fill": "#16a34aff"
+                        },
+                        {
+                          "type": "text",
+                          "id": "t111",
+                          "name": "文件名",
+                          "fill": "#171717ff",
+                          "content": "审计备忘录-疑点摘录.md",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
+                          "id": "t112",
+                          "name": "diff统计",
+                          "fill": "#737373ff",
+                          "content": "+2 -1",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "400"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "t113",
+                      "name": "删除行",
+                      "fill": "#b91c1cff",
+                      "content": "- 1. 待核实：合同金额与已开发票差异（演示）",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "400",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container"
+                    },
+                    {
+                      "type": "text",
+                      "id": "t114",
+                      "name": "新增行1",
+                      "fill": "#15803dff",
+                      "content": "+ 2. 待核实：合同金额与已开发票差异 [高风险]（演示）",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "400",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container"
+                    },
+                    {
+                      "type": "text",
+                      "id": "t115",
+                      "name": "新增行2",
+                      "fill": "#15803dff",
+                      "content": "+ 3. 建议：补充 2024Q4 对账单及剩余发票复印件",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "400",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "t116",
+                  "name": "收尾说明",
+                  "fill": "#30343aff",
+                  "content": "本次模型已完成：资料阅读与多轮关键词检索、技能「疑点归纳与交叉核对」结构化输出，并已更新《审计备忘录-疑点摘录.md》差异草案。",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "textGrowth": "fixed-width",
+                  "width": 900,
+                  "lineHeight": 1.45
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "composer",
+              "name": "输入区",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 6,
+              "padding": [
+                8,
+                24,
+                16,
+                24
+              ],
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "inputBox",
+                  "name": "输入框",
+                  "width": "fill_container",
+                  "height": 44,
+                  "cornerRadius": 10,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#d4d4d4ff"
+                  },
+                  "padding": [
+                    0,
+                    12
+                  ],
+                  "alignItems": "center",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "i117",
+                      "name": "附件",
+                      "width": 16,
+                      "height": 16,
+                      "icon": "paperclip",
+                      "library": "lucide",
+                      "fill": "#737373ff"
+                    },
+                    {
+                      "type": "text",
+                      "id": "t118",
+                      "name": "占位符",
+                      "fill": "#a3a3a3ff",
+                      "content": "输入问题；@ 引用资料或结果，/ 选择技能；Enter 发送",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "textGrowth": "fixed-width-height",
+                      "width": "fill_container",
+                      "height": 20
+                    },
+                    {
+                      "type": "icon",
+                      "id": "i119",
+                      "name": "发送",
+                      "width": 16,
+                      "height": 16,
+                      "icon": "send",
+                      "library": "lucide",
+                      "fill": "#1677ffff"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "t120",
+                  "name": "免责声明",
+                  "fill": "#a3a3a3ff",
+                  "content": "系统生成内容需人工核查，审计结论以人工确认为准。",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "400"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "rail",
+          "name": "右侧工具栏",
+          "width": 48,
+          "height": "fill_container",
+          "fill": "#f5f5f5ff",
+          "layout": "vertical",
+          "gap": 4,
+          "padding": [
+            8,
+            4
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "rb121",
+              "name": "展开或收起右栏",
+              "width": 40,
+              "height": 40,
+              "cornerRadius": 10,
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "fill": "#00000000",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "i122",
+                  "name": "展开或收起右栏图标",
+                  "width": 18,
+                  "height": 18,
+                  "icon": "panel-right",
+                  "library": "lucide",
+                  "fill": "#333840ff"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "rb123",
+              "name": "文件",
+              "width": 40,
+              "height": 40,
+              "cornerRadius": 10,
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "fill": "#00000000",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "i124",
+                  "name": "文件图标",
+                  "width": 18,
+                  "height": 18,
+                  "icon": "file-text",
+                  "library": "lucide",
+                  "fill": "#333840ff"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "rb125",
+              "name": "库表",
+              "width": 40,
+              "height": 40,
+              "cornerRadius": 10,
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "fill": "#00000000",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "i126",
+                  "name": "库表图标",
+                  "width": 18,
+                  "height": 18,
+                  "icon": "table-2",
+                  "library": "lucide",
+                  "fill": "#333840ff"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "rb127",
+              "name": "图谱",
+              "width": 40,
+              "height": 40,
+              "cornerRadius": 10,
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "fill": "#00000000",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "i128",
+                  "name": "图谱图标",
+                  "width": 18,
+                  "height": 18,
+                  "icon": "share-2",
+                  "library": "lucide",
+                  "fill": "#333840ff"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "rb129",
+              "name": "知识库",
+              "width": 40,
+              "height": 40,
+              "cornerRadius": 10,
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "fill": "#00000000",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "i130",
+                  "name": "知识库图标",
+                  "width": 18,
+                  "height": 18,
+                  "icon": "book-open",
+                  "library": "lucide",
+                  "fill": "#333840ff"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "rb131",
+              "name": "结果",
+              "width": 40,
+              "height": 40,
+              "cornerRadius": 10,
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "fill": "#00000000",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "i132",
+                  "name": "结果图标",
+                  "width": 18,
+                  "height": 18,
+                  "icon": "file-output",
+                  "library": "lucide",
+                  "fill": "#333840ff"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

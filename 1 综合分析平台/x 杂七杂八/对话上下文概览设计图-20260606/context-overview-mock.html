@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>对话上下文概览设计示意</title>
+  <style>
+    :root {
+      --bg-soft: #e8f3ff;
+      --bg-page: #f7fbff;
+      --bg: #ffffff;
+      --bg-muted: #f5f7fa;
+      --line: #dfe5ed;
+      --line-soft: #edf1f6;
+      --text: #172033;
+      --text-2: #536171;
+      --text-3: #8793a3;
+      --blue: #1677ff;
+      --blue-soft: #e8f2ff;
+      --green: #20a162;
+      --orange: #d9850d;
+      --shadow: 0 12px 32px rgba(22, 44, 80, 0.12);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #dceeff;
+      color: var(--text);
+    }
+
+    .board {
+      width: 1762px;
+      height: 1195px;
+      margin: 0 auto;
+      background: var(--bg-page);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .app {
+      height: 100%;
+      display: grid;
+      grid-template-columns: 260px 1px minmax(0, 1fr) 1px 760px;
+    }
+
+    .sidebar {
+      background: var(--bg-soft);
+      padding: 20px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      border-right: 1px solid var(--line);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+    }
+
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: var(--blue);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .brand-sub { display: block; color: var(--text-2); font-size: 12px; font-weight: 500; }
+
+    .nav-block { display: grid; gap: 10px; }
+    .nav-item {
+      height: 34px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 0 8px;
+      border-radius: 6px;
+      color: var(--text-2);
+      font-size: 14px;
+    }
+    .nav-item.active { background: rgba(22, 119, 255, 0.10); color: var(--text); }
+    .nav-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      border: 1px solid currentColor;
+      opacity: .7;
+    }
+
+    .resizer { background: var(--line); }
+
+    .chat {
+      min-width: 0;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-header {
+      height: 52px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      background: var(--bg);
+    }
+
+    .chat-title { font-size: 17px; font-weight: 700; }
+    .header-actions { display: flex; align-items: center; gap: 8px; position: relative; }
+    .header-btn {
+      height: 32px;
+      padding: 0 10px;
+      border-radius: 7px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-2);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+    }
+    .header-btn.primary {
+      color: var(--blue);
+      background: var(--blue-soft);
+      border-color: rgba(22, 119, 255, 0.16);
+      font-weight: 600;
+    }
+    .ico {
+      width: 16px;
+      height: 16px;
+      border: 1.5px solid currentColor;
+      border-radius: 4px;
+      display: inline-block;
+      position: relative;
+    }
+    .ico.spark::after {
+      content: "";
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+      position: absolute;
+      top: 4px;
+      left: 4px;
+    }
+
+    .overview-pop {
+      position: absolute;
+      right: 42px;
+      top: 40px;
+      width: 360px;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 14px;
+      z-index: 5;
+    }
+
+    .overview-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line-soft);
+    }
+    .overview-title { font-size: 15px; font-weight: 700; }
+    .overview-desc { margin-top: 4px; font-size: 12px; color: var(--text-3); }
+    .overview-link { color: var(--blue); font-size: 12px; font-weight: 600; }
+
+    .summary-list { display: grid; gap: 8px; padding-top: 10px; }
+    .summary-card {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 10px;
+      display: grid;
+      gap: 8px;
+      background: var(--bg);
+    }
+    .summary-card.active {
+      border-color: rgba(22, 119, 255, .45);
+      background: var(--blue-soft);
+    }
+    .summary-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+    .summary-name { display: flex; align-items: center; gap: 8px; min-width: 0; font-weight: 700; font-size: 14px; }
+    .summary-count { color: var(--text); font-size: 18px; font-weight: 750; }
+    .summary-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .chip {
+      height: 20px;
+      padding: 0 7px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      color: var(--text-2);
+      background: var(--bg-muted);
+      font-size: 11px;
+    }
+    .chip.blue { color: var(--blue); background: #e8f2ff; }
+    .chip.green { color: var(--green); background: #eaf8f0; }
+    .chip.orange { color: var(--orange); background: #fff4e2; }
+    .summary-action { color: var(--blue); font-size: 12px; font-weight: 600; }
+
+    .chat-body {
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      padding: 24px 32px;
+      position: relative;
+    }
+    .message {
+      max-width: 640px;
+      margin-left: auto;
+      background: var(--blue-soft);
+      color: #25507d;
+      border-radius: 18px;
+      padding: 12px 16px;
+      font-size: 14px;
+    }
+    .answer {
+      margin-top: 36px;
+      max-width: 760px;
+      font-size: 15px;
+      line-height: 1.8;
+      color: #263548;
+    }
+    .step { display: flex; align-items: center; gap: 10px; margin: 14px 0; }
+    .ok {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #eaf8f0;
+      color: var(--green);
+      display: grid;
+      place-items: center;
+      font-size: 12px;
+      font-weight: 900;
+    }
+    .input {
+      position: absolute;
+      left: 32px;
+      right: 32px;
+      bottom: 24px;
+      height: 76px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--bg);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 14px;
+      color: var(--text-3);
+      box-shadow: 0 4px 14px rgba(22, 44, 80, .06);
+    }
+
+    .doc {
+      min-width: 0;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      border-left: 1px solid var(--line);
+    }
+    .doc-tabs {
+      height: 48px;
+      background: var(--bg-muted);
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+    }
+    .tab {
+      height: 32px;
+      min-width: 178px;
+      border-radius: 7px;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 10px;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 1px 2px rgba(22, 44, 80, .06);
+    }
+    .tab-actions { display: flex; gap: 8px; color: var(--text-3); }
+    .doc-path {
+      height: 34px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      color: var(--text-3);
+      font-size: 12px;
+    }
+    .doc-body {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 1px 340px 48px;
+    }
+    .detail {
+      min-width: 0;
+      padding: 14px 12px;
+      background: var(--bg);
+    }
+    .panel-tabs {
+      height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 8px 8px 0 0;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 0 8px;
+      background: var(--bg-muted);
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .panel-tabs span {
+      padding: 7px 12px;
+      border-radius: 6px;
+      color: var(--text-2);
+    }
+    .panel-tabs .active { background: var(--bg); color: var(--blue); }
+    .doc-page {
+      height: 710px;
+      border: 1px solid var(--line);
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      padding: 44px 36px;
+      color: var(--text-2);
+      font-size: 15px;
+      line-height: 1.8;
+    }
+    .divider { background: var(--line); }
+    .directory {
+      min-width: 0;
+      background: var(--bg);
+      padding: 12px 10px;
+      border-left: 0;
+    }
+    .directory-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 32px;
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .status-bar {
+      height: 30px;
+      border: 1px solid rgba(22, 119, 255, .35);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: var(--text-2);
+      font-size: 12px;
+      margin: 8px 0 12px;
+    }
+    .file-row {
+      height: 32px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 6px;
+      padding: 0 8px;
+      color: var(--text-2);
+      font-size: 13px;
+    }
+    .file-row.active { background: var(--bg-muted); color: var(--text); }
+    .type-rail {
+      width: 48px;
+      background: var(--bg);
+      border-left: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px 6px;
+      gap: 8px;
+    }
+    .type-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 7px;
+      display: grid;
+      place-items: center;
+      color: var(--text-2);
+    }
+    .type-btn.active { color: var(--blue); background: var(--blue-soft); }
+
+    .interaction-strip {
+      position: absolute;
+      left: 292px;
+      right: 792px;
+      top: 92px;
+      display: flex;
+      gap: 10px;
+      pointer-events: none;
+    }
+    .mini-state {
+      width: 150px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px;
+      box-shadow: 0 6px 18px rgba(22, 44, 80, .08);
+      font-size: 12px;
+      color: var(--text-2);
+    }
+    .mini-state strong { display: block; color: var(--text); margin-bottom: 4px; }
+  </style>
+</head>
+<body>
+  <div class="board">
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">浙</div>
+          <div>浙江审计综合分析<span class="brand-sub">Audit Analytics</span></div>
+        </div>
+        <div class="nav-block">
+          <div class="nav-item"><span class="nav-dot"></span>新建会话</div>
+          <div class="nav-item"><span class="nav-dot"></span>新建任务</div>
+          <div class="nav-item"><span class="nav-dot"></span>搜索</div>
+          <div class="nav-item"><span class="nav-dot"></span>技能</div>
+        </div>
+        <div class="nav-block">
+          <div class="nav-item active"><span class="nav-dot"></span>总结当前工作台中的主...</div>
+          <div class="nav-item"><span class="nav-dot"></span>合同与发票专项核对</div>
+          <div class="nav-item"><span class="nav-dot"></span>付款与验收追踪</div>
+        </div>
+      </aside>
+      <div class="resizer"></div>
+      <main class="chat">
+        <header class="chat-header">
+          <div class="chat-title">总结当前工作台中的主要疑点</div>
+          <div class="header-actions">
+            <button class="header-btn"><span class="ico spark"></span>生成技能</button>
+            <button class="header-btn primary"><span class="ico"></span>对话上下文</button>
+            <div class="overview-pop">
+              <div class="overview-head">
+                <div>
+                  <div class="overview-title">对话上下文</div>
+                  <div class="overview-desc">查看当前对话可调用的资料、技能与结果</div>
+                </div>
+                <div class="overview-link">刷新</div>
+              </div>
+              <div class="summary-list">
+                <div class="summary-card active">
+                  <div class="summary-top">
+                    <div class="summary-name"><span class="ico"></span>可用资料</div>
+                    <div class="summary-count">42</div>
+                  </div>
+                  <div class="summary-meta">
+                    <span class="chip orange">排队中 4</span>
+                    <span class="chip blue">解析中 7</span>
+                    <span class="chip">未解析 4</span>
+                    <span class="summary-action">展开文件目录</span>
+                  </div>
+                </div>
+                <div class="summary-card">
+                  <div class="summary-top">
+                    <div class="summary-name"><span class="ico"></span>可用技能</div>
+                    <div class="summary-count">12</div>
+                  </div>
+                  <div class="summary-meta">
+                    <span class="chip green">项目匹配 8</span>
+                    <span class="chip">共享技能 4</span>
+                    <span class="summary-action">展开技能目录</span>
+                  </div>
+                </div>
+                <div class="summary-card">
+                  <div class="summary-top">
+                    <div class="summary-name"><span class="ico"></span>已产出结果</div>
+                    <div class="summary-count">10</div>
+                  </div>
+                  <div class="summary-meta">
+                    <span class="chip green">成功 8</span>
+                    <span class="chip orange">生成中 2</span>
+                    <span class="summary-action">展开结果目录</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+        <section class="chat-body">
+          <div class="message">总结当前工作台中的主要疑点</div>
+          <div class="answer">
+            <p>针对「总结当前工作台中的主要疑点」，先对本次要用的资料范围与期望产出进行核查。</p>
+            <div class="step"><span class="ok">✓</span>阅读《银行流水-解析失败.xlsx》L10-L30</div>
+            <div class="step"><span class="ok">✓</span>查询尾款、付款节点、合同 50%</div>
+            <div class="step"><span class="ok">✓</span>调用疑点归纳与交叉核对技能</div>
+            <p>核查任务已完成并生成中间结果。现在可继续追问，或从右侧查看本次可用资料和已产出结果。</p>
+          </div>
+          <div class="input">输入问题；@ 引用资料或结果，/ 选择技能；Enter 发送</div>
+        </section>
+      </main>
+      <div class="resizer"></div>
+      <section class="doc">
+        <div class="doc-tabs">
+          <div class="tab"><span class="ico"></span>整改说明.wps</div>
+          <div class="tab-actions">⛶ ▣</div>
+        </div>
+        <div class="doc-path">
+          <span>当前工作台 / 文件 / 整改说明.wps</span>
+          <span>⋯  ⊙  ☰</span>
+        </div>
+        <div class="doc-body">
+          <div class="detail">
+            <div class="panel-tabs"><span>基本信息</span><span class="active">文件预览</span><span>解析结果</span></div>
+            <div class="doc-page">
+              <strong>【在线预览页 1】</strong>
+              <p>这里展示 PDF 首屏内容（演示态）。系统后续可替换为真实 PDF 渲染流。</p>
+              <br />
+              <strong>【在线预览页 2】</strong>
+              <p>这里是第 2 页示意内容。目录隐藏时，详情区域会吃掉右侧目录宽度。</p>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <aside class="directory">
+            <div class="directory-head"><span>文件 <span class="chip">42</span></span><span>⌕ ↻ ＋</span></div>
+            <div class="status-bar"><span>排队中 4</span><span>解析中 7</span><span>未解析 4</span></div>
+            <div class="file-row">二零二六年度工程项目合同...</div>
+            <div class="file-row">银行流水-解析失败.xlsx</div>
+            <div class="file-row active">整改说明.wps</div>
+            <div class="file-row">银行流水导出.csv</div>
+            <div class="file-row">访谈纪要补充.txt</div>
+            <div class="file-row">合同抽取字段.json</div>
+            <div class="file-row">发票接口回执.xml</div>
+          </aside>
+          <aside class="type-rail">
+            <div class="type-btn active"><span class="ico"></span></div>
+            <div class="type-btn"><span class="ico"></span></div>
+            <div class="type-btn"><span class="ico"></span></div>
+            <div class="type-btn"><span class="ico"></span></div>
+            <div class="type-btn"><span class="ico"></span></div>
+          </aside>
+        </div>
+      </section>
+    </div>
+    <div class="interaction-strip">
+      <div class="mini-state"><strong>默认</strong>右上角只露出“对话上下文”入口</div>
+      <div class="mini-state"><strong>打开</strong>显示三类摘要，不替代右侧目录</div>
+      <div class="mini-state"><strong>点击资料</strong>右侧切到文件目录并保留详情</div>
+    </div>
+  </div>
+</body>
+</html>

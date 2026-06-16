@@ -1,0 +1,27 @@
+{
+  "output": "/Users/mac/Desktop/workspace/outputs/manual-20260610-ppt-page1-restore/output/智慧审计新范式-首页还原稿.pptx",
+  "outputBytes": 1870464,
+  "slideCount": 1,
+  "slideSize": {
+    "width": 1280,
+    "height": 720
+  },
+  "previewDir": "/Users/mac/Desktop/workspace/outputs/manual-20260610-ppt-page1-restore/preview",
+  "previewPaths": [
+    "/Users/mac/Desktop/workspace/outputs/manual-20260610-ppt-page1-restore/preview/slide-01.png"
+  ],
+  "layoutDir": "/Users/mac/Desktop/workspace/outputs/manual-20260610-ppt-page1-restore/layout",
+  "layoutResults": [
+    {
+      "layoutPath": "/Users/mac/Desktop/workspace/outputs/manual-20260610-ppt-page1-restore/layout/slide-01.layout.json"
+    }
+  ],
+  "slides": [
+    {
+      "index": 1,
+      "requestedSlideNumber": 1,
+      "modulePath": "/Users/mac/Desktop/workspace/outputs/manual-20260610-ppt-page1-restore/slides/slide-01.mjs",
+      "exportName": "slide01"
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "mode": "edit",
+  "componentId": "414197789162082304",
+  "projectId": "414161563457556480",
+  "selectedRevisionId": "414199421203533824",
+  "jobId": "414161563243646976-external-agent-414199421203533825",
+  "generatedName": "wise-city-3502",
+  "name": "工作台任务区组件",
+  "dimensions": {
+    "width": 1100,
+    "height": 760
+  },
+  "selectedImages": [],
+  "editableFiles": [
+    {
+      "path": "src/App.tsx",
+      "sha256": "fb8977e6c239ab9de0322a03b1e042052c3bfb080a3099424962a3360adc8909"
+    },
+    {
+      "path": "src/components/generated/Composer.tsx",
+      "sha256": "cea159e8219df7e58a2d868d1304669382e5328fe59c950344a9f2e09d6ed374"
+    },
+    {
+      "path": "src/components/generated/GeneratedComponent.tsx",
+      "sha256": "1f91641706dbf966b6c57f4af26c5fadad33da01b0f52b37715ee414132a8c17"
+    },
+    {
+      "path": "src/components/generated/Icon.tsx",
+      "sha256": "6d706a221027e7c7629f17cc14cb288bc2968bdaf38b832ad03963ca0cdd6cc9"
+    },
+    {
+      "path": "src/components/generated/StartGuide.tsx",
+      "sha256": "b471a303cd213d8a4065d4752fcd9521be75702a6d26a6db0e46c42a89c34431"
+    },
+    {
+      "path": "src/components/generated/WorkbenchChatStage.tsx",
+      "sha256": "402ca9a5ea1ba0253e6d448a862058ca8ae7ce1ff65b3f78e565ed848ceff0c9"
+    },
+    {
+      "path": "src/components/generated/WorkbenchDocWorkspace.tsx",
+      "sha256": "613dc0c0e939a65bf0c31335c7d64ea9f69156c32ae498c17c946d5234d1d0ef"
+    },
+    {
+      "path": "src/components/generated/WorkbenchInitPage.tsx",
+      "sha256": "4d5adc55a45a09f66c57540d32fe8641a9e2e9cc6e67ccbdb999865c371bd482"
+    },
+    {
+      "path": "src/components/generated/WorkbenchMain.tsx",
+      "sha256": "eb38d7d285984c6976b6fa0a42ec5cbefa6f1bb61c4f76d6c17c26b6880e4a72"
+    },
+    {
+      "path": "src/components/generated/WorkbenchSearchView.tsx",
+      "sha256": "e9befc313657067687b63ed99e2bfc59cd7aa945cb1cda090ab1bd109090224c"
+    },
+    {
+      "path": "src/components/generated/WorkbenchShell.tsx",
+      "sha256": "d03e9ef831ef0d4fbacd88391e026d57483cfab46d8af242487949ede484c1f1"
+    },
+    {
+      "path": "src/components/generated/WorkbenchSidebar.tsx",
+      "sha256": "df1b6ee65a62e07c1b2f6c8e07f782488788a42cfb9b2512e44f35b741418950"
+    },
+    {
+      "path": "src/components/generated/WorkbenchSkillView.tsx",
+      "sha256": "39bdcf52af34b22c18762e36712913eb71de793e8399c72408c370f74d77ef0d"
+    },
+    {
+      "path": "src/components/generated/WorkbenchTaskWorkspace.tsx",
+      "sha256": "e0380bfaf3e131707738378c2c8889dfd4e7cb5abcd21677689306b64d73f3b3"
+    },
+    {
+      "path": "src/components/generated/data.ts",
+      "sha256": "42479e0a9a260f85f3ddf760b4992a71acbd154ff0df22c711446638afca845f"
+    },
+    {
+      "path": "src/index.css",
+      "sha256": "5ad95ee92a6d7b8740dcb3a5fce75cd6003f7459b617fcf2665aeff4f53edd92"
+    }
+  ],
+  "baseRevisionId": "414199421203533824"
+}

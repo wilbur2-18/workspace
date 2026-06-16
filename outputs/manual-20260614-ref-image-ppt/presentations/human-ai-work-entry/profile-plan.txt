@@ -1,0 +1,7 @@
+task mode: create
+primary deck-profile: product-platform
+required proof objects: one platform/workflow architecture slide reconstructed from the supplied reference image
+source/asset requirements: user-provided PNG used only as a visual reference; no full-slide background embedding
+brand authenticity constraints: no brand/logo assets involved; product icons are generic platform pictograms
+profile-specific QA gates: diagram labels are concrete, all major text is editable, connectors and containers preserve the platform-system meaning
+known missing inputs: none

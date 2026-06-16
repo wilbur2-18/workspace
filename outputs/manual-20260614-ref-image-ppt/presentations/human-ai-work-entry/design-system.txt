@@ -1,0 +1,9 @@
+slide size: 1280x720, 16:9
+background system: white to pale-blue technical grid feel using light native shapes and vector mesh
+typography: PingFang SC preferred for Chinese, fallback is Microsoft YaHei or Aptos; title 39px, subtitle 18px, section headings 20px, body 15-16px
+color palette: deep blue #0B2A8E for titles, action blue #145BEA for headers, mid blue #1D66E5 for icons, pale blue #D7E5FF for outlines, ink #111827 for body
+diagram grammar: central hub plus five capability nodes; pale arcs imply shared platform convergence; dashed links imply capability injection
+container grammar: left/right upper cards are primary sections; bottom three cards are supporting capabilities
+footer grammar: deep-blue platform synthesis ribbon with editable white text and editable page number
+brand asset policy: no official brand marks; generic product pictograms only
+banned motifs: whole PNG background, non-editable title/body text, decorative elements that obscure hierarchy

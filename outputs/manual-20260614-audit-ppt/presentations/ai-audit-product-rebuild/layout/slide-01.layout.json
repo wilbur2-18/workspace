@@ -1,0 +1,2277 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/fyx1ca",
+    "id": "fyx1ca",
+    "slide": 1,
+    "layoutId": "f45dc97c-80cf-493d-8a07-45cb8a238829",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "edcbc8ea-3b87-4638-b8bd-e433b564a957",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "PingFang SC"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "f45dc97c-80cf-493d-8a07-45cb8a238829",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "edcbc8ea-3b87-4638-b8bd-e433b564a957",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "edcbc8ea-3b87-4638-b8bd-e433b564a957",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/pg3ex0nu",
+      "id": "1",
+      "bbox": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "alt": "light blue technology background",
+      "contentType": "image/png",
+      "imageFit": "cover",
+      "asset": {
+        "assetId": "f53d3a0c-8113-49c2-b14c-9b06500e4b22",
+        "contentType": "image/png",
+        "byteLength": 34361
+      }
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vixczed8",
+      "id": "2",
+      "name": "main-title",
+      "bbox": [
+        43,
+        82,
+        1120,
+        58
+      ],
+      "geometry": "rect",
+      "text": "AI 原生审计产品体系： 用技术链路重构审计作业支撑",
+      "textPreview": "AI 原生审计产品体系： 用技术链路重构审计作业支撑",
+      "resolvedFontSize": 39,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 39,
+        "typeface": "PingFang SC",
+        "color": "#071078",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "AI 原生审计产品体系： 用技术链路重构审计作业支撑"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "AI 原生审计产品体系： 用技术链路重构审计作业支撑",
+          "resolvedTextStyle": {
+            "fontSize": 39,
+            "typeface": "PingFang SC",
+            "color": "#071078",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "AI 原生审计产品体系： 用技术链路重构审计作业支撑",
+              "fontSize": 39,
+              "typeface": "PingFang SC",
+              "color": "#071078",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2x4nap4r",
+      "id": "3",
+      "bbox": [
+        43,
+        149,
+        18,
+        2.5
+      ],
+      "geometry": "rect",
+      "fillColor": "#0E5DFF",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/dcbulwva",
+      "id": "4",
+      "bbox": [
+        63,
+        149,
+        28,
+        2.5
+      ],
+      "geometry": "rect",
+      "fillColor": "#A8CCFF",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kre1w7mp",
+      "id": "5",
+      "name": "subtitle-line-1",
+      "bbox": [
+        51,
+        169,
+        640,
+        30
+      ],
+      "geometry": "rect",
+      "text": "我们的解法不是在系统外层增加 AI 问答入口，",
+      "textPreview": "我们的解法不是在系统外层增加 AI 问答入口，",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 20,
+        "typeface": "PingFang SC",
+        "color": "#171B25",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "我们的解法不是在系统外层增加 AI 问答入口，"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "我们的解法不是在系统外层增加 AI 问答入口，",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "typeface": "PingFang SC",
+            "color": "#171B25",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "我们的解法不是在系统外层增加 AI 问答入口，",
+              "fontSize": 20,
+              "typeface": "PingFang SC",
+              "color": "#171B25"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/val87ed8",
+      "id": "6",
+      "name": "subtitle-line-2a",
+      "bbox": [
+        51,
+        202,
+        492,
+        30
+      ],
+      "geometry": "rect",
+      "text": "而是围绕真实的审计作业链路， 运用 AI 技术去解决",
+      "textPreview": "而是围绕真实的审计作业链路， 运用 AI 技术去解决",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 20,
+        "typeface": "PingFang SC",
+        "color": "#171B25",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "而是围绕真实的审计作业链路， 运用 AI 技术去解决"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "而是围绕真实的审计作业链路， 运用 AI 技术去解决",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "typeface": "PingFang SC",
+            "color": "#171B25",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "而是围绕真实的审计作业链路， 运用 AI 技术去解决",
+              "fontSize": 20,
+              "typeface": "PingFang SC",
+              "color": "#171B25"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6psfil0r",
+      "id": "7",
+      "name": "subtitle-line-2b",
+      "bbox": [
+        545,
+        202,
+        110,
+        30
+      ],
+      "geometry": "rect",
+      "text": "“AI+审计”",
+      "textPreview": "“AI+审计”",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 20,
+        "typeface": "PingFang SC",
+        "color": "#0349D9",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "“AI+审计”"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "“AI+审计”",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "typeface": "PingFang SC",
+            "color": "#0349D9",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "“AI+审计”",
+              "fontSize": 20,
+              "typeface": "PingFang SC",
+              "color": "#0349D9",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/d8bat47y",
+      "id": "8",
+      "name": "subtitle-line-2c",
+      "bbox": [
+        654,
+        202,
+        136,
+        30
+      ],
+      "geometry": "rect",
+      "text": "的技术难题。",
+      "textPreview": "的技术难题。",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 20,
+        "typeface": "PingFang SC",
+        "color": "#171B25",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "的技术难题。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "的技术难题。",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "typeface": "PingFang SC",
+            "color": "#171B25",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "的技术难题。",
+              "fontSize": 20,
+              "typeface": "PingFang SC",
+              "color": "#171B25"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/knih4byh",
+      "id": "9",
+      "name": "left-panel",
+      "bbox": [
+        39,
+        257,
+        342,
+        372
+      ],
+      "geometry": "roundRect",
+      "fillColor": "rgba(242, 248, 255, 1)",
+      "lineColor": "#FFFFFF",
+      "lineWidth": 1.8
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/uxc3ylc7",
+      "id": "10",
+      "name": "重点回答三个问题-tab-fill",
+      "bbox": [
+        108,
+        262,
+        210,
+        38
+      ],
+      "geometry": "rect",
+      "fillColor": "#1D73FF",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ji5snelo",
+      "id": "11",
+      "name": "重点回答三个问题-tab-left-cut",
+      "bbox": [
+        88,
+        262,
+        42,
+        38
+      ],
+      "geometry": "triangle",
+      "fillColor": "#F1F7FF",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/c3ylc7u5",
+      "id": "12",
+      "name": "重点回答三个问题-tab-right-cut",
+      "bbox": [
+        297,
+        262,
+        42,
+        38
+      ],
+      "rotation": 180,
+      "geometry": "triangle",
+      "fillColor": "#F1F7FF",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1kre1w7m",
+      "id": "13",
+      "name": "重点回答三个问题-tab-label",
+      "bbox": [
+        108,
+        266,
+        210,
+        28
+      ],
+      "geometry": "rect",
+      "text": "重点回答三个问题",
+      "textPreview": "重点回答三个问题",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 20,
+        "typeface": "PingFang SC",
+        "color": "#FFFFFF",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "重点回答三个问题"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "重点回答三个问题",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "typeface": "PingFang SC",
+            "color": "#FFFFFF",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "重点回答三个问题",
+              "fontSize": 20,
+              "typeface": "PingFang SC",
+              "color": "#FFFFFF",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ulwval87",
+      "id": "14",
+      "name": "left-inner-card",
+      "bbox": [
+        51,
+        315,
+        320,
+        296
+      ],
+      "geometry": "roundRect",
+      "fillColor": "rgba(248, 251, 255, 1)",
+      "lineColor": "#FFFFFF",
+      "lineWidth": 1
+    },
+    {
+      "order": 15,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/obm58z25",
+      "id": "15",
+      "bbox": [
+        61,
+        326,
+        68,
+        68
+      ],
+      "alt": "left-cube.png",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "c422192e-229d-4d37-8603-e3f495e743a2",
+        "contentType": "image/png",
+        "byteLength": 14281
+      }
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/crmhk3q5",
+      "id": "16",
+      "name": "left-如何避免大模型幻觉",
+      "bbox": [
+        151,
+        346,
+        205,
+        32
+      ],
+      "geometry": "rect",
+      "text": "如何避免大模型幻觉",
+      "textPreview": "如何避免大模型幻觉",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 19,
+        "typeface": "PingFang SC",
+        "color": "#171B25",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "如何避免大模型幻觉"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "如何避免大模型幻觉",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "typeface": "PingFang SC",
+            "color": "#171B25",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "如何避免大模型幻觉",
+              "fontSize": 19,
+              "typeface": "PingFang SC",
+              "color": "#171B25",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1cfa9w3m",
+      "id": "17",
+      "bbox": [
+        63,
+        411,
+        293,
+        1.2
+      ],
+      "geometry": "rect",
+      "fillColor": "#C9DFFF",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 18,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/h0fepkzu",
+      "id": "18",
+      "bbox": [
+        61,
+        425,
+        68,
+        68
+      ],
+      "alt": "left-mind.png",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "f1d5edd9-efd3-4aeb-9be4-aef860995008",
+        "contentType": "image/png",
+        "byteLength": 14517
+      }
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/j2t83itg",
+      "id": "19",
+      "name": "left-如何让大模型具备审计思路",
+      "bbox": [
+        151,
+        445,
+        205,
+        32
+      ],
+      "geometry": "rect",
+      "text": "如何让大模型具备审计思路",
+      "textPreview": "如何让大模型具备审计思路",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 19,
+        "typeface": "PingFang SC",
+        "color": "#171B25",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "如何让大模型具备审计"
+          },
+          {
+            "index": 2,
+            "text": "思路"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "如何让大模型具备审计思路",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "typeface": "PingFang SC",
+            "color": "#171B25",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "如何让大模型具备审计思路",
+              "fontSize": 19,
+              "typeface": "PingFang SC",
+              "color": "#171B25",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bq1oryts",
+      "id": "20",
+      "bbox": [
+        63,
+        509,
+        293,
+        1.2
+      ],
+      "geometry": "rect",
+      "fillColor": "#C9DFFF",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 21,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/d8v6psfi",
+      "id": "21",
+      "bbox": [
+        61,
+        524,
+        68,
+        68
+      ],
+      "alt": "left-team.png",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "d1a91274-6229-454b-98e9-00fd03fe16d9",
+        "contentType": "image/png",
+        "byteLength": 14135
+      }
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/twra5gbq",
+      "id": "22",
+      "name": "left-如何让大模型与审计人员协作",
+      "bbox": [
+        151,
+        544,
+        205,
+        32
+      ],
+      "geometry": "rect",
+      "text": "如何让大模型与审计人员协作",
+      "textPreview": "如何让大模型与审计人员协作",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 19,
+        "typeface": "PingFang SC",
+        "color": "#171B25",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "如何让大模型与审计人"
+          },
+          {
+            "index": 2,
+            "text": "员协作"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "如何让大模型与审计人员协作",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "typeface": "PingFang SC",
+            "color": "#171B25",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "如何让大模型与审计人员协作",
+              "fontSize": 19,
+              "typeface": "PingFang SC",
+              "color": "#171B25",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4byhgn29",
+      "id": "23",
+      "bbox": [
+        386,
+        421,
+        21,
+        34
+      ],
+      "rotation": 90,
+      "geometry": "triangle",
+      "fillColor": "#4F8BFF",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/b2hwfyxo",
+      "id": "24",
+      "bbox": [
+        852,
+        421,
+        21,
+        34
+      ],
+      "rotation": 90,
+      "geometry": "triangle",
+      "fillColor": "#4F8BFF",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 25,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/dg7adsji",
+      "id": "25",
+      "bbox": [
+        380,
+        380,
+        530,
+        265
+      ],
+      "alt": "bridge platform technology illustration",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "c0a9a1de-14df-4b59-81d0-72f54800338a",
+        "contentType": "image/png",
+        "byteLength": 301296
+      }
+    },
+    {
+      "order": 26,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/6tovahoz",
+      "id": "26",
+      "bbox": [
+        431,
+        291,
+        102,
+        102
+      ],
+      "alt": "存量数据",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "6be8171b-9e1e-4264-afd5-3cdc93ca72fe",
+        "contentType": "image/png",
+        "byteLength": 24652
+      }
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4nap4r65",
+      "id": "27",
+      "name": "存量数据-halo",
+      "bbox": [
+        440,
+        389,
+        84,
+        34
+      ],
+      "geometry": "arc",
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "#8AC7FF",
+      "lineWidth": 1.3
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bat47y1k",
+      "id": "28",
+      "name": "node-label-存量数据",
+      "bbox": [
+        417,
+        401,
+        130,
+        26
+      ],
+      "geometry": "rect",
+      "text": "存量数据",
+      "textPreview": "存量数据",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 19,
+        "typeface": "PingFang SC",
+        "color": "#0033D8",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "存量数据"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "存量数据",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "typeface": "PingFang SC",
+            "color": "#0033D8",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "存量数据",
+              "fontSize": 19,
+              "typeface": "PingFang SC",
+              "color": "#0033D8",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 29,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/dsji5sne",
+      "id": "29",
+      "bbox": [
+        581,
+        278,
+        111,
+        111
+      ],
+      "alt": "实际业务",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "cdd136ba-736e-4d17-911d-b9ee584010e9",
+        "contentType": "image/png",
+        "byteLength": 26043
+      }
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/szqtcj6t",
+      "id": "30",
+      "name": "实际业务-halo",
+      "bbox": [
+        590,
+        385,
+        93,
+        34
+      ],
+      "geometry": "arc",
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "#8AC7FF",
+      "lineWidth": 1.3
+    },
+    {
+      "order": 31,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lkjm1cfa",
+      "id": "31",
+      "name": "node-label-实际业务",
+      "bbox": [
+        567,
+        397,
+        139,
+        26
+      ],
+      "geometry": "rect",
+      "text": "实际业务",
+      "textPreview": "实际业务",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 19,
+        "typeface": "PingFang SC",
+        "color": "#0033D8",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "实际业务"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "实际业务",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "typeface": "PingFang SC",
+            "color": "#0033D8",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "实际业务",
+              "fontSize": 19,
+              "typeface": "PingFang SC",
+              "color": "#0033D8",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 32,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/lwval87e",
+      "id": "32",
+      "bbox": [
+        741,
+        293,
+        101,
+        101
+      ],
+      "alt": "智能体能力",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "d8c07f10-07e2-4fac-885d-970f168088fe",
+        "contentType": "image/png",
+        "byteLength": 25238
+      }
+    },
+    {
+      "order": 33,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3ex0nuxc",
+      "id": "33",
+      "name": "智能体能力-halo",
+      "bbox": [
+        750,
+        390,
+        83,
+        34
+      ],
+      "geometry": "arc",
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "#8AC7FF",
+      "lineWidth": 1.3
+    },
+    {
+      "order": 34,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/sneloj2t",
+      "id": "34",
+      "name": "node-label-智能体能力",
+      "bbox": [
+        727,
+        402,
+        129,
+        26
+      ],
+      "geometry": "rect",
+      "text": "智能体能力",
+      "textPreview": "智能体能力",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 19,
+        "typeface": "PingFang SC",
+        "color": "#0033D8",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "智能体能力"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "智能体能力",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "typeface": "PingFang SC",
+            "color": "#0033D8",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "智能体能力",
+              "fontSize": 19,
+              "typeface": "PingFang SC",
+              "color": "#0033D8",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 35,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/l87ed8ba",
+      "id": "35",
+      "bbox": [
+        535,
+        322,
+        25,
+        1.4
+      ],
+      "geometry": "rect",
+      "fillColor": "#4E8DFF",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 36,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ahoza1gv",
+      "id": "36",
+      "bbox": [
+        558,
+        318,
+        9,
+        9
+      ],
+      "rotation": 90,
+      "geometry": "triangle",
+      "fillColor": "#4E8DFF",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 37,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/32lszqtc",
+      "id": "37",
+      "bbox": [
+        682,
+        322,
+        37,
+        1.4
+      ],
+      "geometry": "rect",
+      "fillColor": "#4E8DFF",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 38,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wb2hwfyx",
+      "id": "38",
+      "bbox": [
+        717,
+        318,
+        9,
+        9
+      ],
+      "rotation": 90,
+      "geometry": "triangle",
+      "fillColor": "#4E8DFF",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 39,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lwval87e",
+      "id": "39",
+      "name": "bridge-up-arrow",
+      "bbox": [
+        604,
+        431,
+        62,
+        92
+      ],
+      "geometry": "upArrow",
+      "fillColor": "rgba(255, 255, 255, 0.4)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 40,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/dsji5sne",
+      "id": "40",
+      "name": "bridge-label-plate",
+      "bbox": [
+        454,
+        535,
+        372,
+        70
+      ],
+      "geometry": "ellipse",
+      "fillColor": "rgba(233, 245, 255, 1)",
+      "lineColor": "#91C6FF",
+      "lineWidth": 1.2
+    },
+    {
+      "order": 41,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/o7qpg3ex",
+      "id": "41",
+      "name": "bridge-editable-label",
+      "bbox": [
+        535,
+        556,
+        200,
+        35
+      ],
+      "geometry": "rect",
+      "text": "建立桥梁",
+      "textPreview": "建立桥梁",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 24,
+        "typeface": "PingFang SC",
+        "color": "#0040D8",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "建立桥梁"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "建立桥梁",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "typeface": "PingFang SC",
+            "color": "#0040D8",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "建立桥梁",
+              "fontSize": 24,
+              "typeface": "PingFang SC",
+              "color": "#0040D8",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 42,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vmtwra5g",
+      "id": "42",
+      "name": "right-panel",
+      "bbox": [
+        879,
+        236,
+        352,
+        416
+      ],
+      "geometry": "roundRect",
+      "fillColor": "rgba(242, 248, 255, 1)",
+      "lineColor": "#FFFFFF",
+      "lineWidth": 1.8
+    },
+    {
+      "order": 43,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/61032lsz",
+      "id": "43",
+      "name": "重点解决的问题-tab-fill",
+      "bbox": [
+        955,
+        240,
+        206,
+        38
+      ],
+      "geometry": "rect",
+      "fillColor": "#1D73FF",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 44,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/d4vmtwra",
+      "id": "44",
+      "name": "重点解决的问题-tab-left-cut",
+      "bbox": [
+        935,
+        240,
+        42,
+        38
+      ],
+      "geometry": "triangle",
+      "fillColor": "#F1F7FF",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 45,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/oj2t83it",
+      "id": "45",
+      "name": "重点解决的问题-tab-right-cut",
+      "bbox": [
+        1140,
+        240,
+        42,
+        38
+      ],
+      "rotation": 180,
+      "geometry": "triangle",
+      "fillColor": "#F1F7FF",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 46,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vy90je9c",
+      "id": "46",
+      "name": "重点解决的问题-tab-label",
+      "bbox": [
+        955,
+        244,
+        206,
+        28
+      ],
+      "geometry": "rect",
+      "text": "重点解决的问题",
+      "textPreview": "重点解决的问题",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 20,
+        "typeface": "PingFang SC",
+        "color": "#FFFFFF",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "重点解决的问题"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "重点解决的问题",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "typeface": "PingFang SC",
+            "color": "#FFFFFF",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "重点解决的问题",
+              "fontSize": 20,
+              "typeface": "PingFang SC",
+              "color": "#FFFFFF",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 47,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6dcbulwv",
+      "id": "47",
+      "name": "right-inner-card",
+      "bbox": [
+        893,
+        289,
+        324,
+        347
+      ],
+      "geometry": "roundRect",
+      "fillColor": "rgba(248, 251, 255, 1)",
+      "lineColor": "#FFFFFF",
+      "lineWidth": 1
+    },
+    {
+      "order": 48,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/u9knih4b",
+      "id": "48",
+      "bbox": [
+        912,
+        310,
+        48,
+        48
+      ],
+      "alt": "right-doc.png",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "9cb7ae88-2594-49d9-996d-767102871e84",
+        "contentType": "image/png",
+        "byteLength": 7256
+      }
+    },
+    {
+      "order": 49,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/onyd0z61",
+      "id": "49",
+      "bbox": [
+        970,
+        332,
+        8,
+        8
+      ],
+      "rotation": 90,
+      "geometry": "triangle",
+      "fillColor": "#0F63FF",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 50,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ylc7u54z",
+      "id": "50",
+      "name": "right-海量非结构化资料",
+      "bbox": [
+        988,
+        315,
+        252,
+        45
+      ],
+      "geometry": "rect",
+      "text": "海量非结构化资料的数据治理",
+      "textPreview": "海量非结构化资料的数据治理",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 16,
+        "typeface": "PingFang SC",
+        "color": "#171B25",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "海量非结构化资料的数据治理"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "海量非结构化资料的数据治理",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "PingFang SC",
+            "color": "#171B25",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "海量非结构化资料的数据治理",
+              "fontSize": 16,
+              "typeface": "PingFang SC",
+              "color": "#171B25",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 51,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/kb6xkf6d",
+      "id": "51",
+      "bbox": [
+        912,
+        379,
+        48,
+        48
+      ],
+      "alt": "right-network.png",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "0e0134c4-86eb-4169-9287-b4123448945e",
+        "contentType": "image/png",
+        "byteLength": 7755
+      }
+    },
+    {
+      "order": 52,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gr2p8nqx",
+      "id": "52",
+      "bbox": [
+        970,
+        401,
+        8,
+        8
+      ],
+      "rotation": 90,
+      "geometry": "triangle",
+      "fillColor": "#0F63FF",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 53,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9cvixcze",
+      "id": "53",
+      "name": "right-多源数据贯通与隐",
+      "bbox": [
+        988,
+        384,
+        252,
+        45
+      ],
+      "geometry": "rect",
+      "text": "多源数据贯通与隐含价值挖掘",
+      "textPreview": "多源数据贯通与隐含价值挖掘",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 16,
+        "typeface": "PingFang SC",
+        "color": "#171B25",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "多源数据贯通与隐含价值挖掘"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "多源数据贯通与隐含价值挖掘",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "PingFang SC",
+            "color": "#171B25",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "多源数据贯通与隐含价值挖掘",
+              "fontSize": 16,
+              "typeface": "PingFang SC",
+              "color": "#171B25",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 54,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/9knih4by",
+      "id": "54",
+      "bbox": [
+        912,
+        448,
+        48,
+        48
+      ],
+      "alt": "right-graph.png",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "7a155563-9568-4dbc-b847-02c2eaff52e5",
+        "contentType": "image/png",
+        "byteLength": 7656
+      }
+    },
+    {
+      "order": 55,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nih4byhg",
+      "id": "55",
+      "bbox": [
+        970,
+        470,
+        8,
+        8
+      ],
+      "rotation": 90,
+      "geometry": "triangle",
+      "fillColor": "#0F63FF",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 56,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/g3ex0nux",
+      "id": "56",
+      "name": "right-人、企、单位、项",
+      "bbox": [
+        988,
+        453,
+        252,
+        62
+      ],
+      "geometry": "rect",
+      "text": "人、企、单位、项目、\n资金图谱搭建与疑点挖掘",
+      "textPreview": "人、企、单位、项目、 | 资金图谱搭建与疑点挖掘",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 16,
+        "typeface": "PingFang SC",
+        "color": "#171B25",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "人、企、单位、项目、"
+          },
+          {
+            "index": 2,
+            "text": "资金图谱搭建与疑点挖掘"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "人、企、单位、项目、",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "PingFang SC",
+            "color": "#171B25",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "人、企、单位、项目、",
+              "fontSize": 16,
+              "typeface": "PingFang SC",
+              "color": "#171B25",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "资金图谱搭建与疑点挖掘",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "PingFang SC",
+            "color": "#171B25",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "资金图谱搭建与疑点挖掘",
+              "fontSize": 16,
+              "typeface": "PingFang SC",
+              "color": "#171B25",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 57,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/2t83itgf",
+      "id": "57",
+      "bbox": [
+        912,
+        529,
+        48,
+        48
+      ],
+      "alt": "right-check.png",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "def5aaa3-b293-4e61-a1ae-4436fd1c728a",
+        "contentType": "image/png",
+        "byteLength": 7562
+      }
+    },
+    {
+      "order": 58,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/y1kre1w7",
+      "id": "58",
+      "bbox": [
+        970,
+        551,
+        8,
+        8
+      ],
+      "rotation": 90,
+      "geometry": "triangle",
+      "fillColor": "#0F63FF",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 59,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rmhk3q5o",
+      "id": "59",
+      "name": "right-大批量审计核查任",
+      "bbox": [
+        988,
+        534,
+        252,
+        45
+      ],
+      "geometry": "rect",
+      "text": "大批量审计核查任务自动化执行",
+      "textPreview": "大批量审计核查任务自动化执行",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 16,
+        "typeface": "PingFang SC",
+        "color": "#171B25",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "大批量审计核查任务自动化执行"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "大批量审计核查任务自动化执行",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "PingFang SC",
+            "color": "#171B25",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "大批量审计核查任务自动化执行",
+              "fontSize": 16,
+              "typeface": "PingFang SC",
+              "color": "#171B25",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 60,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/wra5gbq1",
+      "id": "60",
+      "bbox": [
+        912,
+        599,
+        48,
+        48
+      ],
+      "alt": "right-team.png",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "0fe95924-a1a5-452b-a81f-050cdad4d905",
+        "contentType": "image/png",
+        "byteLength": 7786
+      }
+    },
+    {
+      "order": 61,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/adsji5sn",
+      "id": "61",
+      "bbox": [
+        970,
+        621,
+        8,
+        8
+      ],
+      "rotation": 90,
+      "geometry": "triangle",
+      "fillColor": "#0F63FF",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 62,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/h4byhgn2",
+      "id": "62",
+      "name": "right-审计思路沉淀与团",
+      "bbox": [
+        988,
+        604,
+        252,
+        45
+      ],
+      "geometry": "rect",
+      "text": "审计思路沉淀与团队共享",
+      "textPreview": "审计思路沉淀与团队共享",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 16,
+        "typeface": "PingFang SC",
+        "color": "#171B25",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "审计思路沉淀与团队共享"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "审计思路沉淀与团队共享",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "PingFang SC",
+            "color": "#171B25",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "审计思路沉淀与团队共享",
+              "fontSize": 16,
+              "typeface": "PingFang SC",
+              "color": "#171B25",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 63,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/sji5snel",
+      "id": "63",
+      "bbox": [
+        904,
+        356,
+        300,
+        1.2
+      ],
+      "geometry": "rect",
+      "fillColor": "#C9DFFF",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 64,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3m94fu18",
+      "id": "64",
+      "bbox": [
+        904,
+        425,
+        300,
+        1.2
+      ],
+      "geometry": "rect",
+      "fillColor": "#C9DFFF",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 65,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/a5gbq1or",
+      "id": "65",
+      "bbox": [
+        904,
+        500,
+        300,
+        1.2
+      ],
+      "geometry": "rect",
+      "fillColor": "#C9DFFF",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 66,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lszqtcj6",
+      "id": "66",
+      "bbox": [
+        904,
+        569,
+        300,
+        1.2
+      ],
+      "geometry": "rect",
+      "fillColor": "#C9DFFF",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

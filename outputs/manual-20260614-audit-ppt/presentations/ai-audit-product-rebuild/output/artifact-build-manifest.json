@@ -1,0 +1,27 @@
+{
+  "output": "/Users/mac/Desktop/workspace/outputs/manual-20260614-audit-ppt/presentations/ai-audit-product-rebuild/output/AI原生审计产品体系-技术链路重构.pptx",
+  "outputBytes": 510241,
+  "slideCount": 1,
+  "slideSize": {
+    "width": 1280,
+    "height": 720
+  },
+  "previewDir": "/Users/mac/Desktop/workspace/outputs/manual-20260614-audit-ppt/presentations/ai-audit-product-rebuild/preview",
+  "previewPaths": [
+    "/Users/mac/Desktop/workspace/outputs/manual-20260614-audit-ppt/presentations/ai-audit-product-rebuild/preview/slide-01.png"
+  ],
+  "layoutDir": "/Users/mac/Desktop/workspace/outputs/manual-20260614-audit-ppt/presentations/ai-audit-product-rebuild/layout/final",
+  "layoutResults": [
+    {
+      "layoutPath": "/Users/mac/Desktop/workspace/outputs/manual-20260614-audit-ppt/presentations/ai-audit-product-rebuild/layout/final/slide-01.layout.json"
+    }
+  ],
+  "slides": [
+    {
+      "index": 1,
+      "requestedSlideNumber": 1,
+      "modulePath": "/Users/mac/Desktop/workspace/outputs/manual-20260614-audit-ppt/presentations/ai-audit-product-rebuild/slides/slide-01.mjs",
+      "exportName": "slide01"
+    }
+  ]
+}

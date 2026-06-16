@@ -1,0 +1,11 @@
+story: 4
+specificity: 4
+rhythm: 4
+whitespace: 4
+chart clarity: 4
+typography: 4
+restraint: 4
+precision: 4
+coherence: 4
+reference delta: n/a
+notes: Single-slide reference reconstruction. The QA gate is fidelity plus editability rather than reference-beating.

@@ -1,0 +1,214 @@
+{
+  "version": "2.13",
+  "children": [
+    {
+      "type": "frame",
+      "id": "pageRoot",
+      "name": "工作台左侧边栏 · Vue 同步设计源样例",
+      "x": 0,
+      "y": 0,
+      "clip": true,
+      "width": 1180,
+      "height": 900,
+      "fill": "#f8fafcff",
+      "layout": "horizontal",
+      "gap": 32,
+      "padding": [40, 40, 40, 40],
+      "children": [
+        {
+          "type": "frame",
+          "id": "sidebarExpanded",
+          "name": "Sidebar / 展开态 / maps-to: .workbench-v2-sidebar",
+          "width": 260,
+          "height": 820,
+          "fill": "#e8f2ffff",
+          "layout": "vertical",
+          "gap": 0,
+          "padding": [0, 12, 8, 12],
+          "children": [
+            {
+              "type": "frame",
+              "id": "brand",
+              "name": "Brand / maps-to: .workbench-v2-brand",
+              "width": "fill_container",
+              "height": 48,
+              "layout": "horizontal",
+              "gap": 10,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "brandMark",
+                  "name": "Logo / maps-to: .workbench-v2-brand__mark",
+                  "width": 32,
+                  "height": 32,
+                  "fill": "#1d72f3ff",
+                  "cornerRadius": 8,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "brandIcon",
+                      "name": "工作台",
+                      "width": 16,
+                      "height": 16,
+                      "icon": "landmark",
+                      "library": "lucide",
+                      "fill": "#ffffffff"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "brandText",
+                  "name": "品牌文字 / hidden-when-collapsed",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 2,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "brandName",
+                      "name": "品牌名",
+                      "content": "浙江审计综合分析",
+                      "fontFamily": "PingFang SC",
+                      "fontSize": 16,
+                      "fontWeight": "700",
+                      "fill": "#14181fff"
+                    },
+                    {
+                      "type": "text",
+                      "id": "brandSub",
+                      "name": "品牌副标题",
+                      "content": "Audit Analytics",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fill": "#6d7888ff"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "collapseButton",
+                  "name": "收起按钮 / maps-to: collapseSidebar",
+                  "content": "▯",
+                  "fontSize": 18,
+                  "fill": "#3e4652ff"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "primaryActions",
+              "name": "主操作 / maps-to: .workbench-v2-sidebar-actions",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 0,
+              "padding": [12, 0, 12, 0],
+              "children": [
+                { "type": "text", "id": "newChat", "name": "Nav / 新建会话", "content": "+  新建会话", "fontSize": 14, "fontWeight": "600", "fill": "#1f2a37ff", "height": 36 },
+                { "type": "text", "id": "newTask", "name": "Nav / 新建任务", "content": "+  新建任务", "fontSize": 14, "fontWeight": "600", "fill": "#1f2a37ff", "height": 36 },
+                { "type": "text", "id": "search", "name": "Nav / 搜索", "content": "⌕  搜索", "fontSize": 14, "fontWeight": "600", "fill": "#1f2a37ff", "height": 36 },
+                { "type": "text", "id": "skill", "name": "Nav / 技能", "content": "▱  技能", "fontSize": 14, "fontWeight": "600", "fill": "#1f2a37ff", "height": 36 }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "sidebarList",
+              "name": "历史列表 / maps-to: .workbench-v2-conversation-list",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "gap": 7,
+              "padding": [24, 0, 0, 0],
+              "children": [
+                { "type": "text", "id": "projectTitle", "name": "项目名", "content": "A市城建集团年度经济责任审计", "fontSize": 14, "fontWeight": "500", "fill": "#344154ff" },
+                { "type": "text", "id": "convHead", "name": "对话分组标题", "content": "⌄  对话   4", "fontSize": 14, "fill": "#556273ff", "height": 24 },
+                { "type": "text", "id": "conv1", "name": "对话 / 初始化引导样例", "content": "▤  初始化引导样例                         6 小时", "fontSize": 14, "fill": "#3f4b5dff", "height": 36 },
+                { "type": "text", "id": "conv2", "name": "对话 / 删除结果", "content": "▤  请帮我删除结果树里...              7 小时", "fontSize": 14, "fill": "#3f4b5dff", "height": 36 },
+                { "type": "text", "id": "conv3", "name": "对话 / 合同付款", "content": "▤  梳理合同付款节点与...              8 小时", "fontSize": 14, "fill": "#3f4b5dff", "height": 36 },
+                {
+                  "type": "frame",
+                  "id": "activeConversation",
+                  "name": "Active Conversation / maps-to: .workbench-v2-conversation.is-active",
+                  "width": "fill_container",
+                  "height": 36,
+                  "fill": "#d0dcebff",
+                  "cornerRadius": 6,
+                  "children": [
+                    { "type": "text", "id": "conv4", "name": "当前对话文本", "content": "▤  总结当前工作台中的主...              1 周", "fontSize": 14, "fill": "#3f4b5dff", "x": 8, "y": 9 }
+                  ]
+                },
+                { "type": "text", "id": "taskHead", "name": "任务分组标题", "content": "⌄  任务   7", "fontSize": 14, "fill": "#556273ff", "height": 24 },
+                { "type": "text", "id": "task1", "name": "任务 / 往来函证", "content": "☷  往来函证抽样核对                         ◌", "fontSize": 14, "fill": "#3f4b5dff", "height": 36 },
+                {
+                  "type": "frame",
+                  "id": "activeTask",
+                  "name": "Active Task / maps-to: .workbench-v2-conversation--task.is-active",
+                  "width": "fill_container",
+                  "height": 36,
+                  "fill": "#d0dcebff",
+                  "cornerRadius": 6,
+                  "children": [
+                    { "type": "text", "id": "task2", "name": "当前任务文本", "content": "▦  企业工商信息批量查询                    ◌", "fontSize": 14, "fill": "#3f4b5dff", "x": 8, "y": 9 }
+                  ]
+                },
+                { "type": "text", "id": "task3", "name": "任务 / 采购异常", "content": "☷  采购异常专项扫描                         ×", "fontSize": 14, "fill": "#3f4b5dff", "height": 36 }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "settings",
+              "name": "设置 / maps-to: .workbench-v2-sidebar-footer",
+              "content": "⚙  设置",
+              "fontSize": 14,
+              "fontWeight": "600",
+              "fill": "#1f2a37ff",
+              "height": 36
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "sidebarCollapsed",
+          "name": "Sidebar / 收起态 / maps-to: .workbench-v2-shell.is-sidebar-collapsed",
+          "width": 64,
+          "height": 820,
+          "fill": "#e8f2ffff",
+          "layout": "vertical",
+          "gap": 0,
+          "alignItems": "center",
+          "padding": [0, 8, 8, 8],
+          "children": [
+            { "type": "frame", "id": "collapsedLogo", "name": "Logo 展开入口", "width": 32, "height": 32, "y": 8, "fill": "#1d72f3ff", "cornerRadius": 8 },
+            { "type": "text", "id": "collapsedPlus1", "name": "Icon / 新建会话", "content": "+", "fontSize": 20, "fill": "#344154ff", "height": 36 },
+            { "type": "text", "id": "collapsedPlus2", "name": "Icon / 新建任务", "content": "+", "fontSize": 20, "fill": "#344154ff", "height": 36 },
+            { "type": "text", "id": "collapsedSearch", "name": "Icon / 搜索", "content": "⌕", "fontSize": 18, "fill": "#344154ff", "height": 36 },
+            { "type": "text", "id": "collapsedSkill", "name": "Icon / 技能", "content": "▱", "fontSize": 18, "fill": "#344154ff", "height": 36 },
+            { "type": "text", "id": "collapsedSettings", "name": "Icon / 设置", "content": "⚙", "fontSize": 18, "fill": "#344154ff", "height": 36 }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "syncNotes",
+          "name": "Vue 同步映射说明",
+          "width": 420,
+          "height": 820,
+          "fill": "#ffffffff",
+          "cornerRadius": 8,
+          "layout": "vertical",
+          "gap": 14,
+          "padding": [24, 24, 24, 24],
+          "children": [
+            { "type": "text", "id": "noteTitle", "content": "侧边栏设计 → Vue 同步规则", "fontSize": 22, "fontWeight": "700", "fill": "#111827ff" },
+            { "type": "text", "id": "note1", "content": "1. 节点命名保留 maps-to，直接对应 workbench-v2.css 与 demo-cmp-freeaudit-v2.js。", "fontSize": 15, "fill": "#374151ff" },
+            { "type": "text", "id": "note2", "content": "2. 展开态宽度 260px；收起态宽度 64px；品牌文字、列表与收起按钮在收起态隐藏。", "fontSize": 15, "fill": "#374151ff" },
+            { "type": "text", "id": "note3", "content": "3. Pencil 适合作为结构化设计源：可读取节点、变量、尺寸，再由 Codex 同步到 Vue。", "fontSize": 15, "fill": "#374151ff" },
+            { "type": "text", "id": "note4", "content": "4. 每次同步流程：读取选中节点 → 输出变更清单 → 用户确认 → 修改 Vue CSS/结构 → 截图验收。", "fontSize": 15, "fill": "#374151ff" }
+          ]
+        }
+      ]
+    }
+  ]
+}

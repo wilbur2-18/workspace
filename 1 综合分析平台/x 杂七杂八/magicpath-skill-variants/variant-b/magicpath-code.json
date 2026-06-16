@@ -1,0 +1,37 @@
+{
+  "mode": "edit",
+  "componentId": "415850851010252800",
+  "projectId": "415699548976087040",
+  "selectedRevisionId": "415852905480998912",
+  "baseRevisionId": "415852905480998912",
+  "jobId": "414161563243646976-external-agent-415857421467127808",
+  "generatedName": "fiercely-month-5953",
+  "name": "技能页·变体B-卡片样式",
+  "selectedImages": [],
+  "editableFiles": [
+    {
+      "path": "src/App.tsx",
+      "sha256": "13edb83568a0cd51fc20f8a103c017f48a9cf54a8b4382f5071f017c68e689f0"
+    },
+    {
+      "path": "src/components/generated/B.tsx",
+      "sha256": "af0b507f88c48fedd0d9c3e998a5c3f4e2b949581815f62a000eb97d6fccee7f"
+    },
+    {
+      "path": "src/components/generated/Icon.tsx",
+      "sha256": "095afdce6723c41a06d1013dabfc969bea391db7ad25317573e080b95b51c779"
+    },
+    {
+      "path": "src/components/generated/shared.tsx",
+      "sha256": "31dc92934a4676df4fb5956ca49928cdb0da01b1052bd292b952772037858c03"
+    },
+    {
+      "path": "src/components/generated/skillData.ts",
+      "sha256": "418fe732db527a10f07d1ddc13d6e8b119e0e59c57432178bfc076c701d82c8a"
+    },
+    {
+      "path": "src/index.css",
+      "sha256": "5434dd6ca188142aacd49d427e1308e03de88ed8447fafe72564969ecc82078a"
+    }
+  ]
+}

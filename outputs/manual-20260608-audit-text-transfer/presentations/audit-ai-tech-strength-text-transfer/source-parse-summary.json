@@ -1,0 +1,192 @@
+[
+  {
+    "page": 1,
+    "title": "封面",
+    "bodyLines": 13
+  },
+  {
+    "page": 2,
+    "title": "目录",
+    "bodyLines": 10
+  },
+  {
+    "page": 3,
+    "title": "审计信息化已经奠定基础，但正在进入智能化深水区",
+    "bodyLines": 26
+  },
+  {
+    "page": 4,
+    "title": "大模型带来新可能，但通用 AI 难以直接承接审计作业",
+    "bodyLines": 24
+  },
+  {
+    "page": 5,
+    "title": "AI + 审计真正要解决的是完整作业链路",
+    "bodyLines": 27
+  },
+  {
+    "page": 6,
+    "title": "我们的解法：AI 原生审计产品体系",
+    "bodyLines": 22
+  },
+  {
+    "page": 7,
+    "title": "解法路径：连接存量数据、实际业务与智能体能力",
+    "bodyLines": 24
+  },
+  {
+    "page": 8,
+    "title": "本章收束：从单点工具走向 AI 原生审计技术体系",
+    "bodyLines": 18
+  },
+  {
+    "page": 9,
+    "title": "3+1 AI 原生审计技术底座",
+    "bodyLines": 18
+  },
+  {
+    "page": 10,
+    "title": "四层能力破局：从数据到作业闭环",
+    "bodyLines": 20
+  },
+  {
+    "page": 11,
+    "title": "平台定位与能力底座",
+    "bodyLines": 21
+  },
+  {
+    "page": 12,
+    "title": "基础智能应用能力",
+    "bodyLines": 24
+  },
+  {
+    "page": 13,
+    "title": "票据溯源与供应链追查",
+    "bodyLines": 24
+  },
+  {
+    "page": 14,
+    "title": "向后赋能的数据治理与图谱智能体",
+    "bodyLines": 25
+  },
+  {
+    "page": 15,
+    "title": "本章收束：智能体平台向后赋能",
+    "bodyLines": 18
+  },
+  {
+    "page": 16,
+    "title": "产品架构与功能模块",
+    "bodyLines": 19
+  },
+  {
+    "page": 17,
+    "title": "重点解决的真实数据问题",
+    "bodyLines": 32
+  },
+  {
+    "page": 18,
+    "title": "任务调度与作业机制",
+    "bodyLines": 24
+  },
+  {
+    "page": 19,
+    "title": "核心能力：数据漫游与文本结构化",
+    "bodyLines": 32
+  },
+  {
+    "page": 20,
+    "title": "工商变更治理与企业历史股权治理",
+    "bodyLines": 37
+  },
+  {
+    "page": 21,
+    "title": "招股书提取",
+    "bodyLines": 27
+  },
+  {
+    "page": 22,
+    "title": "实体漫游搜集",
+    "bodyLines": 29
+  },
+  {
+    "page": 23,
+    "title": "数据图谱平台：关系建模与线索挖掘",
+    "bodyLines": 31
+  },
+  {
+    "page": 24,
+    "title": "图谱基础管理与构建",
+    "bodyLines": 48
+  },
+  {
+    "page": 25,
+    "title": "图谱分析、推理与批量任务",
+    "bodyLines": 50
+  },
+  {
+    "page": 26,
+    "title": "案例：关联穿透审计",
+    "bodyLines": 57
+  },
+  {
+    "page": 27,
+    "title": "贯通案例：工程项目供应链",
+    "bodyLines": 49
+  },
+  {
+    "page": 28,
+    "title": "综合分析平台：任务执行与应用承接",
+    "bodyLines": 26
+  },
+  {
+    "page": 29,
+    "title": "OCR 引擎与文档智能处理",
+    "bodyLines": 34
+  },
+  {
+    "page": 30,
+    "title": "多源数据融合与统一资源接入",
+    "bodyLines": 30
+  },
+  {
+    "page": 31,
+    "title": "审计助手",
+    "bodyLines": 30
+  },
+  {
+    "page": 32,
+    "title": "任务模块：单次任务与跑批任务",
+    "bodyLines": 31
+  },
+  {
+    "page": 33,
+    "title": "技能",
+    "bodyLines": 37
+  },
+  {
+    "page": 34,
+    "title": "应用中心",
+    "bodyLines": 32
+  },
+  {
+    "page": 35,
+    "title": "审计案例：投资审计",
+    "bodyLines": 31
+  },
+  {
+    "page": 36,
+    "title": "案例：大批量材料自动化批量审计",
+    "bodyLines": 36
+  },
+  {
+    "page": 37,
+    "title": "重塑人机协同关系",
+    "bodyLines": 33
+  },
+  {
+    "page": 38,
+    "title": "AI 原生审计产品体系的核心价值",
+    "bodyLines": 35
+  }
+]

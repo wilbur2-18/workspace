@@ -1,0 +1,8 @@
+thesis: 综合分析平台将数据、知识、图谱、智能体和审计成果统一入口化，并下沉为审计作业执行能力。
+audience: 产品、审计业务与方案评审人员
+one-line arc: 左侧说明统一工作台承接多源数据，中部表达能力汇聚，右侧说明 AI 执行层进入真实审计作业，底部补充三类平台化能力。
+slide 1:
+  claim: 人机协同的统一工作入口与审计作业执行层
+  proof object: platform architecture diagram rebuilt with editable text, shapes, and generic SVG/icon primitives
+  source: /Users/mac/Downloads/ChatGPT Image 2026年6月8日 23_52_03 (1).png
+  omission notes: complex decorative mesh and detailed icon micro-strokes are simplified to editable/vector equivalents

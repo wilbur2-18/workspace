@@ -1,0 +1,28 @@
+{
+  "output": "/Users/mac/Desktop/workspace/outputs/manual-20260614-ref-image-ppt/presentations/human-ai-work-entry/output/人机协同统一工作入口与审计作业执行层.pptx",
+  "outputBytes": 597822,
+  "slideCount": 1,
+  "slideSize": {
+    "width": 1280,
+    "height": 720
+  },
+  "previewDir": "/Users/mac/Desktop/workspace/outputs/manual-20260614-ref-image-ppt/presentations/human-ai-work-entry/preview",
+  "previewPaths": [
+    "/Users/mac/Desktop/workspace/outputs/manual-20260614-ref-image-ppt/presentations/human-ai-work-entry/preview/slide-01.png"
+  ],
+  "layoutDir": "/Users/mac/Desktop/workspace/outputs/manual-20260614-ref-image-ppt/presentations/human-ai-work-entry/layout/final",
+  "layoutResults": [
+    {
+      "layoutPath": "/Users/mac/Desktop/workspace/outputs/manual-20260614-ref-image-ppt/presentations/human-ai-work-entry/layout/final/slide-01.layout.json"
+    }
+  ],
+  "contactSheet": "/Users/mac/Desktop/workspace/outputs/manual-20260614-ref-image-ppt/presentations/human-ai-work-entry/preview/contact-sheet.png",
+  "slides": [
+    {
+      "index": 1,
+      "requestedSlideNumber": 1,
+      "modulePath": "/Users/mac/Desktop/workspace/outputs/manual-20260614-ref-image-ppt/presentations/human-ai-work-entry/slides/slide-01.mjs",
+      "exportName": "slide01"
+    }
+  ]
+}

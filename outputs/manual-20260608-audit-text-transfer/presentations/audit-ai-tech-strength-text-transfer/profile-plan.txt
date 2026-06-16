@@ -1,0 +1,9 @@
+task mode: create
+primary deck-profile: product-platform
+secondary gates: engineering-platform terminology should remain unchanged
+required proof objects: none; this is a basic text-transfer deck for later manual layout
+source requirements: preserve every page split and page title from outputs/audit-ai-tech-strength-ppt内容正式稿-20260607.md
+asset requirements: no external assets
+brand constraints: no invented logos or identity marks
+qa gates: 38 editable slides exported; source page titles present; PPTX opens as a non-empty file
+known missing inputs: final visual layout is intentionally out of scope

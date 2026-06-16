@@ -1,0 +1,33 @@
+{
+  "mode": "edit",
+  "componentId": "415779874716917760",
+  "projectId": "415699548976087040",
+  "selectedRevisionId": "415985809112588288",
+  "baseRevisionId": "415985809112588288",
+  "jobId": "414161563243646976-external-agent-415988239720128512",
+  "generatedName": "steady-gate-2175",
+  "name": "技能列表·Codex风格",
+  "selectedImages": [],
+  "editableFiles": [
+    {
+      "path": "src/App.tsx",
+      "sha256": "617857c2a4d035c290c2ce61dc3a1df3cad906363cb2026c3d41cc53fd7ab1e5"
+    },
+    {
+      "path": "src/components/generated/Codex.tsx",
+      "sha256": "33d0370258c071bcbb1f6d5ed1aa1ca87e9ac43abd753cb218373942a5238038"
+    },
+    {
+      "path": "src/components/generated/Icon.tsx",
+      "sha256": "decc18990c83ec31c5660c5cf3d3e48a4c0aebc65c27eed6a3f20b7493c2d370"
+    },
+    {
+      "path": "src/components/generated/skillData.ts",
+      "sha256": "ce368a362dd70f656595c056620b4315ea65caf8bc1c1af5867bbf93e34f7540"
+    },
+    {
+      "path": "src/index.css",
+      "sha256": "e544e300b2af053f7c5818f7e660c1b9a3991129b1b4325dc783f520773633e2"
+    }
+  ]
+}
