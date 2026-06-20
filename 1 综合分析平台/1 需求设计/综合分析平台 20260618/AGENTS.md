@@ -46,5 +46,5 @@ This directory is a high-fidelity static prototype for 综合分析平台. Work 
 ## Validation Expectations
 
 - `node scripts/check-manifest.js` should pass after code or style changes.
-- `scripts/audit-token-coverage.mjs` should keep `should-fix=0`; remaining `review` items are acceptable only when they are layout, line-height, or intentionally strong emphasis cases.
+- The shared token coverage check invoked by `scripts/check-manifest.js` should keep `should-fix=0`; remaining `review` items are acceptable only when they are layout, line-height, or intentionally strong emphasis cases.
 - Runtime CSS must remain Chrome 109 compatible: do not use `color-mix()`, `oklch()`, `lab()`, `lch()`, modern slash RGB syntax, or 8-digit hex in runtime styles.

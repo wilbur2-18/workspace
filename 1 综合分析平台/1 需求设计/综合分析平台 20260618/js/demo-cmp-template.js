@@ -1,8 +1,7 @@
 (function () {
   const app = window.__DEMO_APP;
   const Modal = window.antd && window.antd.Modal;
-  const templateUtils = window.__DEMO_TEMPLATE_UTILS || {};
-  const DEFAULT_TEMPLATE_SORT = templateUtils.DEFAULT_TEMPLATE_SORT || 'updated_desc';
+  const DEFAULT_TEMPLATE_SORT = 'updated_desc';
   const TEMPLATE_SKILL_LIBRARY = { SHARED: 'shared', MARKET: 'market' };
   const TEMPLATE_CONFIRM_WRAP_CLASS = (window.dsConfirm && window.dsConfirm.WRAP_CLASS) || 'modal-w-520';
   const TEMPLATE_PROJECT_FALLBACKS = [

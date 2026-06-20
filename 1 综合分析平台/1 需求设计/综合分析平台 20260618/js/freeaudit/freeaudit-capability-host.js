@@ -171,7 +171,7 @@
               </template>
               <template v-else>
               <div class="workbench-v2-assistant-tour-frame" data-tour-id="workbench-assistant-frame" aria-hidden="true"></div>
-              <FreeAuditChatPanel :host="freeAuditChatHost" />
+              <ChatPanelShell :host="freeAuditChatHost" />
               <ChatComposer :host="freeAuditChatHost">
               <div
                 class="nlm-chat-input-wrap"

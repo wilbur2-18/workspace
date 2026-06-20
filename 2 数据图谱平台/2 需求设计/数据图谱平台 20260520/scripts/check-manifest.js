@@ -1,8 +1,11 @@
-const fs = require('fs');
-const path = require('path');
-const childProcess = require('child_process');
+import fs from 'node:fs';
+import path from 'node:path';
+import childProcess from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
+const sharedScriptsRoot = path.resolve(root, '../../..', 'x 模板/prototype-checks/scripts');
 const required = [
   'demo.html',
   'README.md',
@@ -72,7 +75,7 @@ const governanceScripts = [
 
 console.log('check-manifest: running prototype governance checks');
 for (const script of governanceScripts) {
-  const result = childProcess.spawnSync('node', [path.join(root, 'scripts', script)], { stdio: 'inherit' });
+  const result = childProcess.spawnSync(process.execPath, [path.join(sharedScriptsRoot, script), root], { stdio: 'inherit' });
   if (result.status !== 0) process.exit(result.status || 1);
 }
 console.log('check-manifest: prototype governance checks completed');

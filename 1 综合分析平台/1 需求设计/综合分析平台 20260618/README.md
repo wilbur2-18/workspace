@@ -22,12 +22,10 @@
 | `assets/css/freeaudit/workbench-v2.css` | 当前审计工作台外壳、左侧栏、主对话区嵌入和右侧工具栏样式。 |
 | `assets/css/skill-config/skill-config.css` | 技能库与技能配置弹窗样式。 |
 | `assets/css/project/`、`assets/css/template/` | 工作台列表与技能库后续业务样式归档目录，当前仅作为业务 CSS 分区预留。 |
-| `assets/css/freeaudit/freeaudit.css` | 审计助手样式兼容入口，目前仅保留拆分说明。 |
 | `assets/demo-icon.css` | IconPark `DsIcon` 基础样式（旋转、尺寸）。 |
 | `assets/generated/` | 运行时样式引用的生成资源，例如一级页面背景图。 |
 | `assets/lib/iconpark-subset.js` | IconPark Outline 子集（运行时 SVG 数据）。 |
 | `assets/lib/` | 本地依赖资源。 |
-| `assets/webfonts/` | 旧字体图标迁移保留资源，不在当前运行链路中直接加载。 |
 | `js/core/` | 路由、应用根、启动、全局弹窗等核心运行时。 |
 | `js/data/` | 演示数据与兼容全局导出。 |
 | `js/project/` | 工作台列表与工作台主入口组件。 |
@@ -36,7 +34,7 @@
 | `js/freeaudit/demo-cmp-freeaudit-v2.js` | 当前审计工作台外壳组件，复用审计能力宿主提供的主体能力。 |
 | `js/skill-config/` | 技能配置文件树、配置校验、项目技能匹配与共享编辑器组件。 |
 | `js/` | 仍保留少量跨域组件与兼容入口，后续逐步归入上述目录。 |
-| `scripts/` | 本原型的轻量检查脚本。 |
+| `scripts/check-manifest.js` | 本原型校验入口；共享治理脚本位于工作区 `x 模板/prototype-checks/scripts/`。 |
 
 ## 维护规则
 
@@ -73,7 +71,7 @@
 - 模板中使用 `<ds-icon name="search" />`，`name` 为**逻辑名**（见 `js/demo-icon-map.js`）。
 - 加载顺序见 `demo.html`：`iconpark-subset.js` → `demo-icon-map.js` → `demo-cmp-icon.js`（须在 `demo-app-root.js` 之后）。
 - 新增图标：在 `demo-icon-map.js` 增加逻辑名映射 → 在本目录执行 `npm install`（仅首次）→ `node scripts/build-iconpark-subset.mjs` 重新生成子集。
-- 旧字体图标库已移除出运行链路；历史文件保留在 `assets/lib/_retired/`。
+- 旧字体图标库已移除出运行链路；需要追溯时查看 git 历史。
 
 ## 校验
 

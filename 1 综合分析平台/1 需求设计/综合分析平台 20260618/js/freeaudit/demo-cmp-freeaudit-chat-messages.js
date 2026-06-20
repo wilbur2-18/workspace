@@ -541,6 +541,15 @@
     `,
   });
 
+  if (!(app._context && app._context.components && app._context.components.FreeAuditChatPanel)) {
+    app.component('FreeAuditChatPanel', {
+      props: {
+        host: { type: Object, required: true },
+      },
+      template: `<ChatPanelShell :host="host" />`,
+    });
+  }
+
   app.component('ChatHeaderActions', {
     props: {
       host: { type: Object, required: true },

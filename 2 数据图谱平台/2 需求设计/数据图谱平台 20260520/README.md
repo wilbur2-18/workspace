@@ -17,7 +17,7 @@
   - `graph-workbench.js` + `graph-workbench-layout.js`：L2 图谱画布（可折叠/拖拽三栏）
   - `module-placeholder.js`：其它一级模块占位
 - `js/data/graph-data.js`：`DGP_DATA` mock（含按历史小图切换的 `getResultForHistory`）
-- `scripts/check-manifest.js`：必需文件与 JS 语法检查
+- `scripts/check-manifest.js`：必需文件、JS 语法与共享治理检查入口
 
 ## 设计边界
 
