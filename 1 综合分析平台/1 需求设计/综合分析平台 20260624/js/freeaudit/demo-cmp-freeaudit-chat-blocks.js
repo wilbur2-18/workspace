@@ -370,6 +370,11 @@
       msg: { type: Object, required: true },
       block: { type: Object, required: true },
     },
+    data() {
+      return {
+        collapsedGroupIds: {},
+      };
+    },
     computed: {
       status() {
         return String(this.block.status || 'pending');
@@ -489,6 +494,283 @@
             <span class="nlm-tool-call-line__txt">{{ rowLabel }}</span>
           </p>
         </div>
+      </div>
+    `,
+  });
+
+  app.component('DataScopeDecisionBlock', {
+    props: {
+      host: { type: Object, required: true },
+      msg: { type: Object, required: true },
+      block: { type: Object, required: true },
+    },
+    data() {
+      return {
+        collapsedGroupIds: {},
+      };
+    },
+    computed: {
+      pending() {
+        return String(this.block.status || 'pending') === 'pending';
+      },
+      visibleGroups() {
+        return this.host.dataScopeVisibleGroups ? this.host.dataScopeVisibleGroups(this.block) : [];
+      },
+      candidateGroups() {
+        return this.host.dataScopeCandidateGroups ? this.host.dataScopeCandidateGroups(this.block) : [];
+      },
+      selectedCount() {
+        return this.host.dataScopeSelectedCount ? this.host.dataScopeSelectedCount(this.block) : 0;
+      },
+      totalCount() {
+        return this.host.dataScopeTotalCount ? this.host.dataScopeTotalCount(this.block) : 0;
+      },
+      groupCount() {
+        return this.host.dataScopeGroupCount ? this.host.dataScopeGroupCount(this.block) : 0;
+      },
+      allVisibleSelected() {
+        return this.host.dataScopeAllVisibleSelected ? this.host.dataScopeAllVisibleSelected(this.block) : false;
+      },
+      candidateCounts() {
+        return this.host.dataScopeCandidateCounts ? this.host.dataScopeCandidateCounts(this.block) : { groups: 0, selected: 0, total: 0 };
+      },
+      candidateAllSelected() {
+        const rows = this.candidateGroups.reduce((list, group) => list.concat(group.tables || []), []);
+        return !!rows.length && rows.every((row) => row.selected);
+      },
+      candidatePartialSelected() {
+        const rows = this.candidateGroups.reduce((list, group) => list.concat(group.tables || []), []);
+        return rows.some((row) => row.selected) && !rows.every((row) => row.selected);
+      },
+      compact() {
+        return !this.block.detailVisible;
+      },
+    },
+    methods: {
+      groupSelected(group) {
+        const rows = group && group.tables ? group.tables : [];
+        return !!rows.length && rows.every((row) => row.selected);
+      },
+      groupPartial(group) {
+        const rows = group && group.tables ? group.tables : [];
+        return rows.some((row) => row.selected) && !rows.every((row) => row.selected);
+      },
+      groupCollapsed(group) {
+        return !!(group && this.collapsedGroupIds[group.id]);
+      },
+      toggleAll() {
+        if (this.host.toggleDataScopeAll) this.host.toggleDataScopeAll(this.block);
+      },
+      toggleGroup(group) {
+        if (this.host.toggleDataScopeGroup) this.host.toggleDataScopeGroup(this.block, group);
+      },
+      toggleCandidateAll() {
+        const rows = this.candidateGroups.reduce((list, group) => list.concat(group.tables || []), []);
+        const next = !this.candidateAllSelected;
+        rows.forEach((row) => { row.selected = next; });
+      },
+      toggleCandidateGroup(group) {
+        const rows = group && group.tables ? group.tables : [];
+        const next = !rows.length || !rows.every((row) => row.selected);
+        rows.forEach((row) => { row.selected = next; });
+      },
+      toggleTable(row) {
+        if (this.host.toggleDataScopeTable) this.host.toggleDataScopeTable(this.block, row);
+      },
+      toggleGroupExpanded(group) {
+        if (group && group.id) this.collapsedGroupIds[group.id] = !this.collapsedGroupIds[group.id];
+      },
+      addCandidates() {
+        if (this.host.addDataScopeCandidateTables) this.host.addDataScopeCandidateTables(this.block);
+      },
+      submit() {
+        if (this.host.submitDataScopeDecision) this.host.submitDataScopeDecision(this.msg, this.block);
+      },
+    },
+    template: `
+      <div class="nlm-data-scope-card" :class="{ 'is-submitted': !pending, 'is-compact': compact }" @click.stop>
+        <div class="nlm-data-scope-card__eyebrow">
+          <span class="nlm-data-scope-card__mark"><ds-icon name="circle-info" aria-hidden="true" /></span>
+          <span>数据范围确认</span>
+          <span v-if="!pending" class="nlm-data-scope-card__status">已提交</span>
+        </div>
+        <div class="nlm-data-scope-card__title">请确认本次查询的数据表范围</div>
+        <div class="nlm-data-scope-card__controls">
+          <div class="nlm-data-scope-card__count">{{ groupCount }} 个库 · 已选 {{ selectedCount }} / {{ totalCount }} 张表</div>
+          <label class="nlm-data-scope-search">
+            <ds-icon class="nlm-data-scope-search__icon" name="search" aria-hidden="true" />
+            <input v-model="block.searchText" type="search" placeholder="搜索表名" :disabled="!pending" />
+          </label>
+        </div>
+        <div class="nlm-data-scope-table" :class="{ 'is-compact': compact }">
+          <div class="nlm-data-scope-row nlm-data-scope-row--head">
+            <div class="nlm-data-scope-frozen nlm-data-scope-frozen--head">
+              <button type="button" class="nlm-data-scope-check" :class="{ 'is-checked': allVisibleSelected }" :disabled="!pending" aria-label="全选当前列表" @click="toggleAll">
+                <ds-icon v-if="allVisibleSelected" name="check" aria-hidden="true" />
+              </button>
+              <span class="nlm-data-scope-cell nlm-data-scope-cell--name">表名</span>
+            </div>
+            <span class="nlm-data-scope-cell nlm-data-scope-cell--reason">推荐理由</span>
+            <template v-if="!compact">
+              <span class="nlm-data-scope-cell">置信度</span>
+              <span class="nlm-data-scope-cell">类型</span>
+              <span class="nlm-data-scope-cell">主领域</span>
+              <span class="nlm-data-scope-cell">行数</span>
+              <span class="nlm-data-scope-cell nlm-data-scope-cell--related">关联表</span>
+            </template>
+          </div>
+          <template v-for="group in visibleGroups" :key="group.id">
+            <div
+              class="nlm-data-scope-row nlm-data-scope-row--group"
+              :class="{ 'is-collapsed': groupCollapsed(group) }"
+              role="button"
+              tabindex="0"
+              :aria-expanded="!groupCollapsed(group)"
+              @click="toggleGroupExpanded(group)"
+              @keydown.enter.prevent="toggleGroupExpanded(group)"
+              @keydown.space.prevent="toggleGroupExpanded(group)"
+            >
+              <div class="nlm-data-scope-frozen nlm-data-scope-frozen--group">
+                <button
+                  type="button"
+                  class="nlm-data-scope-check"
+                  :class="{ 'is-checked': groupSelected(group), 'is-partial': groupPartial(group) }"
+                  :disabled="!pending"
+                  :aria-label="'选择' + group.name"
+                  @click.stop="toggleGroup(group)"
+                >
+                  <ds-icon v-if="groupSelected(group)" name="check" aria-hidden="true" />
+                  <span v-else-if="groupPartial(group)" class="nlm-data-scope-check__partial"></span>
+                </button>
+                <span class="nlm-data-scope-group-name">{{ group.name }}</span>
+                <ds-icon class="nlm-data-scope-caret" name="down" aria-hidden="true" />
+              </div>
+            </div>
+            <template v-if="!groupCollapsed(group)">
+              <div v-for="row in group.tables" :key="row.id" class="nlm-data-scope-row nlm-data-scope-row--table">
+                <div class="nlm-data-scope-frozen nlm-data-scope-frozen--table">
+                  <button
+                    type="button"
+                    class="nlm-data-scope-check"
+                    :class="{ 'is-checked': row.selected }"
+                    :disabled="!pending"
+                    :aria-label="'选择' + row.name"
+                    @click="toggleTable(row)"
+                  >
+                    <ds-icon v-if="row.selected" name="check" aria-hidden="true" />
+                  </button>
+                  <span class="nlm-data-scope-indent"></span>
+                  <span class="nlm-data-scope-cell nlm-data-scope-cell--name">{{ row.name }}</span>
+                </div>
+                <span class="nlm-data-scope-cell nlm-data-scope-cell--reason">{{ row.reason }}</span>
+                <template v-if="!compact">
+                  <span class="nlm-data-scope-cell">{{ row.confidence }}</span>
+                  <span class="nlm-data-scope-cell">{{ row.type }}</span>
+                  <span class="nlm-data-scope-cell">{{ row.domain }}</span>
+                  <span class="nlm-data-scope-cell">{{ row.rows }}</span>
+                  <span class="nlm-data-scope-cell nlm-data-scope-cell--related">{{ row.related }}</span>
+                </template>
+              </div>
+            </template>
+          </template>
+        </div>
+        <button type="button" class="nlm-data-scope-add" :disabled="!pending" @click="block.addModalOpen = true">
+          <ds-icon name="plus" aria-hidden="true" />
+          <span>新增数据表</span>
+        </button>
+        <div class="nlm-data-scope-card__footer">
+          <button type="button" class="nlm-data-scope-switch" :class="{ 'is-on': block.detailVisible }" @click="block.detailVisible = !block.detailVisible">
+            <span class="nlm-data-scope-switch__track"><span class="nlm-data-scope-switch__dot"></span></span>
+            <span>显示详细信息</span>
+          </button>
+          <div class="nlm-data-scope-card__actions">
+            <button type="button" class="ds-trigger-btn nlm-chat-result-toolbar-btn nlm-result-decision-card__btn nlm-result-decision-card__btn--reject" :disabled="!pending">取消</button>
+            <button type="button" class="ds-trigger-btn nlm-chat-result-toolbar-btn nlm-result-decision-card__btn nlm-result-decision-card__btn--primary" :disabled="!pending || !selectedCount" @click="submit">
+              <span class="ds-trigger-btn__text">{{ pending ? '确认' : '已确认' }}</span>
+            </button>
+          </div>
+        </div>
+        <a-modal
+          v-model:open="block.addModalOpen"
+          title="新增数据表"
+          width="800"
+          wrapClassName="modal-data-scope-add"
+          :footer="null"
+          @cancel="block.addModalOpen = false"
+        >
+          <div class="nlm-data-scope-add-modal">
+            <div class="nlm-data-scope-card__controls">
+              <div class="nlm-data-scope-card__count">{{ candidateCounts.groups }} 个库 · 已选 {{ candidateCounts.selected }} / {{ candidateCounts.total }} 张表</div>
+              <label class="nlm-data-scope-search">
+                <ds-icon class="nlm-data-scope-search__icon" name="search" aria-hidden="true" />
+                <input v-model="block.addSearchText" type="search" placeholder="搜索表名" />
+              </label>
+            </div>
+            <div class="nlm-data-scope-table nlm-data-scope-table--candidate">
+              <div class="nlm-data-scope-row nlm-data-scope-row--head">
+                <div class="nlm-data-scope-frozen nlm-data-scope-frozen--head">
+                  <button type="button" class="nlm-data-scope-check" :class="{ 'is-checked': candidateAllSelected, 'is-partial': candidatePartialSelected }" aria-label="全选候选表" @click="toggleCandidateAll">
+                    <ds-icon v-if="candidateAllSelected" name="check" aria-hidden="true" />
+                    <span v-else-if="candidatePartialSelected" class="nlm-data-scope-check__partial"></span>
+                  </button>
+                  <span class="nlm-data-scope-cell nlm-data-scope-cell--name">表名</span>
+                </div>
+                <span class="nlm-data-scope-cell">类型</span>
+                <span class="nlm-data-scope-cell">主领域</span>
+                <span class="nlm-data-scope-cell">行数</span>
+                <span class="nlm-data-scope-cell nlm-data-scope-cell--related">关联表</span>
+              </div>
+              <template v-for="group in candidateGroups" :key="group.id">
+                <div
+                  class="nlm-data-scope-row nlm-data-scope-row--group"
+                  :class="{ 'is-collapsed': groupCollapsed(group) }"
+                  role="button"
+                  tabindex="0"
+                  :aria-expanded="!groupCollapsed(group)"
+                  @click="toggleGroupExpanded(group)"
+                  @keydown.enter.prevent="toggleGroupExpanded(group)"
+                  @keydown.space.prevent="toggleGroupExpanded(group)"
+                >
+                  <div class="nlm-data-scope-frozen nlm-data-scope-frozen--group">
+                    <button
+                      type="button"
+                      class="nlm-data-scope-check"
+                      :class="{ 'is-checked': groupSelected(group), 'is-partial': groupPartial(group) }"
+                      :aria-label="'选择' + group.name"
+                      @click.stop="toggleCandidateGroup(group)"
+                    >
+                      <ds-icon v-if="groupSelected(group)" name="check" aria-hidden="true" />
+                      <span v-else-if="groupPartial(group)" class="nlm-data-scope-check__partial"></span>
+                    </button>
+                    <span class="nlm-data-scope-group-name">{{ group.name }}</span>
+                    <ds-icon class="nlm-data-scope-caret" name="down" aria-hidden="true" />
+                  </div>
+                </div>
+                <template v-if="!groupCollapsed(group)">
+                  <div v-for="row in group.tables" :key="row.id" class="nlm-data-scope-row nlm-data-scope-row--table">
+                    <div class="nlm-data-scope-frozen nlm-data-scope-frozen--table">
+                      <button type="button" class="nlm-data-scope-check" :class="{ 'is-checked': row.selected }" :aria-label="'选择' + row.name" @click="row.selected = !row.selected">
+                        <ds-icon v-if="row.selected" name="check" aria-hidden="true" />
+                      </button>
+                      <span class="nlm-data-scope-indent"></span>
+                      <span class="nlm-data-scope-cell nlm-data-scope-cell--name">{{ row.name }}</span>
+                    </div>
+                    <span class="nlm-data-scope-cell">{{ row.type }}</span>
+                    <span class="nlm-data-scope-cell">{{ row.domain }}</span>
+                    <span class="nlm-data-scope-cell">{{ row.rows }}</span>
+                    <span class="nlm-data-scope-cell nlm-data-scope-cell--related">{{ row.related }}</span>
+                  </div>
+                </template>
+              </template>
+            </div>
+            <div class="nlm-data-scope-add-modal__footer">
+              <button type="button" class="ds-trigger-btn nlm-chat-result-toolbar-btn nlm-result-decision-card__btn nlm-result-decision-card__btn--reject" @click="block.addModalOpen = false">取消</button>
+              <button type="button" class="ds-trigger-btn nlm-chat-result-toolbar-btn nlm-result-decision-card__btn nlm-result-decision-card__btn--primary" :disabled="!candidateCounts.selected" @click="addCandidates">
+                <span class="ds-trigger-btn__text">加入范围</span>
+              </button>
+            </div>
+          </div>
+        </a-modal>
       </div>
     `,
   });

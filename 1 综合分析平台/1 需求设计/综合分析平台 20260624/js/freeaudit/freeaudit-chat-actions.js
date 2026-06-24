@@ -1362,6 +1362,217 @@
             _actionDetailExpanded: !!(extra && extra.expanded),
           };
         },
+        buildDataScopeDecisionBlock() {
+          return {
+            type: 'decision.dataScope',
+            id: 'decision-data-scope-' + Date.now(),
+            status: 'pending',
+            detailVisible: false,
+            searchText: '',
+            addModalOpen: false,
+            addSearchText: '',
+            groups: [
+              {
+                id: 'audit-result-db',
+                name: '审计结果库',
+                expanded: true,
+                tables: [
+                  { id: 'budget-detail', name: '预算偏差明细表', reason: '命中预算偏差，建议联用。', confidence: '96%', type: '结果表', domain: '预算', rows: 128, related: '预算执行汇总表', selected: true },
+                  { id: 'purchase-scan', name: '采购异常扫描结果表', reason: '包含异常线索，辅助判断。', confidence: '89%', type: '分析表', domain: '采购', rows: 42, related: '招标控制价对比表', selected: true },
+                  { id: 'budget-summary', name: '预算执行汇总表', reason: '用于校验偏差明细。', confidence: '84%', type: '汇总表', domain: '预算', rows: 76, related: '预算偏差明细表', selected: true },
+                  { id: 'contract-change', name: '合同金额变更表', reason: '合同变更与付款相关。', confidence: '78%', type: '业务表', domain: '合同', rows: 51, related: '合同付款节点表', selected: true },
+                ],
+              },
+              {
+                id: 'base-material-db',
+                name: '基础资料库',
+                expanded: true,
+                tables: [
+                  { id: 'project-ledger', name: '项目台账汇总表', reason: '补充项目基础口径。', confidence: '86%', type: '台账表', domain: '项目', rows: 214, related: '预算偏差明细表', selected: true },
+                  { id: 'payment-approval', name: '付款审批记录表', reason: '核对审批和付款状态。', confidence: '81%', type: '记录表', domain: '付款', rows: 39, related: '合同付款节点表', selected: true },
+                  { id: 'tender-control', name: '招标控制价对比表', reason: '判断采购价格偏离。', confidence: '75%', type: '对比表', domain: '采购', rows: 22, related: '采购异常扫描结果表', selected: true },
+                  { id: 'budget-note-copy', name: '预算测算说明副本', reason: '命中较弱，暂不纳入。', confidence: '68%', type: '文档表', domain: '预算', rows: 18, related: '无', selected: false },
+                ],
+              },
+              {
+                id: 'process-log-db',
+                name: '过程日志库',
+                expanded: true,
+                tables: [
+                  { id: 'approval-history', name: '历史审批记录表', reason: '保留历史审批上下文。', confidence: '72%', type: '日志表', domain: '审批', rows: 33, related: '付款审批记录表', selected: true },
+                  { id: 'model-recall-log', name: '模型召回操作日志', reason: '仅作过程参考。', confidence: '55%', type: '日志表', domain: '系统', rows: 12, related: '无', selected: false },
+                ],
+              },
+            ],
+            candidates: [
+              {
+                id: 'budget-candidate-db',
+                name: '预算域候选表',
+                expanded: true,
+                tables: [
+                  { id: 'budget-adjust-log', name: '预算调整记录表', type: '记录表', domain: '预算', rows: 64, related: '预算偏差明细表', selected: true },
+                  { id: 'budget-cost-snapshot', name: '预算成本快照表', type: '快照表', domain: '预算', rows: 31, related: '预算执行汇总表', selected: false },
+                ],
+              },
+              {
+                id: 'supplier-candidate-db',
+                name: '供应商候选表',
+                expanded: true,
+                tables: [
+                  { id: 'supplier-balance', name: '供应商往来余额表', type: '业务表', domain: '采购', rows: 87, related: '付款审批记录表', selected: false },
+                  { id: 'supplier-contract-map', name: '供应商合同映射表', type: '映射表', domain: '合同', rows: 42, related: '合同金额变更表', selected: false },
+                ],
+              },
+            ],
+          };
+        },
+        buildDataScopeQueryDemoConversation() {
+          const now = Date.now();
+          const cleanText = '帮我统计预算执行偏差较高的项目，并关联合同付款情况做汇总。';
+          const userMsg = {
+            id: 'data-scope-user-' + now,
+            role: 'user',
+            text: cleanText,
+            refCount: 1,
+            refTitles: ['A市城建集团年度经济责任审计'],
+          };
+          const thinkingMsg = {
+            id: 'data-scope-think-' + now,
+            role: 'thinking',
+            toolCalls: [
+              { type: 'text', body: '先识别问数目标，再召回可能参与统计口径的数据表。' },
+              { type: 'query', text: '召回预算、合同、付款、采购相关表' },
+              { type: 'query', text: '按库归并候选表并生成数据范围确认项' },
+            ],
+            thinkPhaseIndex: 3,
+            thinkTextChars: 0,
+            thinkToolStartedAt: null,
+            _demoSendText: cleanText,
+            _finalized: true,
+            _intervalId: null,
+          };
+          const introMsg = {
+            id: 'data-scope-bot-intro-' + now,
+            role: 'bot',
+            suppressActions: true,
+            plainBotText: true,
+            text: '我已召回与预算偏差、合同付款相关的多个库表。请先确认本次查询的数据表范围，确认后我再继续执行聚合查询。',
+          };
+          return {
+            messages: [userMsg, thinkingMsg, introMsg],
+            decision: this.buildDataScopeDecisionBlock(),
+          };
+        },
+        dataScopeTableRows(block) {
+          return (block && Array.isArray(block.groups) ? block.groups : [])
+            .reduce((rows, group) => rows.concat(group.tables || []), []);
+        },
+        dataScopeSelectedCount(block) {
+          return this.dataScopeTableRows(block).filter((row) => row && row.selected).length;
+        },
+        dataScopeTotalCount(block) {
+          return this.dataScopeTableRows(block).length;
+        },
+        dataScopeGroupCount(block) {
+          return block && Array.isArray(block.groups) ? block.groups.length : 0;
+        },
+        dataScopeVisibleGroups(block, key) {
+          const kw = String(key == null ? (block && block.searchText) : key || '').trim().toLowerCase();
+          return (block && Array.isArray(block.groups) ? block.groups : []).map((group) => {
+            const tables = (group.tables || []).filter((row) => !kw || String(row.name || '').toLowerCase().includes(kw));
+            return { ...group, tables };
+          }).filter((group) => group.tables.length || !kw);
+        },
+        dataScopeVisibleRows(block) {
+          return this.dataScopeVisibleGroups(block).reduce((rows, group) => rows.concat(group.tables || []), []);
+        },
+        dataScopeAllVisibleSelected(block) {
+          const rows = this.dataScopeVisibleRows(block);
+          return !!rows.length && rows.every((row) => row.selected);
+        },
+        toggleDataScopeAll(block) {
+          if (!block || block.status !== 'pending') return;
+          const rows = this.dataScopeVisibleRows(block);
+          const next = !this.dataScopeAllVisibleSelected(block);
+          rows.forEach((row) => { row.selected = next; });
+        },
+        toggleDataScopeGroup(block, group) {
+          if (!block || block.status !== 'pending' || !group) return;
+          const rows = group.tables || [];
+          const next = !rows.length || !rows.every((row) => row.selected);
+          rows.forEach((row) => { row.selected = next; });
+        },
+        toggleDataScopeTable(block, row) {
+          if (!block || block.status !== 'pending' || !row) return;
+          row.selected = !row.selected;
+        },
+        addDataScopeCandidateTables(block) {
+          if (!block || block.status !== 'pending') return;
+          const existing = new Set(this.dataScopeTableRows(block).map((row) => String(row.id)));
+          (block.candidates || []).forEach((group) => {
+            const picked = (group.tables || []).filter((row) => row.selected && !existing.has(String(row.id)));
+            if (!picked.length) return;
+            let target = (block.groups || []).find((g) => g.id === group.id);
+            if (!target) {
+              target = { id: group.id, name: group.name, expanded: true, tables: [] };
+              block.groups.push(target);
+            }
+            picked.forEach((row) => {
+              target.tables.push({
+                id: row.id,
+                name: row.name,
+                reason: '用户补充纳入查询范围。',
+                confidence: '新增',
+                type: row.type,
+                domain: row.domain,
+                rows: row.rows,
+                related: row.related,
+                selected: true,
+              });
+              existing.add(String(row.id));
+            });
+          });
+          block.addModalOpen = false;
+          block.addSearchText = '';
+        },
+        dataScopeCandidateGroups(block) {
+          const kw = String((block && block.addSearchText) || '').trim().toLowerCase();
+          return (block && Array.isArray(block.candidates) ? block.candidates : []).map((group) => {
+            const tables = (group.tables || []).filter((row) => !kw || String(row.name || '').toLowerCase().includes(kw));
+            return { ...group, tables };
+          }).filter((group) => group.tables.length || !kw);
+        },
+        dataScopeCandidateCounts(block) {
+          const groups = block && Array.isArray(block.candidates) ? block.candidates : [];
+          const rows = groups.reduce((list, group) => list.concat(group.tables || []), []);
+          return { groups: groups.length, selected: rows.filter((row) => row.selected).length, total: rows.length };
+        },
+        submitDataScopeDecision(msg, block) {
+          if (!block || block.status !== 'pending') return;
+          const count = this.dataScopeSelectedCount(block);
+          block.status = 'submitted';
+          block.addModalOpen = false;
+          if (this.chatComposerDecision === block) this.chatComposerDecision = null;
+          this.chatMessages.push({
+            id: 'data-scope-running-' + Date.now(),
+            role: 'thinking',
+            toolCalls: [
+              { type: 'query', text: `已确认数据范围：${count} 张表` },
+              { type: 'analysis', text: '生成问数指标口径与查询计划' },
+              { type: 'query', text: '执行聚合查询中' },
+            ],
+            thinkPhaseIndex: 2,
+            thinkTextChars: 0,
+            thinkToolStartedAt: Date.now(),
+            _demoSendText: msg && msg.id,
+            _finalized: false,
+            _intervalId: null,
+          });
+          this.$nextTick(() => {
+            const wrap = this.$refs.chatMessages;
+            if (wrap) wrap.scrollTop = wrap.scrollHeight;
+          });
+        },
         findPendingApprovalBlock(messages) {
           const list = Array.isArray(messages) ? messages : [];
           for (let i = 0; i < list.length; i++) {
@@ -1778,6 +1989,20 @@
             });
             return;
           }
+          if (scenario.kind === 'data-scope-query') {
+            const dataScopeDemo = this.buildDataScopeQueryDemoConversation();
+            this.chatMessages = dataScopeDemo.messages || [];
+            this.chatComposerDecision = dataScopeDemo.decision || null;
+            this.activeChatScenarioId = scenario.id;
+            this.chatInput = '';
+            this.chatInputRefItems = [];
+            this.chatUploadAttachments = [];
+            this.$nextTick(() => {
+              const wrap = this.$refs.chatMessages;
+              if (wrap) wrap.scrollTop = wrap.scrollHeight;
+            });
+            return;
+          }
           this.chatMessages = this.buildSeededDemoConversation(seedText, refs);
           this.activeChatScenarioId = scenario.id;
           this.chatInput = '';
@@ -1824,7 +2049,7 @@
               m._runSummaryIv = null;
             }
             if (rs.length) m.chatRunSummaryProgress = rs.length;
-            this.toastMessage = '已暂停生成';
+            this.toastMessage = '已中止生成';
             setTimeout(() => {
               this.toastMessage = '';
             }, 1500);
@@ -1839,7 +2064,7 @@
             }
             m._finalized = true;
             m._generationPaused = true;
-            this.toastMessage = '已暂停生成';
+            this.toastMessage = '已中止生成';
             setTimeout(() => {
               this.toastMessage = '';
             }, 1500);

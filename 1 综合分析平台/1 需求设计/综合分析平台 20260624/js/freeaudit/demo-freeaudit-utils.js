@@ -43,6 +43,13 @@
       isDefault: true,
     },
     {
+      id: 'scenario-data-scope-query',
+      title: '问数：确认查询数据范围',
+      conversationTitle: '问数：确认查询数据范围',
+      kind: 'data-scope-query',
+      seedText: '帮我统计预算执行偏差较高的项目，并关联合同付款情况做汇总。',
+    },
+    {
       id: 'scenario-guide',
       title: '初始化引导样例',
       kind: 'guide',

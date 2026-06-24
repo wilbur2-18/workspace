@@ -180,6 +180,22 @@
                 @dragover.prevent
                 @drop="onChatAreaDrop"
               >
+                <div v-if="chatReplyInProgress" class="nlm-chat-processing-bar" role="status" aria-live="polite">
+                  <span class="nlm-chat-processing-bar__main">
+                    <svg class="iconpark-icon is-spin nlm-chat-processing-bar__icon" aria-hidden="true"><use href="#loading-four"></use></svg>
+                    <span class="nlm-chat-processing-bar__text">处理中...</span>
+                  </span>
+                  <button
+                    type="button"
+                    class="nlm-chat-processing-bar__abort"
+                    title="中止生成"
+                    aria-label="中止生成"
+                    @click="pauseChatGeneration"
+                  >
+                    <svg class="iconpark-icon nlm-chat-processing-bar__abort-icon" aria-hidden="true"><use href="#pause"></use></svg>
+                    <span>中止</span>
+                  </button>
+                </div>
                 <div
                   v-if="chatQueueNotice && chatQueueNotice.visible && chatQueueNoticeBody"
                   class="nlm-chat-queue-notice-slot"
@@ -365,7 +381,14 @@
                     <span>不再提醒</span>
                   </button>
                   <template v-if="chatComposerDecision">
+                    <DataScopeDecisionBlock
+                      v-if="chatComposerDecision.type === 'decision.dataScope'"
+                      :host="this"
+                      :msg="{ id: 'data-scope-composer' }"
+                      :block="chatComposerDecision"
+                    />
                     <div
+                      v-else
                       class="nlm-chat-approval-composer"
                       :class="{ 'is-detail-expanded': approvalDecisionDetailExpanded(chatComposerDecision) }"
                     >
@@ -558,26 +581,15 @@
                         <span v-if="chatDailyGuideStage === 'upload'" class="nlm-chat-guide-callout nlm-chat-guide-callout--upload">点击这里上传附件</span>
                       </div>
                       <div class="nlm-chat-input-bar__right">
-                        <a-tooltip v-if="chatReplyInProgress" title="暂停">
-                          <button
-                            type="button"
-                            class="ds-icon-btn ds-icon-btn--standard nlm-chat-send-btn nlm-chat-send-btn--pause"
-                            title="暂停"
-                            aria-label="暂停生成"
-                            @click="pauseChatGeneration"
-                          >
-                            <svg class="iconpark-icon nlm-chat-send-btn__icon" aria-hidden="true"><use href="#pause"></use></svg>
-                          </button>
-                        </a-tooltip>
-                        <a-tooltip v-else :title="chatUploadAttachmentSendBlockTip">
+                        <a-tooltip :title="chatReplyInProgress ? '处理中，暂不可发送' : chatUploadAttachmentSendBlockTip">
                           <button
                             type="button"
                             class="ds-icon-btn ds-icon-btn--standard nlm-chat-send-btn"
                             :class="{ 'is-guide-target': chatDailyGuideStage === 'send' }"
                             data-tour-id="chat-send-button"
                             title="发送"
-                            aria-label="发送"
-                            :disabled="chatUploadAttachmentSendBlocked"
+                            :aria-label="chatReplyInProgress ? '发送，处理中不可用' : '发送'"
+                            :disabled="chatReplyInProgress || chatUploadAttachmentSendBlocked"
                             @click="sendChat"
                           >
                             <svg class="iconpark-icon nlm-chat-send-btn__icon" aria-hidden="true"><use href="#send"></use></svg>

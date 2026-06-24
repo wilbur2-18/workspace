@@ -85,6 +85,9 @@
       isApprovalToolBlock(block) {
         return block && String(block.type || '') === 'tool.approval';
       },
+      isDataScopeDecisionBlock(block) {
+        return block && String(block.type || '') === 'decision.dataScope';
+      },
       handleSuggestionClick(item) {
         if (this.host && typeof this.host.applyWorkbenchNextSuggestion === 'function') {
           this.host.applyWorkbenchNextSuggestion(item);
@@ -107,6 +110,7 @@
                   <template v-for="(block, index) in blocks" :key="blockKey(block, index)">
                     <ResultWriteBlock v-if="block && block.type === 'resultWrite'" :host="host" :msg="msg" :block="block" />
                     <ApprovalToolBlock v-else-if="isApprovalToolBlock(block)" :host="host" :msg="msg" :block="block" />
+                    <DataScopeDecisionBlock v-else-if="isDataScopeDecisionBlock(block)" :host="host" :msg="msg" :block="block" />
                     <DecisionCardBlock v-else-if="isDecisionBlock(block)" :host="host" :msg="msg" :block="block" />
                     <BotTextBlock v-else-if="isTextBlock(block)" :host="host" :msg="msg" :block="block" />
                   </template>

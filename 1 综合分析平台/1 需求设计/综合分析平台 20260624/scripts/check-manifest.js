@@ -13,6 +13,7 @@ const scripts = [
   path.join(sharedScriptsRoot, "audit-token-coverage.mjs"),
   path.join(sharedScriptsRoot, "audit-no-legacy-tokens.mjs"),
   path.join(sharedScriptsRoot, "audit-no-runtime-primary-mix.mjs"),
+  path.join(sharedScriptsRoot, "audit-dom-depth.mjs"),
 ];
 
 console.log("check-manifest: running prototype governance checks");

@@ -1905,7 +1905,7 @@
         wbProjectSkillSaveConfigButtonLabel() {
           return '保存配置';
         },
-        /** 思考轨未结束或引导语/收尾总结仍在打字时视为「生成中」（此时输入区显示暂停而非发送） */
+        /** 思考轨未结束或引导语/收尾总结仍在打字时视为「生成中」（此时显示处理中条并禁用发送） */
         chatReplyInProgress() {
           const list = this.chatMessages || [];
           for (let i = 0; i < list.length; i++) {

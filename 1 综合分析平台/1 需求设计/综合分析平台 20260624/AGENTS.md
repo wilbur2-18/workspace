@@ -10,6 +10,15 @@ This directory is a high-fidelity static prototype for 综合分析平台. Work 
 - Put shared runtime UI changes in `ui/runtime-ui.css`; put page-level and business visual changes in `assets/demo-app.css` or the relevant `assets/css/**` file.
 - After style or runtime changes, run `node scripts/check-manifest.js` from this directory unless the change is documentation-only.
 
+## DOM Structure Rules
+
+- For Vue UMD templates, every added container must have a clear semantic, layout, interaction, or component-boundary role.
+- Prefer semantic nodes and existing runtime components before adding anonymous `div` wrappers.
+- Do not add containers only for spacing, background, radius, or shadow when the style can live on an existing node.
+- Treat `wrapper`, `inner`, `content-wrapper`, `card-inner`, `section-inner`, `layout-container`, `body`, and `shell` class names as suspicious. Use them only when they carry a clear layout or component-shell responsibility.
+- Ant Design Vue slots such as `template #overlay`, `a-tabs`, `a-dropdown`, and `a-menu` can add necessary structure; do not add extra wrapper nodes around them unless required for sizing, scrolling, or event boundaries.
+- After non-trivial UI edits, do one DOM simplification pass and remove containers without independent responsibility.
+
 ## Token-First Style Rules
 
 - Any new or changed visual style must first use existing `--ds-*` tokens or existing component classes. Do not introduce standalone bare values when an equivalent token already exists.

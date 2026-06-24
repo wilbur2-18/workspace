@@ -561,7 +561,7 @@
   }
 
   function getConversationTitle(scenario) {
-    return String((scenario && (scenario.seedText || scenario.title)) || '').trim() || '未命名对话';
+    return String((scenario && (scenario.conversationTitle || scenario.seedText || scenario.title)) || '').trim() || '未命名对话';
   }
 
   function getDraftConversationTitle(text) {
@@ -575,6 +575,7 @@
     if (id === 'scenario-full') return '1 周';
     if (id === 'scenario-queue') return '8 小时';
     if (id === 'scenario-result-decision') return '7 小时';
+    if (id === 'scenario-data-scope-query') return '5 小时';
     if (id === 'scenario-guide') return '6 小时';
     return '';
   }
@@ -582,6 +583,7 @@
   function getScenarioAgeHours(scenario) {
     const id = String((scenario && scenario.id) || '');
     if (id === 'scenario-guide') return 6;
+    if (id === 'scenario-data-scope-query') return 5;
     if (id === 'scenario-result-decision') return 7;
     if (id === 'scenario-queue') return 8;
     if (id === 'scenario-full') return 24 * 7;
@@ -921,7 +923,7 @@
         }"
         :style="v2ShellGridStyle"
       >
-        <aside class="workbench-v2-sidebar" aria-label="工作台对话与任务" data-tour-id="workbench-sidebar">
+        <aside class="workbench-v2-sidebar" aria-label="工作台对话与任务" data-tour-id="workbench-sidebar" @click.self="sidebarCollapsed && expandSidebar()">
           <div class="workbench-v2-brand">
             <button
               type="button"
@@ -1040,6 +1042,7 @@
             <button
               type="button"
               class="workbench-v2-sidebar-action"
+              data-tour-id="workbench-new-conversation-button"
               title="新建对话"
               aria-label="新建对话"
               @click="newSession"
@@ -1050,6 +1053,7 @@
             <button
               type="button"
               class="workbench-v2-sidebar-action"
+              data-tour-id="workbench-task-create-button"
               title="新建任务"
               aria-label="新建任务"
               @click="openTaskCreate"
@@ -1062,8 +1066,8 @@
               :key="view.id"
               type="button"
               class="workbench-v2-sidebar-action"
+              :data-tour-id="view.id === 'skill' ? 'workbench-sidebar-skill-button' : null"
               :class="{ 'is-active': activeMainView === view.id }"
-              :data-tour-id="view.id === 'skill' ? 'workbench-skill-entry' : null"
               @click="setMainView(view.id)"
             >
               <ds-icon :name="view.icon" aria-hidden="true" />
@@ -1289,6 +1293,8 @@
                     </button>
                     <template #overlay>
                       <a-menu @click="({ key }) => onSidebarTaskMenu(key, item)">
+                        <a-menu-item key="task-detail">查看基本信息</a-menu-item>
+                        <a-menu-divider />
                         <a-menu-item v-if="canDownloadTask(item)" key="download-package">下载</a-menu-item>
                         <a-menu-item v-if="canSidebarPackageTaskAbort(item)" key="abort-task">中止</a-menu-item>
                         <a-menu-item v-if="sidebarBatchParentShowAbortQuick(item) && !canSidebarPackageTaskAbort(item)" key="abort-task">{{ sidebarAbortMenuLabel(item) }}</a-menu-item>
@@ -1313,6 +1319,8 @@
               </div>
               <template #overlay>
                 <a-menu @click="({ key }) => onSidebarTaskMenu(key, item)">
+                  <a-menu-item key="task-detail">查看基本信息</a-menu-item>
+                  <a-menu-divider />
                   <a-menu-item v-if="canDownloadTask(item)" key="download-package">下载</a-menu-item>
                   <a-menu-item v-if="canSidebarPackageTaskAbort(item)" key="abort-task">中止</a-menu-item>
                   <a-menu-item v-if="sidebarBatchParentShowAbortQuick(item) && !canSidebarPackageTaskAbort(item)" key="abort-task">{{ sidebarAbortMenuLabel(item) }}</a-menu-item>
@@ -1359,6 +1367,16 @@
           <header v-show="activeMainView !== 'skill' && activeMainView !== 'search'" class="workbench-v2-header">
             <div class="workbench-v2-header__left">
               <div class="workbench-v2-title-group">
+                <button
+                  v-if="activeMainView === 'task' && activeTaskIsBatch && activeBatchChildCard"
+                  type="button"
+                  class="workbench-v2-title-more-btn workbench-v2-title-back-btn"
+                  title="返回子任务列表"
+                  aria-label="返回子任务列表"
+                  @click="backToV2BatchChildList"
+                >
+                  <ds-icon name="arrow-left" aria-hidden="true" />
+                </button>
                 <h1 class="workbench-v2-title">{{ activeMainTitle }}</h1>
                 <a-dropdown v-if="activeMainView === 'task' && activeTaskIsBatch && !activeBatchChildCard" :trigger="['click']" placement="bottomLeft" @click.stop>
                   <button type="button" class="workbench-v2-title-more-btn" title="更多操作" aria-label="更多操作" @click.stop>
@@ -1395,6 +1413,7 @@
                 v-else-if="showTaskDetailToggle"
                 type="button"
                 class="nlm-assistant-header-btn"
+                :class="{ 'is-active': v2TaskDetailVisible }"
                 :title="v2TaskDetailVisible ? '隐藏任务详情' : '显示任务详情'"
                 :aria-label="v2TaskDetailVisible ? '隐藏任务详情' : '显示任务详情'"
                 @click="toggleTaskDetail"
@@ -1496,6 +1515,8 @@
                             </button>
                             <template #overlay>
                               <a-menu @click="({ key }) => onSidebarTaskMenu(key, item)">
+                                <a-menu-item key="task-detail">查看基本信息</a-menu-item>
+                                <a-menu-divider />
                                 <a-menu-item v-if="canDownloadTask(item)" key="download-package">下载</a-menu-item>
                                 <a-menu-item v-if="canSidebarPackageTaskAbort(item)" key="abort-task">中止</a-menu-item>
                                 <a-menu-item v-if="sidebarBatchParentShowAbortQuick(item) && !canSidebarPackageTaskAbort(item)" key="abort-task">{{ sidebarAbortMenuLabel(item) }}</a-menu-item>
@@ -1526,7 +1547,7 @@
             </div>
           </section>
 
-          <section v-show="activeMainView === 'skill'" class="workbench-v2-view-stage workbench-v2-skill-view workbench-v2-skill-page" aria-label="工作台技能">
+          <section v-show="activeMainView === 'skill'" class="workbench-v2-view-stage workbench-v2-skill-view workbench-v2-skill-page" aria-label="工作台技能" data-tour-id="workbench-skill-stage">
             <header class="workbench-v2-skill-header">
               <div class="workbench-v2-skill-header__main">
                 <h1 class="workbench-v2-skill-header__title">技能</h1>
@@ -1579,6 +1600,7 @@
                   type="button"
                   class="workbench-v2-skill-scope-tab"
                   :class="{ 'is-active': v2SkillScopeTab === tab.id }"
+                  :data-tour-id="tab.id === 'org' ? 'workbench-public-skill-tab' : null"
                   role="tab"
                   :aria-selected="v2SkillScopeTab === tab.id"
                   @click="setV2SkillScopeTab(tab.id)"
@@ -1672,7 +1694,7 @@
               </div>
               <span class="workbench-v2-skill-tabs__total">共 {{ v2SkillCards.length }} 个</span>
             </nav>
-            <section class="workbench-v2-skill-section" aria-label="技能列表">
+            <section class="workbench-v2-skill-section" aria-label="技能列表" data-tour-id="workbench-public-skill-list">
               <div v-if="v2SkillCards.length" class="workbench-v2-skill-grid">
                 <article
                   v-for="card in v2SkillCards"
@@ -1834,11 +1856,13 @@
                             disabled
                             title="该技能已添加到当前工作台"
                             aria-label="该技能已添加到当前工作台"
+                            :data-tour-id="workbenchTourPublicSkillActionTourId(card)"
                           >
                             <span class="ds-trigger-btn__text">已添加</span>
                           </a-button>
                           <a-dropdown
                             v-else
+                            v-bind="workbenchTourPublicSkillDropdownProps(card)"
                             :trigger="['hover']"
                             :mouse-enter-delay="0.12"
                             :mouse-leave-delay="0.18"
@@ -1850,6 +1874,7 @@
                               class="ds-trigger-btn ds-trigger-btn--icon-text workbench-v2-skill-item__cta is-install is-add-menu"
                               :title="'添加技能：' + card.name"
                               :aria-label="'添加技能：' + card.name"
+                              :data-tour-id="workbenchTourPublicSkillActionTourId(card)"
                               @click.stop="installV2SkillCard(card)"
                             >
                               <span class="ds-trigger-btn__text">添加</span>
@@ -1858,7 +1883,10 @@
                             <template #overlay>
                               <a-menu @click="({ key }) => onV2SkillCardInstallMenu(key, card)">
                                 <a-menu-item key="add">添加到当前工作台</a-menu-item>
-                                <a-menu-item key="add-and-use">添加并使用</a-menu-item>
+                                <a-menu-item
+                                  key="add-and-use"
+                                  :data-tour-id="workbenchTourPublicSkillAddUseTourId(card)"
+                                >添加并使用</a-menu-item>
                               </a-menu>
                             </template>
                           </a-dropdown>
@@ -1899,6 +1927,7 @@
                         aria-label="刷新子任务列表"
                         @click.stop="refreshV2BatchChildList"
                       >
+                        <ds-icon name="refresh" aria-hidden="true" />
                         <span>刷新</span>
                       </a-button>
                     </a-tooltip>
@@ -1909,30 +1938,6 @@
                       :disabled="!v2BatchChildBulkSelectableKeys().length"
                       @click.stop="toggleV2BatchChildBulkMode"
                     >{{ workbenchBulkScopeActive('task', 'batch-child') ? '退出批量' : '批量管理' }}</a-button>
-                    <a-dropdown :trigger="['click']" @click.stop>
-                      <a-tooltip title="更多">
-                        <a-button
-                          class="workbench-v2-batch-toolbar__secondary-btn"
-                          title="更多"
-                          aria-label="更多操作"
-                          @click.stop
-                        >
-                          <span>更多</span>
-                          <ds-icon name="chevron-down" class="workbench-v2-batch-toolbar__caret" aria-hidden="true" />
-                        </a-button>
-                      </a-tooltip>
-                      <template #overlay>
-                        <a-menu @click="({ key }) => handleV2BatchParentHeaderMenu(key)">
-                          <a-menu-item v-if="sidebarBatchParentShowAbortQuick(activeTaskCard)" key="abort-task">一键中止</a-menu-item>
-                          <a-menu-item v-if="sidebarBatchParentCanRerunMenu(activeTaskCard)" key="rerun-all">一键重跑</a-menu-item>
-                          <a-menu-item v-if="sidebarBatchParentCanRerunMenu(activeTaskCard)" key="rerun-failed-only" :disabled="!sidebarBatchParentFailedChildCount(activeTaskCard)">一键重跑（仅失败）</a-menu-item>
-                          <a-menu-item v-if="sidebarBatchParentCanRerunMenu(activeTaskCard)" key="rerun-no-result" :disabled="!v2BatchChildNoResultCount()">一键重跑（无结果）</a-menu-item>
-                          <a-menu-item v-if="sidebarBatchParentCanRerunMenu(activeTaskCard)" key="clear-failed-only" :disabled="!sidebarBatchParentFailedChildCount(activeTaskCard)">一键清空（仅失败）</a-menu-item>
-                          <a-menu-divider v-if="sidebarTaskMenuHasNonDelete(activeTaskCard)" />
-                          <a-menu-item key="delete" danger>删除</a-menu-item>
-                        </a-menu>
-                      </template>
-                    </a-dropdown>
                   </div>
                 </div>
                 <div class="workbench-v2-batch-child-list">
@@ -2027,121 +2032,7 @@
               </div>
             </template>
             <template v-else-if="activeTaskCard">
-              <div class="workbench-v2-task-workspace" :class="{ 'is-batch-child-selected': activeTaskIsBatch }">
-                <aside v-if="activeTaskIsBatch" class="workbench-v2-batch-child-pane" aria-label="子任务列表">
-                  <div class="workbench-v2-batch-child-pane__head">
-                    <button type="button" class="workbench-v2-icon-action" title="返回对话" aria-label="返回对话" @click="closeTaskContext">
-                      <ds-icon name="arrow-left" aria-hidden="true" />
-                    </button>
-                    <span class="workbench-v2-batch-child-pane__title">{{ activeTaskCard.title }}</span>
-                    <div class="nlm-material-toolbar__actions workbench-v2-batch-child-pane__actions">
-                      <a-tooltip :title="workbenchBulkScopeActive('task', 'batch-child') ? '取消多选' : '多选'">
-                        <a-button
-                          type="text"
-                          :class="['ds-icon-btn ds-icon-btn--compact ds-icon-btn--nlm nlm-input-bar-btn nlm-sort-icon-btn', { 'is-active': workbenchBulkScopeActive('task', 'batch-child') }]"
-                          :disabled="!workbenchBulkScopeActive('task', 'batch-child') && !workbenchBulkSelectableKeys('task', 'batch-child').length"
-                          :title="workbenchBulkScopeActive('task', 'batch-child') ? '取消多选' : '多选'"
-                          :aria-label="workbenchBulkScopeActive('task', 'batch-child') ? '取消子任务多选' : '子任务多选'"
-                          :aria-pressed="workbenchBulkScopeActive('task', 'batch-child') ? 'true' : 'false'"
-                          @click.stop="workbenchBulkScopeActive('task', 'batch-child') ? resetWorkbenchBulkSelection('task') : startWorkbenchBulkMode('task', 'batch-child')"
-                        >
-                          <svg class="iconpark-icon" aria-hidden="true"><use href="#check-correct"></use></svg>
-                        </a-button>
-                      </a-tooltip>
-                      <a-tooltip title="刷新">
-                        <a-button
-                          type="text"
-                          class="ds-icon-btn ds-icon-btn--compact ds-icon-btn--nlm nlm-input-bar-btn nlm-sort-icon-btn nlm-toolbar-pool-refresh-btn"
-                          title="刷新"
-                          aria-label="刷新任务列表"
-                          @click="refreshV2BatchChildList"
-                        >
-                          <ds-icon name="refresh" aria-hidden="true" />
-                        </a-button>
-                      </a-tooltip>
-                      <a-dropdown :trigger="['click']" @click.stop>
-                        <a-tooltip title="更多">
-                          <a-button type="text" class="ds-icon-btn ds-icon-btn--compact ds-icon-btn--nlm nlm-input-bar-btn nlm-sort-icon-btn" title="更多" aria-label="更多操作" @click.stop>
-                            <ds-icon name="more" aria-hidden="true" />
-                          </a-button>
-                        </a-tooltip>
-                        <template #overlay>
-                          <a-menu @click="({ key }) => handleV2BatchParentHeaderMenu(key)">
-                            <a-menu-item v-if="canDownloadTask(activeTaskCard)" key="download-package">下载</a-menu-item>
-                            <a-menu-item v-if="sidebarBatchParentShowAbortQuick(activeTaskCard)" key="abort-task">一键中止</a-menu-item>
-                            <a-menu-item v-if="sidebarBatchParentCanRerunMenu(activeTaskCard)" key="rerun-all">一键重跑</a-menu-item>
-                            <a-menu-item
-                              v-if="sidebarBatchParentCanRerunMenu(activeTaskCard)"
-                              key="rerun-failed-only"
-                              :disabled="!sidebarBatchParentFailedChildCount(activeTaskCard)"
-                            >一键重跑（仅失败）</a-menu-item>
-                            <a-menu-item
-                              v-if="sidebarBatchParentCanRerunMenu(activeTaskCard)"
-                              key="clear-failed-only"
-                              :disabled="!sidebarBatchParentFailedChildCount(activeTaskCard)"
-                            >一键清空（仅失败）</a-menu-item>
-                            <a-menu-item v-if="sidebarTaskCanShowRerun(activeTaskCard)" key="rerun-task">{{ sidebarTaskRerunMenuLabel(activeTaskCard) }}</a-menu-item>
-                            <a-menu-divider v-if="sidebarTaskMenuHasNonDelete(activeTaskCard)" />
-                            <a-menu-item key="delete" danger>删除</a-menu-item>
-                          </a-menu>
-                        </template>
-                      </a-dropdown>
-                    </div>
-                  </div>
-                  <div class="wb-task-batch-children-view workbench-v2-batch-child-list">
-                    <div class="wb-material-status-footer wb-batch-child-status-footer wb-material-status-footer--file-pool ds-popover-panel__footer">
-                      <div class="wb-material-status-footer__right">
-                        <FreeAuditStatusFilterBar
-                          aria-label="子任务状态摘要"
-                          :active-key="v2BatchChildStatusView"
-                          :items="v2BatchChildStatusItems"
-                          @select="setV2BatchChildStatusView"
-                        />
-                      </div>
-                    </div>
-                    ${freeauditPanels.bulkBar ? freeauditPanels.bulkBar('task', 'batch-child') : ''}
-                    <div class="wb-task-batch-child-list-shell">
-                      <div class="nlm-cards-wrap nlm-tree-wrap nlm-task-batch-child-list">
-                        <FreeAuditBatchChildRow
-                          v-for="child in pagedV2BatchChildCards"
-                          :key="'v2-batch-child-pane-' + child.id"
-                          :child="child.raw || child"
-                          :selected="child.id === activeBatchChildId"
-                          :bulk-descriptor="workbenchBulkBatchChildDescriptor(child)"
-                          :bulk-selected="workbenchBulkIsSelected(workbenchBulkBatchChildDescriptor(child))"
-                          :bulk-mode="workbenchBulkScopeActive('task', 'batch-child')"
-                          :status="child.status"
-                          :queue-position="v2BatchChildQueuePosition(child)"
-                          :show-more="v2BatchChildShowMoreMenu(child)"
-                          :can-abort="v2BatchChildCanAbort(child)"
-                          :can-rerun="v2BatchChildCanRerun(child)"
-                          :can-delete="v2BatchChildCanDelete(child)"
-                          :progress="v2BatchChildProgress(child)"
-                          @open="onWorkbenchBulkBatchChildRowOpen"
-                          @menu="onV2BatchChildMenu"
-                          @abort="abortV2BatchChild"
-                          @rerun="rerunV2BatchChild"
-                          @bulk-toggle="toggleWorkbenchBulkSelection"
-                        />
-                        <a-empty v-if="!filteredV2BatchChildCards.length" description="暂无子任务" />
-                      </div>
-                      <div class="wb-task-batch-child-list-footer">
-                        <div class="wb-material-list-top-actions wb-batch-child-list-top-actions">
-                          <span class="wb-batch-child-list-top-actions__count">共 {{ filteredV2BatchChildCards.length }} 条</span>
-                        </div>
-                        <a-pagination
-                          v-if="filteredV2BatchChildCards.length"
-                          size="small"
-                          :current="v2BatchChildPage"
-                          :page-size="v2BatchChildPageSize"
-                          :total="filteredV2BatchChildCards.length"
-                          :show-size-changer="false"
-                          @change="onV2BatchChildPageChange"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </aside>
+              <div class="workbench-v2-task-workspace">
                 <section
                   class="nlm-assistant-column workbench-v2-task-context-pane"
                   :class="{ 'is-task-detail-visible': v2TaskDetailVisible }"
@@ -2189,13 +2080,6 @@
                         </div>
                       </div>
                     <aside v-if="v2TaskDetailVisible" class="workbench-v2-task-floating-detail" aria-label="任务详情">
-                      <div class="workbench-v2-task-floating-detail__head">
-                        <span class="workbench-v2-task-floating-detail__title">{{ activeTaskContextCard.title }}</span>
-                        <button type="button" class="workbench-v2-text-btn" @click="openTaskBasicInfo">
-                          <ds-icon name="circle-info" aria-hidden="true" />
-                          <span>基本信息</span>
-                        </button>
-                      </div>
                       <div class="workbench-v2-task-floating-detail__body">
                         <div class="wb-task-detail-sections" role="region" :aria-label="activeTaskDetailAriaLabel">
                           <section
@@ -2246,7 +2130,7 @@
             </template>
             <a-modal
               v-model:open="v2TaskBasicInfoModalOpen"
-              title="基本信息"
+              title="任务详情"
               :footer="null"
               width="520px"
             >
@@ -2572,6 +2456,7 @@
 	              type="button"
 	              class="workbench-v2-directory-switcher__btn"
 	              :class="['workbench-v2-directory-switcher__btn--' + tool.id, { 'is-active': tool.active }]"
+              :data-tour-id="tool.id === 'file' ? 'workbench-rail-file-button' : (tool.id === 'result' ? 'workbench-rail-result-button' : null)"
               :title="tool.label"
               :aria-label="tool.label"
               :aria-pressed="tool.active ? 'true' : 'false'"
@@ -2627,6 +2512,7 @@
         </a-modal>
         <a-tour
           v-if="tourOpen"
+          :key="'workbench-tour-' + tourGuideKind + '-' + tourRenderKey"
           v-model:current="tourCurrent"
           :root-class-name="workbenchTourRootClassName"
           :open="tourOpen"
@@ -2650,17 +2536,71 @@
                   v-model:checked="tourSuppressNextTime"
                   class="workbench-v2-tour-repeat-choice"
                   @click.stop
-                >下次不再显示</a-checkbox>
+                >不再提示</a-checkbox>
               </span>
               <a-button
-                v-if="current === 0 && tourLaunchMode === 'auto'"
                 size="small"
                 class="workbench-v2-tour-skip-button"
                 @click.stop="skipWorkbenchTour"
-              >跳过引导</a-button>
+              >{{ workbenchTourSkipLabel(current) }}</a-button>
             </div>
           </template>
         </a-tour>
+        <a-tour
+          v-if="v2HelpCoachOpen"
+          root-class-name="workbench-v2-tour--help"
+          :current="0"
+          :open="v2HelpCoachOpen"
+          :steps="workbenchHelpCoachSteps"
+          :gap="workbenchTourGap"
+          @update:open="onWorkbenchHelpCoachOpenChange"
+          @close="finishWorkbenchHelpCoach"
+          @finish="finishWorkbenchHelpCoach"
+        />
+        <teleport to="body">
+          <div class="workbench-v2-help-float" data-tour-id="workbench-help-button">
+            <span v-if="v2HelpHintVisible" class="workbench-v2-help-float__hint">之后可在这里学习</span>
+            <a-popover
+              :open="v2HelpPopoverOpen"
+              trigger="click"
+              placement="topRight"
+              :arrow="false"
+              overlayClassName="workbench-v2-help-popover"
+              @update:open="onWorkbenchHelpOpenChange"
+            >
+              <template #content>
+                <div class="workbench-v2-help-panel">
+                  <div class="workbench-v2-help-panel__head">
+                    <div class="workbench-v2-help-panel__title">选择引导</div>
+                  </div>
+                  <button
+                    v-for="guide in workbenchHelpGuides"
+                    :key="guide.key"
+                    type="button"
+                    class="workbench-v2-help-guide"
+                    @click="startWorkbenchGuide(guide.key)"
+                  >
+                    <ds-icon :name="guide.icon" class="workbench-v2-help-guide__icon" aria-hidden="true" />
+                    <span class="workbench-v2-help-guide__main">
+                      <span class="workbench-v2-help-guide__title">{{ guide.title }}</span>
+                      <span class="workbench-v2-help-guide__desc">{{ guide.desc }}</span>
+                    </span>
+                  </button>
+                </div>
+              </template>
+              <button
+                ref="workbenchHelpButton"
+                type="button"
+                class="workbench-v2-help-float__button"
+                title="帮助"
+                aria-label="打开引导帮助"
+              >
+                <ds-icon name="circle-info" aria-hidden="true" />
+                <span>帮助</span>
+              </button>
+            </a-popover>
+          </div>
+        </teleport>
       </a-layout>
     `,
     data() {
@@ -2719,9 +2659,19 @@
         capabilityHostReady: false,
         tourOpen: false,
         tourCurrent: 0,
+        tourRenderKey: 0,
         tourAutoShown: false,
         tourLaunchMode: 'manual',
+        tourGuideKind: 'basic',
+        tourIncludeIntro: false,
         tourSuppressNextTime: false,
+        tourSkillUseApplied: false,
+        tourSkillCompleted: false,
+        tourSuppressCloseHint: false,
+        v2HelpPopoverOpen: false,
+        v2HelpCoachOpen: false,
+        v2HelpHintVisible: false,
+        _v2HelpHintTimer: null,
         v2ProjectOptions: readStoredV2WorkbenchProjectOptions(),
         v2ProjectDropdownOpen: false,
         v2ProjectSearchQuery: '',
@@ -2734,6 +2684,22 @@
       },
       mainViews() {
         return V2_MAIN_VIEWS;
+      },
+      workbenchHelpGuides() {
+        return [
+          {
+            key: 'basic',
+            icon: 'chat-ref',
+            title: '基础操作',
+            desc: '上传材料，输入要求，发送对话。',
+          },
+          {
+            key: 'skill',
+            icon: 'book-open',
+            title: '复用审计思路',
+            desc: '选择审计方法，进行专业审计。',
+          },
+        ];
       },
       workbenchProjectOptions() {
         const rows = normalizeV2WorkbenchProjectOptions(this.v2ProjectOptions || []);
@@ -2809,7 +2775,7 @@
         return Math.max(240, detailW + 1 + drawerW);
       },
       v2ShellGridStyle() {
-        const sidebarW = this.sidebarCollapsed ? '64px' : `${this.v2SidebarWidth}px`;
+        const sidebarW = this.sidebarCollapsed ? '48px' : `${this.v2SidebarWidth}px`;
         const docWorkspaceW = `${this.v2DocWorkspaceWidth}px`;
         const previewTailW = this.isPreviewView ? `${V2_DOC_WORKSPACE_RAIL_WIDTH}px` : '0px';
         if (this.isV2DocWorkspaceFullscreen) {
@@ -3020,11 +2986,14 @@
           key === 'first' ? 'workbench-v2-tour--first' : '',
           key === 'assistant' ? 'workbench-v2-tour--assistant' : '',
           key === 'rail' ? 'workbench-v2-tour--rail' : '',
+          key === 'upload' ? 'workbench-v2-tour--upload' : '',
+          key === 'input' ? 'workbench-v2-tour--input' : '',
+          key === 'send' ? 'workbench-v2-tour--send' : '',
+          key === 'process' ? 'workbench-v2-tour--process' : '',
+          key === 'learn-more' ? 'workbench-v2-tour--learn-more' : '',
+          key.indexOf('skill-') === 0 ? 'workbench-v2-tour--skill' : '',
           key === 'task' ? 'workbench-v2-tour--task-start' : '',
         ].filter(Boolean).join(' ');
-      },
-      workbenchTourFirstStepDescription() {
-        return '这里是审计工作台，你可以通过对话或任务的方式，让 AI 协助你开展资料核查、疑点梳理、结果整理等审计工作。';
       },
       workbenchTourFirstStepCover() {
         if (typeof createVNode !== 'function') return null;
@@ -3034,8 +3003,9 @@
           src: V2_WORKBENCH_TOUR_BANNER_SRC,
         });
       },
-      workbenchTourFinalDescription() {
-        return '在下方输入你想让 AI 协助完成的事项。需要补充材料时，可以先上传附件、引用资料或选择技能，再发送给 AI 处理。';
+      workbenchTourCurrentStepKey() {
+        const current = (this.workbenchTourRawSteps || [])[this.tourCurrent] || {};
+        return current.tourStepKey || '';
       },
       workbenchTourFinalPlacement() {
         return 'top';
@@ -3045,6 +3015,52 @@
           const { tourStepKey, ...tourStep } = step;
           return tourStep;
         });
+      },
+      workbenchHelpCoachSteps() {
+        return [
+          {
+            title: '之后可以在这里学习',
+            target: () => this.workbenchTourHelpTarget(),
+            placement: 'topRight',
+            nextButtonProps: this.workbenchTourNextButtonProps('知道了'),
+          },
+        ];
+      },
+      workbenchTourLearnMoreDescription() {
+        if (typeof createVNode !== 'function') return '你还可以继续学习其他操作。';
+        const guides = (this.workbenchHelpGuides || [])
+          .filter((guide) => ['basic', 'skill'].includes(guide.key))
+          .map((guide) => ({ ...guide, learned: guide.key === 'basic' || (guide.key === 'skill' && this.tourSkillCompleted) }));
+        return createVNode('div', { class: 'workbench-v2-tour-guide-panel' }, [
+          createVNode('p', { class: 'workbench-v2-tour-guide-desc' }, '你还可以继续学习其他操作。'),
+          createVNode('div', { class: 'workbench-v2-tour-guide-list' }, guides.map((guide) => {
+            const children = [
+              createVNode('ds-icon', { name: guide.icon, class: 'workbench-v2-help-guide__icon', 'aria-hidden': 'true' }),
+              createVNode('span', { class: 'workbench-v2-help-guide__main' }, [
+                createVNode('span', { class: 'workbench-v2-help-guide__title' }, guide.title),
+                createVNode('span', { class: 'workbench-v2-help-guide__desc' }, guide.desc),
+              ]),
+            ];
+            if (guide.learned) {
+              children.push(createVNode('span', { class: 'workbench-v2-tour-guide-card__status' }, '已学习'));
+            }
+            children.push(createVNode('button', {
+              type: 'button',
+              class: [
+                'workbench-v2-tour-guide-card__action',
+                guide.learned ? 'is-secondary' : '',
+              ],
+              onClick: (event) => {
+                if (event && typeof event.stopPropagation === 'function') event.stopPropagation();
+                this.chooseWorkbenchTourGuide(guide.key);
+              },
+            }, guide.learned ? '重新学习' : '继续学习'));
+            return createVNode('div', {
+              key: guide.key,
+              class: 'workbench-v2-help-guide workbench-v2-tour-guide-card',
+            }, children);
+          })),
+        ]);
       },
       workbenchTourGap() {
         return { offset: 0, radius: 8 };
@@ -3508,13 +3524,49 @@
     methods: {
       workbenchTourTarget(id) {
         const root = this.$el && typeof this.$el.querySelector === 'function' ? this.$el : document;
-        const shell = root.querySelector('[data-tour-id="workbench-shell"]') || root.querySelector('.workbench-v2-shell') || this.$el;
-        const fallback = root.querySelector('[data-tour-id="workbench-main"]') || shell;
-        const target = id ? root.querySelector(`[data-tour-id="${id}"]`) : shell;
+        const doc = typeof document !== 'undefined' ? document : root;
+        const queryTourTarget = (selector) => root.querySelector(selector) || (doc !== root ? doc.querySelector(selector) : null);
+        const shell = queryTourTarget('[data-tour-id="workbench-shell"]') || queryTourTarget('.workbench-v2-shell') || this.$el;
+        const fallback = queryTourTarget('[data-tour-id="workbench-main"]') || shell;
+        const target = id ? queryTourTarget(`[data-tour-id="${id}"]`) : shell;
         if (!target || typeof target.getBoundingClientRect !== 'function') return fallback || null;
         const rect = target.getBoundingClientRect();
         if (!rect.width || !rect.height) return fallback || null;
         return target;
+      },
+      workbenchTourVisibleDomTarget(selector) {
+        const target = document.querySelector(selector);
+        if (!target || typeof target.getBoundingClientRect !== 'function') return null;
+        const rect = target.getBoundingClientRect();
+        return rect.width && rect.height ? target : null;
+      },
+      workbenchTourFirstPublicSkillCard() {
+        if (this.activeMainView !== 'skill' || this.v2SkillScopeTab !== 'org') return null;
+        const cards = this.v2SkillCards || [];
+        return cards.find((card) => !this.v2SkillCardAlreadyAdded(card)) || cards[0] || null;
+      },
+      workbenchTourIsFirstPublicSkillCard(card) {
+        const target = this.workbenchTourFirstPublicSkillCard();
+        return !!(card && target && String(card.key || '') === String(target.key || ''));
+      },
+      workbenchTourPublicSkillActionTourId(card) {
+        return this.workbenchTourIsFirstPublicSkillCard(card) ? 'workbench-public-skill-action' : null;
+      },
+      workbenchTourPublicSkillAddUseTourId(card) {
+        return this.workbenchTourIsFirstPublicSkillCard(card) ? 'workbench-public-skill-add-use' : null;
+      },
+      workbenchTourPublicSkillDropdownProps(card) {
+        const shouldOpen = this.tourOpen
+          && this.tourGuideKind === 'skill'
+          && this.workbenchTourCurrentStepKey === 'skill-add-use'
+          && this.workbenchTourIsFirstPublicSkillCard(card)
+          && !this.v2SkillCardAlreadyAdded(card);
+        return shouldOpen ? { open: true } : {};
+      },
+      workbenchTourPublicSkillAddUseTarget() {
+        return this.workbenchTourVisibleDomTarget('[data-tour-id="workbench-public-skill-add-use"]')
+          || this.workbenchTourVisibleDomTarget('[data-tour-id="workbench-public-skill-action"]')
+          || this.workbenchTourTarget('workbench-main');
       },
       workbenchTourAssistantTarget() {
         const frame = this.workbenchTourTarget('workbench-assistant-frame');
@@ -3527,58 +3579,138 @@
       workbenchTourFinalTarget() {
         return this.workbenchTourTarget('workbench-chat-composer');
       },
+      workbenchTourHelpTarget() {
+        return this.workbenchTourTarget('workbench-help-button');
+      },
       workbenchTourPrevButtonProps() {
         return { children: '上一步' };
       },
       workbenchTourNextButtonProps(label = '下一步') {
         return { children: label };
       },
+      workbenchTourHiddenNextButtonProps() {
+        return { style: { display: 'none' } };
+      },
       emptyWorkbenchTourSteps() {
         const prevButtonProps = this.workbenchTourPrevButtonProps();
+        if (this.tourGuideKind === 'skill') {
+          return [
+            {
+              tourStepKey: 'skill-nav',
+              title: '点击“技能”',
+              target: () => this.workbenchTourTarget('workbench-sidebar-skill-button'),
+              placement: 'right',
+              nextButtonProps: this.workbenchTourNextButtonProps(),
+            },
+            {
+              tourStepKey: 'skill-list',
+              title: '查看并选择审计方法',
+              target: () => this.workbenchTourTarget('workbench-public-skill-list'),
+              placement: 'top',
+              prevButtonProps,
+              nextButtonProps: this.workbenchTourNextButtonProps(),
+            },
+            {
+              tourStepKey: 'skill-add-use',
+              title: '添加并使用',
+              target: () => this.workbenchTourPublicSkillAddUseTarget(),
+              placement: 'top',
+              prevButtonProps,
+              nextButtonProps: this.workbenchTourNextButtonProps(),
+            },
+            {
+              tourStepKey: 'skill-upload',
+              title: '根据技能要求上传材料',
+              target: () => this.workbenchTourTarget('chat-upload-attachment-button'),
+              placement: 'top',
+              prevButtonProps,
+              nextButtonProps: this.workbenchTourNextButtonProps(),
+            },
+            {
+              tourStepKey: 'skill-send',
+              title: '点击“发送”',
+              target: () => this.workbenchTourTarget('chat-send-button'),
+              placement: 'top',
+              prevButtonProps,
+              nextButtonProps: this.workbenchTourNextButtonProps('完成'),
+            },
+          ];
+        }
+        if (this.tourGuideKind === 'task') {
+          return [
+            {
+              tourStepKey: 'task',
+              title: '创建核查任务',
+              target: () => this.workbenchTourTarget('workbench-task-create-button'),
+              placement: 'right',
+              nextButtonProps: this.workbenchTourNextButtonProps(),
+            },
+            {
+              tourStepKey: 'task',
+              title: '查看任务进展',
+              target: () => this.workbenchTourTarget('workbench-task-list'),
+              placement: 'right',
+              prevButtonProps,
+              nextButtonProps: this.workbenchTourNextButtonProps('完成'),
+            },
+          ];
+        }
         return [
-          {
+          ...(this.tourIncludeIntro ? [{
             tourStepKey: 'first',
-            title: '欢迎进入 KianKun 审计分析平台',
-            description: this.workbenchTourFirstStepDescription,
+            title: '欢迎登录，KianKun审计分析平台',
+            description: '这里是你的审计工作台，可以通过对话和技能完成审计分析。',
             cover: this.workbenchTourFirstStepCover,
             target: null,
-            nextButtonProps: this.workbenchTourNextButtonProps('如何使用'),
-          },
+          nextButtonProps: this.workbenchTourNextButtonProps('新手教学'),
+          }] : []),
           {
-            tourStepKey: 'sidebar',
-            title: '左侧：工作记录和操作入口',
-            description: '这里用于管理当前工作台内的对话和任务。你可以查看历史记录，也可以新建对话或任务，继续推进审计工作。',
-            target: () => this.workbenchTourTarget('workbench-sidebar'),
+            tourStepKey: 'new-chat',
+            title: '创建新对话',
+            target: () => this.workbenchTourTarget('workbench-new-conversation-button'),
             placement: 'right',
             prevButtonProps,
             nextButtonProps: this.workbenchTourNextButtonProps(),
           },
           {
-            tourStepKey: 'assistant',
-            title: '中间：当前对话区',
-            description: '这里是你和 AI 协作的主要区域。你可以上传附件、输入核查事项，并围绕同一问题连续追问；AI 的分析过程和生成内容也会在这里呈现。',
+            tourStepKey: 'upload',
+            title: '上传材料',
+            target: () => this.workbenchTourTarget('chat-upload-attachment-button'),
+            placement: 'top',
+            prevButtonProps,
+            nextButtonProps: this.workbenchTourNextButtonProps(),
+          },
+          {
+            tourStepKey: 'input',
+            title: '输入修改要求',
+            target: () => this.workbenchTourTarget('workbench-chat-composer'),
+            placement: 'top',
+            prevButtonProps,
+            nextButtonProps: this.workbenchTourNextButtonProps(),
+          },
+          {
+            tourStepKey: 'send',
+            title: '点击“发送”',
+            target: () => this.workbenchTourTarget('chat-send-button'),
+            placement: 'top',
+            prevButtonProps,
+            nextButtonProps: this.workbenchTourNextButtonProps(),
+          },
+          {
+            tourStepKey: 'process',
+            title: '发送后可查看处理过程',
             target: () => this.workbenchTourAssistantTarget(),
             placement: 'left',
             prevButtonProps,
             nextButtonProps: this.workbenchTourNextButtonProps(),
           },
           {
-            tourStepKey: 'rail',
-            title: '右侧：审计资源区',
-            description: '这里存放当前审计工作可用的资料、数据、知识和结果。你可以添加、浏览资源，也可以基于这些资源发起对话或创建任务，让 AI 协助核查分析。',
-            target: () => this.workbenchTourTarget('workbench-rail'),
-            placement: 'left',
-            prevButtonProps,
-            nextButtonProps: this.workbenchTourNextButtonProps(),
-          },
-          {
-            tourStepKey: 'final',
-            title: '从输入框开始',
-            description: this.workbenchTourFinalDescription,
-            target: () => this.workbenchTourFinalTarget(),
-            placement: this.workbenchTourFinalPlacement,
-            prevButtonProps,
-            nextButtonProps: this.workbenchTourNextButtonProps('完成'),
+            tourStepKey: 'learn-more',
+            title: '已完成当前引导',
+            description: this.workbenchTourLearnMoreDescription,
+            target: null,
+            prevButtonProps: this.workbenchTourHiddenNextButtonProps(),
+            nextButtonProps: this.workbenchTourHiddenNextButtonProps(),
           },
         ];
       },
@@ -3586,8 +3718,12 @@
         const count = Math.max(0, Number(total) || 0);
         return Array.from({ length: count }, (_, index) => index);
       },
+      workbenchTourSkipLabel(current) {
+        const step = (this.workbenchTourRawSteps || [])[Number(current) || 0] || {};
+        return step.tourStepKey === 'learn-more' ? '暂不学习' : '跳过引导';
+      },
       getWorkbenchTourStorageKey() {
-        return `workbenchTourSeen:${this.projectId || 'default'}`;
+        return `workbenchTourV2Suppressed:${this.projectId || 'default'}`;
       },
       hasSeenWorkbenchTour() {
         try {
@@ -3608,35 +3744,153 @@
       },
       saveWorkbenchTourPreference() {
         if (this.tourSuppressNextTime) this.markWorkbenchTourSeen();
-        else this.clearWorkbenchTourSeen();
       },
-      openWorkbenchTour(isAuto = false) {
+      prepareWorkbenchGuide(kind) {
+        if (kind === 'skill') {
+          this.activeMainView = 'chat';
+          return;
+        }
+        this.activeMainView = 'chat';
+        if (kind === 'task') this.v2SidebarTasksExpanded = true;
+      },
+      prepareWorkbenchPublicSkillTourList() {
+        this.activeMainView = 'skill';
+        this.v2SkillScopeTab = 'org';
+        this.v2SkillSearchQuery = '';
+        this.v2SkillCategoryTab = 'all';
+        this.v2SkillTypeFilter = 'all';
+      },
+      ensureWorkbenchTourSkillUsed() {
+        if (this.tourSkillUseApplied) {
+          this.activeMainView = 'chat';
+          return;
+        }
+        this.prepareWorkbenchPublicSkillTourList();
+        const card = this.workbenchTourFirstPublicSkillCard();
+        this.tourSkillUseApplied = true;
+        if (card) this.useV2SkillCard(card);
+        this.activeMainView = 'chat';
+      },
+      refreshWorkbenchTourPosition() {
+        this.$nextTick(() => {
+          if (this.tourOpen) this.tourRenderKey += 1;
+        });
+      },
+      prepareWorkbenchTourStep() {
+        if (this.tourGuideKind !== 'skill') return;
+        const key = this.workbenchTourCurrentStepKey;
+        if (key === 'skill-nav') {
+          this.activeMainView = 'chat';
+          this.refreshWorkbenchTourPosition();
+        } else if (key === 'skill-list' || key === 'skill-add-use') {
+          this.prepareWorkbenchPublicSkillTourList();
+          this.refreshWorkbenchTourPosition();
+        } else if (key === 'skill-upload' || key === 'skill-send') {
+          this.ensureWorkbenchTourSkillUsed();
+          this.refreshWorkbenchTourPosition();
+        }
+      },
+      openWorkbenchTour(isAuto = false, kind = 'basic') {
         if (isAuto && this.hasSeenWorkbenchTour()) return;
+        const nextKind = ['basic', 'skill', 'task'].includes(kind) ? kind : 'basic';
         this.tourLaunchMode = isAuto ? 'auto' : 'manual';
+        this.tourGuideKind = nextKind;
+        this.tourIncludeIntro = isAuto && nextKind === 'basic';
         this.tourCurrent = 0;
-        this.tourSuppressNextTime = this.hasSeenWorkbenchTour();
-        this.tourOpen = true;
+        this.tourRenderKey += 1;
+        this.tourSuppressNextTime = false;
+        this.tourSkillUseApplied = false;
+        this.v2HelpPopoverOpen = false;
+        this.v2HelpCoachOpen = false;
+        this.v2HelpHintVisible = false;
+        this.prepareWorkbenchGuide(nextKind);
+        this.$nextTick(() => {
+          this.prepareWorkbenchTourStep();
+          this.$nextTick(() => { this.tourOpen = true; });
+        });
         if (isAuto) this.tourAutoShown = true;
       },
       closeWorkbenchTour() {
+        if (this.tourSuppressCloseHint) {
+          this.tourSuppressCloseHint = false;
+          return;
+        }
         this.tourOpen = false;
-        this.saveWorkbenchTourPreference();
+        this.returnToChatAndHintHelp();
       },
       finishWorkbenchTour() {
+        if (this.tourGuideKind === 'basic' && this.workbenchTourCurrentStepKey === 'learn-more') {
+          this.tourOpen = false;
+          this.$nextTick(() => this.openWorkbenchTour(false, 'skill'));
+          return;
+        }
+        if (this.tourGuideKind === 'skill') {
+          this.tourOpen = false;
+          this.tourSuppressCloseHint = true;
+          this.activeMainView = 'chat';
+          this.tourSkillCompleted = true;
+          this.tourGuideKind = 'basic';
+          this.tourCurrent = this.emptyWorkbenchTourSteps().findIndex((step) => step.tourStepKey === 'learn-more');
+          this.tourRenderKey += 1;
+          this.$nextTick(() => {
+            this.v2HelpCoachOpen = false;
+            this.v2HelpPopoverOpen = false;
+            this.tourOpen = true;
+          });
+          return;
+        }
         this.tourOpen = false;
-        this.saveWorkbenchTourPreference();
       },
       skipWorkbenchTour() {
-        this.tourSuppressNextTime = true;
-        this.markWorkbenchTourSeen();
+        this.saveWorkbenchTourPreference();
         this.tourOpen = false;
+        this.returnToChatAndHintHelp();
+      },
+      startWorkbenchGuide(kind) {
+        this.openWorkbenchTour(false, kind || 'basic');
+      },
+      chooseWorkbenchTourGuide(kind) {
+        this.tourOpen = false;
+        this.$nextTick(() => this.openWorkbenchTour(false, kind || 'skill'));
+      },
+      onWorkbenchHelpOpenChange(open) {
+        this.v2HelpPopoverOpen = !!open;
+        if (!open) this.v2HelpCoachOpen = false;
+        if (open) this.v2HelpHintVisible = false;
+      },
+      onWorkbenchHelpCoachOpenChange(open) {
+        if (open) return;
+        this.finishWorkbenchHelpCoach();
+      },
+      finishWorkbenchHelpCoach() {
+        this.v2HelpCoachOpen = false;
+        this.v2HelpPopoverOpen = false;
+        this.v2HelpHintVisible = false;
+      },
+      focusWorkbenchHelpButton() {
+        this.$nextTick(() => {
+          const btn = this.$refs.workbenchHelpButton;
+          if (btn && typeof btn.focus === 'function') btn.focus();
+        });
+      },
+      returnToChatAndHintHelp() {
+        this.activeMainView = 'chat';
+        this.v2HelpHintVisible = false;
+        this.v2HelpPopoverOpen = false;
+        this.v2HelpCoachOpen = false;
+        if (this._v2HelpHintTimer) window.clearTimeout(this._v2HelpHintTimer);
+        this._v2HelpHintTimer = null;
+        this.$nextTick(() => {
+          this.focusWorkbenchHelpButton();
+          this.v2HelpCoachOpen = true;
+        });
       },
       scheduleWorkbenchTourAutoOpen() {
         if (this.tourAutoShown || this.hasSeenWorkbenchTour()) return;
         if (this._workbenchTourTimer) window.clearTimeout(this._workbenchTourTimer);
         this._workbenchTourTimer = window.setTimeout(() => {
           this._workbenchTourTimer = null;
-          this.openWorkbenchTour(true);
+          this.openWorkbenchTour(true, 'basic');
         }, 180);
       },
       setMainView(view) {
@@ -4956,7 +5210,7 @@
               ? `任务当前状态为「${statusText}」。可在任务操作中重跑，或先核查输入资料与技能配置。`
               : card.status === 'parsing' || card.status === 'queued'
                 ? `任务当前状态为「${statusText}」。这里展示已进入队列/执行过程的上下文，完成后会补充产出摘要。`
-                : `任务已完成。产出「${resultTitle || title}」已沉淀到结果侧，右上角任务详情中可查看配置、引用资源和基本信息。`,
+                : `任务已完成。产出「${resultTitle || title}」已沉淀到结果侧，可在任务配置中查看配置与引用资源，左侧任务更多菜单可打开任务详情。`,
           },
         ];
       },
@@ -4992,6 +5246,10 @@
         this.v2TaskBasicInfoModalOpen = false;
         this.v2TaskDetailVisible = true;
         this.$nextTick(() => this.ensureV2TaskDetailLayoutObserver());
+      },
+      backToV2BatchChildList() {
+        this.activeBatchChildId = '';
+        this.v2TaskBasicInfoModalOpen = false;
       },
       getV2BatchChildRaw(child) {
         return (child && child.raw) || child || null;
@@ -5502,6 +5760,13 @@
         if (!this.activeTaskContextCard) return;
         this.v2TaskBasicInfoModalOpen = true;
       },
+      openSidebarTaskDetail(item) {
+        if (!item || !item.id) return;
+        this.openTaskCard(item);
+        this.$nextTick(() => {
+          this.v2TaskBasicInfoModalOpen = true;
+        });
+      },
       canDownloadTask(item) {
         const host = this.capabilityHost;
         return !!(host && item && item.raw && typeof host.workbenchPackageTaskCanDownload === 'function' && host.workbenchPackageTaskCanDownload(item.raw));
@@ -5612,6 +5877,10 @@
 	        if (key === 'delete') this.confirmConversationBulkDeleteForItem(item);
 	      },
       onSidebarTaskMenu(key, item) {
+        if (key === 'task-detail') {
+          this.openSidebarTaskDetail(item);
+          return;
+        }
         const host = this.capabilityHost;
         const raw = item && item.raw;
         if (!host || !raw || typeof host.handleTreeContextMenu !== 'function') return;
@@ -5726,6 +5995,10 @@
           window.clearTimeout(this._workbenchTourTimer);
           this._workbenchTourTimer = null;
         }
+        if (this._v2HelpHintTimer) {
+          window.clearTimeout(this._v2HelpHintTimer);
+          this._v2HelpHintTimer = null;
+        }
         if (this._v2TaskDetailLayoutObserver) {
           this._v2TaskDetailLayoutObserver.disconnect();
           this._v2TaskDetailLayoutObserver = null;
@@ -5748,6 +6021,9 @@
       },
       activeMainView() {
         this.$nextTick(() => this.ensureV2TaskDetailLayoutObserver());
+      },
+      tourCurrent() {
+        this.$nextTick(() => this.prepareWorkbenchTourStep());
       },
       v2ProjectDropdownOpen(open) {
         if (open) {
