@@ -4413,16 +4413,35 @@ body.is-col-resizing * {
   padding: var(--ds-space-m);
 }
 
-.workbench-v2-app-upload-setting {
+.workbench-v2-app-config-basics {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-m);
+}
+
+.workbench-v2-app-config-block {
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: var(--ds-space-sm);
 }
 
+.workbench-v2-app-config-block--examples {
+  padding-top: var(--ds-space-m);
+  border-top: 1px solid var(--ds-border-subtle);
+}
+
+.workbench-v2-app-config-block__head,
 .workbench-v2-app-upload-setting > header {
   display: flex;
   flex-direction: column;
   gap: var(--ds-space-xxs);
+}
+
+.workbench-v2-app-upload-setting {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-sm);
 }
 
 .workbench-v2-app-config-summary {
@@ -4572,14 +4591,13 @@ body.is-col-resizing * {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--ds-space-sm);
-  margin-top: var(--ds-space-m);
 }
 
 .workbench-v2-app-config-io {
   display: flex;
   flex-direction: column;
   gap: var(--ds-space-xs);
-  margin-top: var(--ds-space-m);
+  margin-top: var(--ds-space-sm);
   padding: var(--ds-space-sm);
   border: 0;
   border-radius: var(--ds-radius-md);
@@ -4867,8 +4885,8 @@ body.is-col-resizing * {
   justify-content: flex-end;
   gap: var(--ds-space-sm);
   padding: var(--ds-space-sm) var(--ds-space-m);
+  border: 1px solid var(--ds-border-subtle);
   border-radius: var(--ds-radius-standard);
-  background: var(--ds-bg-layout);
   box-sizing: border-box;
 }
 
@@ -4932,8 +4950,20 @@ body.is-col-resizing * {
 }
 
 .workbench-v2-app-use-upload__session-layout .project-material-upload__table-row {
-  min-width: 0;
-  grid-template-columns: minmax(0, 1fr) 96px 88px 88px;
+  grid-template-columns: minmax(0, 1fr) minmax(112px, 120px) minmax(100px, 108px) minmax(88px, 96px);
+}
+
+.workbench-v2-app-use-upload__session-layout .project-material-upload__table-row > div:nth-child(2),
+.workbench-v2-app-use-upload__session-layout .project-material-upload__table-row > div:nth-child(3) {
+  white-space: nowrap;
+}
+
+.workbench-v2-app-use-upload__session-layout .project-material-upload__ops {
+  flex-wrap: nowrap;
+}
+
+.workbench-v2-app-use-upload__session-layout .project-material-upload__remove-btn {
+  white-space: nowrap;
 }
 
 .workbench-v2-app-use-guide.project-material-upload__guide {

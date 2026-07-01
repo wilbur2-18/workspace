@@ -1693,8 +1693,8 @@
                   </button>
                   <template #overlay>
                     <a-menu @click="({ key }) => onV2AppCardMenu(key, activeV2App)">
-                      <a-menu-item key="favorite">{{ v2AppFavoriteMenuLabel(activeV2App) }}</a-menu-item>
-                      <a-menu-divider v-if="v2AppEditable(activeV2App)" />
+                      <a-menu-item v-if="isSimpleWorkbenchMode" key="favorite">{{ v2AppFavoriteMenuLabel(activeV2App) }}</a-menu-item>
+                      <a-menu-divider v-if="isSimpleWorkbenchMode && v2AppEditable(activeV2App)" />
                       <a-menu-item v-if="v2AppEditable(activeV2App)" key="edit">编辑</a-menu-item>
                       <a-menu-item v-if="v2AppEditable(activeV2App)" key="share">{{ v2AppCardShareMenuLabel(activeV2App) }}</a-menu-item>
                       <a-menu-item v-if="v2AppEditable(activeV2App)" key="delete" danger>删除</a-menu-item>
@@ -2095,8 +2095,8 @@
                             </a-button>
                             <template #overlay>
                               <a-menu @click="({ key }) => onV2AppCardMenu(key, app)">
-                                <a-menu-item key="favorite">{{ v2AppFavoriteMenuLabel(app) }}</a-menu-item>
-                                <a-menu-divider v-if="v2AppEditable(app)" />
+                                <a-menu-item v-if="isSimpleWorkbenchMode" key="favorite">{{ v2AppFavoriteMenuLabel(app) }}</a-menu-item>
+                                <a-menu-divider v-if="isSimpleWorkbenchMode && v2AppEditable(app)" />
                                 <a-menu-item v-if="v2AppEditable(app)" key="edit">编辑</a-menu-item>
                                 <a-menu-item v-if="v2AppEditable(app)" key="share">{{ v2AppCardShareMenuLabel(app) }}</a-menu-item>
                                 <a-menu-item v-if="v2AppEditable(app)" key="delete" danger>删除</a-menu-item>
@@ -2178,6 +2178,7 @@
                   aria-label="应用配置模式"
                 >
                   <button
+                    v-if="v2AppEditable(activeV2App)"
                     type="button"
                     :class="{ 'is-active': v2AppStage === 'config' }"
                     role="tab"
@@ -2199,111 +2200,119 @@
               </header>
 
               <section v-if="v2AppStage === 'config'" class="workbench-v2-app-config-page" aria-label="应用配置页">
-              <section class="workbench-v2-app-config-card">
-                <div class="workbench-v2-app-config-summary">
-                  <div class="workbench-v2-app-config-summary__head">
-                    <div class="workbench-v2-app-config-summary__identity">
-                      <div class="workbench-v2-app-config-summary__icon" aria-hidden="true">
-                        <iconpark-icon name="application-one" class="iconpark-icon"></iconpark-icon>
+                <section class="workbench-v2-app-config-card workbench-v2-app-config-basics" aria-label="基本信息与示例文件">
+                  <div class="workbench-v2-app-config-block workbench-v2-app-config-block--profile">
+                    <div class="workbench-v2-app-config-summary">
+                      <div class="workbench-v2-app-config-summary__head">
+                        <div class="workbench-v2-app-config-summary__identity">
+                          <div class="workbench-v2-app-config-summary__icon" aria-hidden="true">
+                            <iconpark-icon name="application-one" class="iconpark-icon"></iconpark-icon>
+                          </div>
+                          <div class="workbench-v2-app-config-summary__meta">
+                            <h2>{{ v2AppForm.name || activeV2App.name }}</h2>
+                            <div class="tc-template-card__tags tc-template-card__tags--compact workbench-v2-app-config-summary__tags">
+                              <TagLg>{{ v2AppSceneLabel(v2AppForm.scene || activeV2App.scene) }}</TagLg>
+                              <TagLg>{{ v2AppTypeLabel(v2AppForm.appType || activeV2App.appType) }}</TagLg>
+                            </div>
+                          </div>
+                        </div>
+                        <button type="button" class="workbench-v2-app-config-summary__edit" @click="openV2AppConfig(activeV2App)">编辑</button>
                       </div>
-                      <div class="workbench-v2-app-config-summary__meta">
-                        <h2>{{ v2AppForm.name || activeV2App.name }}</h2>
-                        <div class="tc-template-card__tags tc-template-card__tags--compact workbench-v2-app-config-summary__tags">
-                          <TagLg>{{ v2AppSceneLabel(v2AppForm.scene || activeV2App.scene) }}</TagLg>
-                          <TagLg>{{ v2AppTypeLabel(v2AppForm.appType || activeV2App.appType) }}</TagLg>
+                      <p class="workbench-v2-app-config-summary__desc">{{ v2AppForm.desc || activeV2App.desc }}</p>
+                    </div>
+                    <div class="workbench-v2-app-config-io">
+                      <div class="tc-template-card__io-row">
+                        <span class="tc-template-card__io-label">输入</span>
+                        <div class="tc-template-card__file-list">
+                          <span
+                            v-for="name in v2AppFormInputItems()"
+                            :key="'config-io-input-' + name"
+                            class="tc-template-card__file-chip"
+                          >
+                            <span>{{ name }}</span>
+                          </span>
+                          <span v-if="!v2AppFormInputItems().length" class="tc-template-card__io-text">按应用说明上传材料。</span>
                         </div>
                       </div>
+                      <div class="tc-template-card__io-row">
+                        <span class="tc-template-card__io-label">输出</span>
+                        <span class="tc-template-card__io-text">{{ v2AppForm.outputLabel || '输出分析结果与核查建议' }}</span>
+                      </div>
                     </div>
-                    <button type="button" class="workbench-v2-app-config-summary__edit" @click="openV2AppConfig(activeV2App)">编辑</button>
                   </div>
-                  <p class="workbench-v2-app-config-summary__desc">{{ v2AppForm.desc || activeV2App.desc }}</p>
-                </div>
-	                <div class="workbench-v2-app-config-io">
-	                  <div class="tc-template-card__io-row">
-	                    <span class="tc-template-card__io-label">输入</span>
-	                    <div class="tc-template-card__file-list">
-	                      <span
-	                        v-for="name in v2AppFormInputItems()"
-	                        :key="'config-io-input-' + name"
-	                        class="tc-template-card__file-chip"
-	                      >
-	                        <span>{{ name }}</span>
-	                      </span>
-	                      <span v-if="!v2AppFormInputItems().length" class="tc-template-card__io-text">按应用说明上传材料。</span>
-	                    </div>
-	                  </div>
-	                  <div class="tc-template-card__io-row">
-	                    <span class="tc-template-card__io-label">输出</span>
-	                    <span class="tc-template-card__io-text">{{ v2AppForm.outputLabel || '输出分析结果与核查建议' }}</span>
-	                  </div>
-	                </div>
-	              </section>
-	              <section class="workbench-v2-app-config-card workbench-v2-app-upload-setting">
-	                <header>
-	                  <h2>上传设置</h2>
-	                  <p>设置应用使用页的上传提示文字。</p>
-	                </header>
-	                <a-textarea
-	                  v-model:value="v2AppForm.uploadPrompt"
-	                  :maxlength="120"
-	                  :rows="3"
-	                  show-count
-	                  @blur="autosaveV2AppConfigPage"
-	                />
-	                <div class="workbench-v2-app-config-examples workbench-v2-app-config-examples--setting">
-	                  <section>
-	                    <header>
-	                      <h3>上传文件示例</h3>
-	                      <button type="button" class="workbench-v2-app-config-text-btn" @click="simulateV2AppExampleUpload('input')">
-	                        <ds-icon name="upload" aria-hidden="true" />
-	                        <span>添加示例文件</span>
-	                      </button>
-	                    </header>
-	                    <div class="workbench-v2-app-config-list">
-	                      <div v-for="file in v2AppForm.uploadExampleFiles" :key="'config-upload-example-' + file" class="workbench-v2-app-config-list__row">
-	                        <span class="workbench-v2-app-config-list__name">
-	                          <ds-icon :name="v2AppRecordFileIconName(file)" class="workbench-v2-app-config-list__file-icon" aria-hidden="true" />
-	                          <span>{{ file }}</span>
-	                        </span>
-	                        <button type="button" class="workbench-v2-app-config-example-btn" @click="removeV2AppExampleFile('input', file)">
-	                          <ds-icon name="delete" aria-hidden="true" />
-	                          <span>移除</span>
-	                        </button>
-	                      </div>
-	                      <button v-if="!v2AppForm.uploadExampleFiles.length" type="button" class="workbench-v2-app-config-example-add" @click="simulateV2AppExampleUpload('input')">
-	                        <ds-icon name="upload" aria-hidden="true" />
-	                        <span>添加示例文件</span>
-	                      </button>
-	                    </div>
-	                  </section>
-	                  <section>
-	                    <header>
-	                      <h3>结果输出示例</h3>
-	                      <button type="button" class="workbench-v2-app-config-text-btn" @click="simulateV2AppExampleUpload('output')">
-	                        <ds-icon name="upload" aria-hidden="true" />
-	                        <span>添加示例文件</span>
-	                      </button>
-	                    </header>
-	                    <div class="workbench-v2-app-config-list">
-	                      <div v-for="file in v2AppForm.outputExampleFiles" :key="'config-output-example-' + file" class="workbench-v2-app-config-list__row">
-	                        <span class="workbench-v2-app-config-list__name">
-	                          <ds-icon :name="v2AppRecordFileIconName(file)" class="workbench-v2-app-config-list__file-icon" aria-hidden="true" />
-	                          <span>{{ file }}</span>
-	                        </span>
-	                        <button type="button" class="workbench-v2-app-config-example-btn" @click="removeV2AppExampleFile('output', file)">
-	                          <ds-icon name="delete" aria-hidden="true" />
-	                          <span>移除</span>
-	                        </button>
-	                      </div>
-	                      <button v-if="!v2AppForm.outputExampleFiles.length" type="button" class="workbench-v2-app-config-example-add" @click="simulateV2AppExampleUpload('output')">
-	                        <ds-icon name="upload" aria-hidden="true" />
-	                        <span>添加示例文件</span>
-	                      </button>
-	                    </div>
-	                  </section>
-	                </div>
-	              </section>
-	              </section>
+                  <div class="workbench-v2-app-config-block workbench-v2-app-config-block--examples">
+                    <header class="workbench-v2-app-config-block__head">
+                      <h2>示例文件</h2>
+                      <p>配置使用页展示的输入、输出示例，帮助使用者理解应上传的材料与预期结果。</p>
+                    </header>
+                    <div class="workbench-v2-app-config-examples">
+                      <section>
+                        <header>
+                          <h3>上传文件示例</h3>
+                          <button type="button" class="workbench-v2-app-config-text-btn" @click="simulateV2AppExampleUpload('input')">
+                            <ds-icon name="upload" aria-hidden="true" />
+                            <span>添加示例文件</span>
+                          </button>
+                        </header>
+                        <div class="workbench-v2-app-config-list">
+                          <div v-for="file in v2AppForm.uploadExampleFiles" :key="'config-upload-example-' + file" class="workbench-v2-app-config-list__row">
+                            <span class="workbench-v2-app-config-list__name">
+                              <ds-icon :name="v2AppRecordFileIconName(file)" class="workbench-v2-app-config-list__file-icon" aria-hidden="true" />
+                              <span>{{ file }}</span>
+                            </span>
+                            <button type="button" class="workbench-v2-app-config-example-btn" @click="removeV2AppExampleFile('input', file)">
+                              <ds-icon name="delete" aria-hidden="true" />
+                              <span>移除</span>
+                            </button>
+                          </div>
+                          <button v-if="!v2AppForm.uploadExampleFiles.length" type="button" class="workbench-v2-app-config-example-add" @click="simulateV2AppExampleUpload('input')">
+                            <ds-icon name="upload" aria-hidden="true" />
+                            <span>添加示例文件</span>
+                          </button>
+                        </div>
+                      </section>
+                      <section>
+                        <header>
+                          <h3>结果输出示例</h3>
+                          <button type="button" class="workbench-v2-app-config-text-btn" @click="simulateV2AppExampleUpload('output')">
+                            <ds-icon name="upload" aria-hidden="true" />
+                            <span>添加示例文件</span>
+                          </button>
+                        </header>
+                        <div class="workbench-v2-app-config-list">
+                          <div v-for="file in v2AppForm.outputExampleFiles" :key="'config-output-example-' + file" class="workbench-v2-app-config-list__row">
+                            <span class="workbench-v2-app-config-list__name">
+                              <ds-icon :name="v2AppRecordFileIconName(file)" class="workbench-v2-app-config-list__file-icon" aria-hidden="true" />
+                              <span>{{ file }}</span>
+                            </span>
+                            <button type="button" class="workbench-v2-app-config-example-btn" @click="removeV2AppExampleFile('output', file)">
+                              <ds-icon name="delete" aria-hidden="true" />
+                              <span>移除</span>
+                            </button>
+                          </div>
+                          <button v-if="!v2AppForm.outputExampleFiles.length" type="button" class="workbench-v2-app-config-example-add" @click="simulateV2AppExampleUpload('output')">
+                            <ds-icon name="upload" aria-hidden="true" />
+                            <span>添加示例文件</span>
+                          </button>
+                        </div>
+                      </section>
+                    </div>
+                  </div>
+                </section>
+                <section class="workbench-v2-app-config-card workbench-v2-app-upload-setting" aria-label="上传说明设置">
+                  <header class="workbench-v2-app-config-block__head">
+                    <h2>上传说明</h2>
+                    <p>自定义应用使用页的上传提示文字。</p>
+                  </header>
+                  <a-textarea
+                    v-model:value="v2AppForm.uploadPrompt"
+                    :maxlength="120"
+                    :rows="3"
+                    show-count
+                    @blur="autosaveV2AppConfigPage"
+                  />
+                </section>
+              </section>
 
               <section
                 v-else
@@ -5717,6 +5726,10 @@
       },
       openV2AppConfigPage(app) {
         const source = app && app.id ? app : this.activeV2App;
+        if (!this.v2AppEditable(source)) {
+          this.openV2AppUse(source);
+          return;
+        }
         this.v2ActiveAppId = source && source.id ? source.id : this.v2ActiveAppId;
         this.v2AppEditorMode = 'edit';
         this.v2AppEditorSourceAppId = source && source.id ? source.id : '';
@@ -5728,6 +5741,11 @@
         this.activeMainView = 'app';
       },
       openV2AppCard(app) {
+        if (!app) return;
+        if (this.isExpertWorkbenchMode && this.v2AppEditable(app)) {
+          this.openV2AppConfigPage(app);
+          return;
+        }
         this.openV2AppUse(app);
       },
       openV2AppFromSkill(card) {
@@ -5978,7 +5996,10 @@
 	      },
       openV2AppUse(app, state) {
         const nextAppId = app && app.id ? app.id : this.v2ActiveAppId;
-        if (nextAppId !== this.v2ActiveAppId) this.v2AppUploadFiles = [];
+        if (nextAppId !== this.v2ActiveAppId) {
+          this.v2AppUploadFiles = [];
+          this.v2AppActiveExampleKey = '';
+        }
         this.v2ActiveAppId = nextAppId;
         const record = this.v2SidebarExecutionRecords.find((item) => item.appId === this.v2ActiveAppId);
         if (record) this.v2ActiveAppRecordId = record.id;
