@@ -1733,16 +1733,16 @@
                 <span>生成技能</span>
               </button>
               <button
-                v-else-if="showAppHistoryToggle"
+                v-else-if="showAppFloatingDetailToggle"
                 type="button"
                 class="nlm-assistant-header-btn"
-                :class="{ 'is-active': v2AppHistoryVisible }"
-                :title="v2AppHistoryVisible ? '隐藏生成记录' : '显示生成记录'"
-                :aria-label="v2AppHistoryVisible ? '隐藏生成记录' : '显示生成记录'"
-                @click="toggleAppHistory"
+                :class="{ 'is-active': appFloatingDetailVisible }"
+                :title="appFloatingDetailToggleTitle"
+                :aria-label="appFloatingDetailToggleTitle"
+                @click="toggleAppFloatingDetail"
               >
-                <ds-icon name="history" aria-hidden="true" />
-                <span>生成记录</span>
+                <ds-icon name="circle-info" aria-hidden="true" />
+                <span>任务详情</span>
               </button>
               <button
                 v-else-if="activeMainView === 'app' && v2AppEditable(activeV2App) && v2AppStage === 'use'"
@@ -1941,6 +1941,8 @@
               'is-app-detail': v2AppStage !== 'list',
               'is-app-record': v2AppStage === 'record',
               'is-app-main-header': v2AppStage === 'config' || v2AppStage === 'use' || v2AppStage === 'record',
+              'is-app-history-overlay': showAppHistoryPanel,
+              'is-app-record-detail-overlay': showAppRecordDetailPanel,
             }"
             aria-label="应用中心"
           >
@@ -2483,7 +2485,8 @@
                     </div>
                   </div>
                 </div>
-                <aside v-if="showAppHistoryPanel" class="workbench-v2-app-history-panel workbench-v2-floating-detail-panel" aria-label="生成记录">
+              </section>
+              <aside v-if="showAppHistoryPanel" class="workbench-v2-app-history-panel workbench-v2-floating-detail-panel" aria-label="生成记录">
                 <header>
                   <h2>生成记录</h2>
                   <span>{{ activeV2AppRecords.length }} 次</span>
@@ -2524,7 +2527,6 @@
                   </div>
                 </div>
               </aside>
-              </section>
             </template>
 
             <section v-else class="workbench-v2-app-record-reader" aria-label="执行记录结果阅读页">
@@ -2564,7 +2566,7 @@
                   </template>
                 </div>
               </article>
-              <aside class="workbench-v2-app-record-reader__detail workbench-v2-floating-detail-panel" aria-label="任务详情">
+              <aside v-if="v2AppRecordDetailVisible" class="workbench-v2-app-record-reader__detail workbench-v2-floating-detail-panel" aria-label="任务详情">
                 <div class="workbench-v2-task-floating-detail__body workbench-v2-app-record-detail__body">
                   <div class="wb-task-detail-sections" role="region" aria-label="任务详情：产出结果、使用技能与引用资源">
                     <section
@@ -3929,6 +3931,7 @@
         v2TaskDetailVisible: true,
         v2TaskDetailLayout: 'overlay',
         v2AppHistoryVisible: false,
+        v2AppRecordDetailVisible: true,
         v2SearchQuery: '',
         v2SkillSearchQuery: '',
         v2SkillScopeTab: 'workbench',
@@ -5119,8 +5122,28 @@
       showAppHistoryToggle() {
         return this.isSimpleWorkbenchMode && this.activeMainView === 'app' && this.v2AppStage === 'use';
       },
+      showAppRecordDetailToggle() {
+        return this.activeMainView === 'app' && this.v2AppStage === 'record';
+      },
+      showAppFloatingDetailToggle() {
+        return this.showAppHistoryToggle || this.showAppRecordDetailToggle;
+      },
+      appFloatingDetailVisible() {
+        if (this.v2AppStage === 'record') return this.v2AppRecordDetailVisible;
+        if (this.v2AppStage === 'use') return this.v2AppHistoryVisible;
+        return false;
+      },
+      appFloatingDetailToggleTitle() {
+        if (this.v2AppStage === 'record') {
+          return this.v2AppRecordDetailVisible ? '隐藏任务详情' : '显示任务详情';
+        }
+        return this.v2AppHistoryVisible ? '隐藏生成记录' : '显示生成记录';
+      },
       showAppHistoryPanel() {
         return this.showAppHistoryToggle && this.v2AppHistoryVisible;
+      },
+      showAppRecordDetailPanel() {
+        return this.showAppRecordDetailToggle && this.v2AppRecordDetailVisible;
       },
     },
     methods: {
@@ -6018,6 +6041,7 @@
         this.v2AppUseState = record.status === 'failed' ? 'failed' : 'done';
         this.v2AppStage = 'record';
         this.activeMainView = 'app';
+        this.v2AppRecordDetailVisible = true;
       },
       onV2AppRecordMenu(key, record) {
         if (!record) return;
@@ -8088,6 +8112,17 @@
       toggleAppHistory() {
         if (!this.showAppHistoryToggle) return;
         this.v2AppHistoryVisible = !this.v2AppHistoryVisible;
+      },
+      toggleAppRecordDetail() {
+        if (!this.showAppRecordDetailToggle) return;
+        this.v2AppRecordDetailVisible = !this.v2AppRecordDetailVisible;
+      },
+      toggleAppFloatingDetail() {
+        if (this.v2AppStage === 'record') {
+          this.toggleAppRecordDetail();
+          return;
+        }
+        this.toggleAppHistory();
       },
       syncV2TaskDetailLayout() {
         const el = this.$refs.v2TaskChatBody;

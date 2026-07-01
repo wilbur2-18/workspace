@@ -4173,6 +4173,22 @@ body.is-col-resizing * {
   padding-top: var(--ds-space-m);
 }
 
+.workbench-v2-app-page.is-app-history-overlay {
+  position: relative;
+}
+
+.workbench-v2-app-page.is-app-history-overlay.is-app-main-header {
+  padding-top: var(--ds-space-xs);
+}
+
+.workbench-v2-app-page.is-app-record-detail-overlay {
+  position: relative;
+}
+
+.workbench-v2-app-page.is-app-record-detail-overlay.is-app-main-header {
+  padding-top: var(--ds-space-xs);
+}
+
 .workbench-v2-app-page > .workbench-v2-skill-header,
 .workbench-v2-app-page > .workbench-v2-skill-search-row,
 .workbench-v2-app-page > .workbench-v2-skill-tabs,
@@ -4371,7 +4387,6 @@ body.is-col-resizing * {
 }
 
 .workbench-v2-app-use.is-history-overlay {
-  position: relative;
   align-self: stretch;
 }
 
