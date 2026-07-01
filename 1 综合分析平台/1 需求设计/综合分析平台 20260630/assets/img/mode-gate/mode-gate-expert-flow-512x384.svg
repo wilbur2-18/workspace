@@ -1,0 +1,69 @@
+<svg width="512" height="384" viewBox="0 0 512 384" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Expert mode: an AI conversation workspace connected to multiple data sources">
+  <defs>
+    <filter id="expertShadow" x="64" y="54" width="392" height="296" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#2f6fd6" flood-opacity=".14"/>
+    </filter>
+    <linearGradient id="expertBlue" x1="96" y1="80" x2="416" y2="304" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3d8cff"/>
+      <stop offset="1" stop-color="#1f62e8"/>
+    </linearGradient>
+    <linearGradient id="expertAvatar" x1="114" y1="134" x2="138" y2="158" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3d8cff"/>
+      <stop offset="1" stop-color="#1f62e8"/>
+    </linearGradient>
+  </defs>
+
+  <path d="M70 280c56 36 152 46 248 31 81-13 132-45 126-88-6-43-66-59-91-96-26-38-18-70-73-81-72-15-94 32-136 54-42 22-94 16-110 67-13 43-6 87 36 113Z" fill="#f2f7ff"/>
+
+  <path d="M72 148l3 11 11 3-11 3-3 11-3-11-11-3 11-3z" fill="#cfe1fb"/>
+  <path d="M452 138l2.6 9 9 2.6-9 2.6-2.6 9-2.6-9-9-2.6 9-2.6z" fill="#cfe1fb"/>
+  <path d="M86 306l2.2 7.6 7.6 2.2-7.6 2.2-2.2 7.6-2.2-7.6-7.6-2.2 7.6-2.2z" fill="#dbeaff"/>
+
+  <g filter="url(#expertShadow)">
+    <rect x="96" y="80" width="320" height="224" rx="22" fill="#fff" stroke="#cfe1fb" stroke-width="2"/>
+    <path d="M96 102a22 22 0 0 1 22-22h276a22 22 0 0 1 22 22v16H96z" fill="url(#expertBlue)"/>
+    <circle cx="120" cy="99" r="4" fill="#d6e8ff"/>
+    <circle cx="136" cy="99" r="4" fill="#d6e8ff"/>
+    <circle cx="152" cy="99" r="4" fill="#d6e8ff"/>
+    <path d="M398 91C398 96 395 99 390 99C395 99 398 102 398 107C398 102 401 99 406 99C401 99 398 96 398 91Z" fill="#ffffff" fill-opacity=".9"/>
+
+    <path d="M296 118V304" stroke="#e6eefb" stroke-width="2"/>
+
+    <circle cx="126" cy="146" r="12" fill="url(#expertAvatar)"/>
+    <path d="M126 140C126 144 128 146 132 146C128 146 126 148 126 152C126 148 124 146 120 146C124 146 126 144 126 140Z" fill="#fff"/>
+    <rect x="146" y="134" width="122" height="26" rx="13" fill="#eef5ff"/>
+    <rect x="158" y="143" width="86" height="8" rx="4" fill="#c9dbf6"/>
+
+    <rect x="156" y="172" width="128" height="26" rx="13" fill="url(#expertBlue)"/>
+    <rect x="168" y="181" width="92" height="8" rx="4" fill="#cfe0ff"/>
+
+    <circle cx="126" cy="216" r="12" fill="url(#expertAvatar)"/>
+    <path d="M126 210C126 214 128 216 132 216C128 216 126 218 126 222C126 218 124 216 120 216C124 216 126 214 126 210Z" fill="#fff"/>
+    <rect x="146" y="204" width="134" height="32" rx="13" fill="#eef5ff"/>
+    <rect x="158" y="213" width="106" height="8" rx="4" fill="#c9dbf6"/>
+    <rect x="158" y="225" width="74" height="8" rx="4" fill="#d6e3f7"/>
+
+    <rect x="112" y="256" width="172" height="30" rx="15" fill="#f4f8ff" stroke="#dbe7fb" stroke-width="1.6"/>
+    <rect x="126" y="267" width="86" height="8" rx="4" fill="#c4d4ee"/>
+    <circle cx="268" cy="271" r="12" fill="url(#expertBlue)"/>
+    <path d="M263 266l10 5-10 5z" fill="#fff"/>
+
+    <rect x="312" y="134" width="52" height="8" rx="4" fill="#cfe1fb"/>
+
+    <rect x="312" y="158" width="14" height="16" rx="2.5" fill="#e8f3ff" stroke="#7baef6" stroke-width="1.6"/>
+    <path d="M322 158v5h4" stroke="#7baef6" stroke-width="1.4" stroke-linejoin="round"/>
+    <rect x="334" y="162" width="58" height="8" rx="4" fill="#eef5ff"/>
+
+    <ellipse cx="319" cy="189" rx="8" ry="3" fill="#e8f3ff" stroke="#7baef6" stroke-width="1.6"/>
+    <path d="M311 189v9c0 1.7 3.6 3 8 3s8-1.3 8-3v-9" stroke="#7baef6" stroke-width="1.6"/>
+    <rect x="334" y="190" width="58" height="8" rx="4" fill="#eef5ff"/>
+
+    <rect x="311" y="216" width="15" height="13" rx="2" fill="#e8f3ff" stroke="#7baef6" stroke-width="1.6"/>
+    <path d="M311 222h15M318.5 216v13" stroke="#7baef6" stroke-width="1.3"/>
+    <rect x="334" y="219" width="48" height="8" rx="4" fill="#eef5ff"/>
+
+    <rect x="308" y="246" width="78" height="22" rx="11" fill="#e8f3ff" stroke="#3d8cff" stroke-width="1.4"/>
+    <path d="M318 257h11M323.5 251.5v11" stroke="#1f62e8" stroke-width="2.4" stroke-linecap="round"/>
+    <rect x="338" y="253" width="36" height="8" rx="4" fill="#9fc2fb"/>
+  </g>
+</svg>

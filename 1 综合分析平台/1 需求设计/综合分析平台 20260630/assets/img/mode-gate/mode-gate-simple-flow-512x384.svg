@@ -1,0 +1,64 @@
+<svg width="512" height="384" viewBox="0 0 512 384" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Simple mode: an application center with ready-to-use apps to pick from">
+  <defs>
+    <filter id="simpleShadow" x="64" y="54" width="392" height="296" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#2f6fd6" flood-opacity=".14"/>
+    </filter>
+    <linearGradient id="simpleBlue" x1="96" y1="80" x2="416" y2="304" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3d8cff"/>
+      <stop offset="1" stop-color="#1f62e8"/>
+    </linearGradient>
+  </defs>
+
+  <path d="M70 280c56 36 152 46 248 31 81-13 132-45 126-88-6-43-66-59-91-96-26-38-18-70-73-81-72-15-94 32-136 54-42 22-94 16-110 67-13 43-6 87 36 113Z" fill="#f2f7ff"/>
+
+  <path d="M72 148l3 11 11 3-11 3-3 11-3-11-11-3 11-3z" fill="#cfe1fb"/>
+  <path d="M452 138l2.6 9 9 2.6-9 2.6-2.6 9-2.6-9-9-2.6 9-2.6z" fill="#cfe1fb"/>
+  <path d="M86 306l2.2 7.6 7.6 2.2-7.6 2.2-2.2 7.6-2.2-7.6-7.6-2.2 7.6-2.2z" fill="#dbeaff"/>
+
+  <g filter="url(#simpleShadow)">
+    <rect x="96" y="80" width="320" height="224" rx="22" fill="#fff" stroke="#cfe1fb" stroke-width="2"/>
+    <path d="M96 102a22 22 0 0 1 22-22h276a22 22 0 0 1 22 22v16H96z" fill="url(#simpleBlue)"/>
+    <circle cx="120" cy="99" r="4" fill="#d6e8ff"/>
+    <circle cx="136" cy="99" r="4" fill="#d6e8ff"/>
+    <circle cx="152" cy="99" r="4" fill="#d6e8ff"/>
+    <rect x="290" y="90" width="102" height="18" rx="9" fill="#5e9bff"/>
+    <circle cx="302" cy="99" r="3.4" fill="none" stroke="#dbeaff" stroke-width="1.6"/>
+    <path d="M304.4 101.4l3 3" stroke="#dbeaff" stroke-width="1.6" stroke-linecap="round"/>
+    <rect x="314" y="96" width="62" height="6" rx="3" fill="#9cc2ff"/>
+
+    <rect x="120" y="138" width="80" height="70" rx="14" fill="#eef5ff" stroke="#2e7df6" stroke-width="2"/>
+    <rect x="144" y="150" width="32" height="32" rx="9" fill="url(#simpleBlue)"/>
+    <path d="M160 158C160 163 163 166 168 166C163 166 160 169 160 174C160 169 157 166 152 166C157 166 160 163 160 158Z" fill="#fff"/>
+    <rect x="137" y="190" width="46" height="6" rx="3" fill="#2e7df6"/>
+
+    <rect x="216" y="138" width="80" height="70" rx="14" fill="#f6f9ff" stroke="#e3edfb" stroke-width="1.6"/>
+    <rect x="240" y="150" width="32" height="32" rx="9" fill="#e8f1ff"/>
+    <rect x="248" y="159" width="16" height="3" rx="1.5" fill="#93bdf6"/>
+    <rect x="248" y="167" width="12" height="3" rx="1.5" fill="#93bdf6"/>
+    <rect x="233" y="190" width="46" height="6" rx="3" fill="#c9d8ef"/>
+
+    <rect x="312" y="138" width="80" height="70" rx="14" fill="#f6f9ff" stroke="#e3edfb" stroke-width="1.6"/>
+    <rect x="336" y="150" width="32" height="32" rx="9" fill="#e8f1ff"/>
+    <rect x="344" y="164" width="4" height="10" rx="2" fill="#93bdf6"/>
+    <rect x="350" y="159" width="4" height="15" rx="2" fill="#93bdf6"/>
+    <rect x="356" y="167" width="4" height="7" rx="2" fill="#93bdf6"/>
+    <rect x="329" y="190" width="46" height="6" rx="3" fill="#c9d8ef"/>
+
+    <rect x="120" y="216" width="80" height="70" rx="14" fill="#f6f9ff" stroke="#e3edfb" stroke-width="1.6"/>
+    <rect x="144" y="228" width="32" height="32" rx="9" fill="#e8f1ff"/>
+    <circle cx="158" cy="242" r="6" fill="none" stroke="#93bdf6" stroke-width="2.4"/>
+    <path d="M162.5 246.5l5 5" stroke="#93bdf6" stroke-width="2.4" stroke-linecap="round"/>
+    <rect x="137" y="268" width="46" height="6" rx="3" fill="#c9d8ef"/>
+
+    <rect x="216" y="216" width="80" height="70" rx="14" fill="#f6f9ff" stroke="#e3edfb" stroke-width="1.6"/>
+    <rect x="240" y="228" width="32" height="32" rx="9" fill="#e8f1ff"/>
+    <path d="M250 244l4 4 8-9" stroke="#93bdf6" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="233" y="268" width="46" height="6" rx="3" fill="#c9d8ef"/>
+
+    <rect x="312" y="216" width="80" height="70" rx="14" fill="#f6f9ff" stroke="#e3edfb" stroke-width="1.6"/>
+    <rect x="336" y="228" width="32" height="32" rx="9" fill="#e8f1ff"/>
+    <circle cx="352" cy="244" r="7" fill="none" stroke="#93bdf6" stroke-width="2.4"/>
+    <path d="M352 244V237A7 7 0 0 1 359 244Z" fill="#93bdf6"/>
+    <rect x="329" y="268" width="46" height="6" rx="3" fill="#c9d8ef"/>
+  </g>
+</svg>
