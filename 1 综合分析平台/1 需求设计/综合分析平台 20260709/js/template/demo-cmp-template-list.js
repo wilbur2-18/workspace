@@ -181,6 +181,9 @@
       skillTypeLabel: { type: String, default: '未分类' },
       dimensionLabels: { type: Array, default: () => [] },
       marketIntaked: { type: Boolean, default: false },
+      recommended: { type: Boolean, default: false },
+      selected: { type: Boolean, default: false },
+      selectable: { type: Boolean, default: false },
     },
     emits: [
       'classify',
@@ -189,10 +192,16 @@
       'open',
       'open-shared-source',
       'publish-skill',
+      'select',
       'toggle-status',
       'toggle-share',
       'unshare-public',
     ],
+    computed: {
+      recommendMenuLabel() {
+        return this.recommended ? '取消推荐' : '推荐置顶';
+      },
+    },
     methods: {
       visibleDimensionLabels() {
         const rows = Array.isArray(this.dimensionLabels) && this.dimensionLabels.length
@@ -274,6 +283,19 @@
       openDefault() {
         this.$emit('config', this.skill, { readOnly: true });
       },
+      onCardActivate() {
+        if (this.selectable) {
+          this.$emit('select', this.skill, !this.selected);
+          return;
+        }
+        this.openDefault();
+      },
+      onCardKeydown(event) {
+        const key = event && event.key;
+        if (key !== 'Enter' && key !== ' ' && key !== 'Spacebar') return;
+        event.preventDefault();
+        this.onCardActivate();
+      },
       menu(info) {
         this.$emit('menu', info, this.skill);
       },
@@ -284,18 +306,29 @@
     template: `
       <div
         class="tc-template-card tc-template-card--list ds-page-card ds-hover-lift ds-list-card ds-list-card--with-corner ds-list-card-clickable ds-l1-grid-card"
-        :class="{ 'tc-template-card--public': libraryTab !== 'private' }"
+        :class="{ 'tc-template-card--public': libraryTab !== 'private', 'is-selected': selected, 'is-recommended': recommended }"
         tabindex="0"
         role="button"
-        :aria-label="'查看技能配置：' + (skill.name || '')"
-        @click="openDefault"
-        @keydown.enter.prevent="openDefault"
-        @keydown.space.prevent="openDefault"
+        :aria-label="(selectable ? '选择技能：' : '查看技能配置：') + (skill.name || '')"
+        @click="onCardActivate"
+        @keydown="onCardKeydown"
       >
         <div class="ds-list-card-corner"></div>
         <div class="tc-template-card__body">
           <div class="tc-template-card__head">
-            <div class="tc-template-card__hero-icon" aria-hidden="true">
+            <div
+              v-if="selectable"
+              class="tc-template-card__hero-icon tc-template-card__hero-icon--select"
+            >
+              <a-checkbox
+                class="tc-template-card__select tc-template-card__hero-select"
+                :checked="selected"
+                :aria-label="'选择技能：' + (skill.name || '')"
+                @click.stop
+                @change="$emit('select', skill, $event && $event.target && $event.target.checked)"
+              />
+            </div>
+            <div v-else class="tc-template-card__hero-icon" aria-hidden="true">
               <ds-icon name="book-open" />
             </div>
             <div class="tc-template-card__title-block">
@@ -307,28 +340,35 @@
                 <TagLg v-if="skillTypeLabel">{{ skillTypeLabel }}</TagLg>
               </div>
             </div>
-            <a-dropdown
+            <div
               v-if="libraryTab === 'shared'"
-              :trigger="['click']"
-              placement="bottomRight"
+              class="tc-template-card__actions"
+              @click.stop
             >
-              <a-button
-                type="text"
-                size="small"
-                class="tc-template-card__more-btn ds-icon-btn ds-icon-btn--standard"
-                aria-label="更多操作"
-                @click.stop
+              <span v-if="recommended" class="tc-template-card__recommend-badge">推荐</span>
+              <a-dropdown
+                :trigger="['click']"
+                placement="bottomRight"
               >
-                <ds-icon name="more" aria-hidden="true" />
-              </a-button>
-              <template #overlay>
-                <a-menu @click="onSharedManageMenu">
-                  <a-menu-item key="edit">查看基本信息</a-menu-item>
-                  <a-menu-item key="unpublish">取消公开</a-menu-item>
-                  <a-menu-item key="export">导出</a-menu-item>
-                </a-menu>
-              </template>
-            </a-dropdown>
+                <a-button
+                  type="text"
+                  size="small"
+                  class="tc-template-card__more-btn ds-icon-btn ds-icon-btn--standard"
+                  aria-label="更多操作"
+                  @click.stop
+                >
+                  <ds-icon name="more" aria-hidden="true" />
+                </a-button>
+                <template #overlay>
+                  <a-menu @click="onSharedManageMenu">
+                    <a-menu-item key="edit">查看基本信息</a-menu-item>
+                    <a-menu-item key="recommend">{{ recommendMenuLabel }}</a-menu-item>
+                    <a-menu-item key="unpublish">取消公开</a-menu-item>
+                    <a-menu-item key="export">导出</a-menu-item>
+                  </a-menu>
+                </template>
+              </a-dropdown>
+            </div>
           </div>
           <p
             class="tc-template-card__desc"
@@ -356,7 +396,7 @@
             class="ds-card-foot tc-template-card__footer"
             role="group"
             :aria-label="'技能操作：' + (skill.name || skill.id)"
-            @click.stop
+            @click.stop="selectable ? onCardActivate() : null"
           >
             <div class="tc-template-card__meta">
               <span class="tc-template-card__owner" :title="'创建人：' + ownerNameLabel()">
@@ -423,7 +463,9 @@
     props: {
       host: { type: Object, required: true },
     },
-    computed: bridgedComputed,
+    computed: {
+      ...bridgedComputed,
+    },
     template: `
       <div class="main-container">
         <header class="ds-page-hero ds-page-hero--l1">
@@ -540,6 +582,18 @@
                   </a-menu>
                 </template>
               </a-dropdown>
+              <button
+                v-if="skillLibraryTab === 'shared' && currentSkillList.length"
+                type="button"
+                class="workbench-v2-skill-tabs__tool workbench-v2-skill-tabs__tool--label"
+                :class="{ 'is-active': host.templateSkillBatchMode }"
+                :aria-pressed="host.templateSkillBatchMode ? 'true' : 'false'"
+                :title="host.templateSkillBatchMode ? '退出批量操作' : '批量操作'"
+                :aria-label="host.templateSkillBatchMode ? '退出批量操作' : '批量操作'"
+                @click.stop="host.templateSkillBatchMode ? host.exitTemplateSkillBatchMode() : host.enterTemplateSkillBatchMode()"
+              >
+                <span class="workbench-v2-skill-filter-control__value">{{ host.templateSkillBatchMode ? '退出批量' : '批量操作' }}</span>
+              </button>
             </div>
           </div>
 
@@ -558,6 +612,15 @@
             </div>
           </nav>
 
+          <div v-if="skillLibraryTab === 'shared' && currentSkillList.length && host.templateSkillBatchMode" class="template-library-batch-bar">
+            <span>已选 {{ host.selectedPublicSkillIds.length }} 个公共技能</span>
+            <a-button :disabled="!filteredSkills.length || host.allVisibleTemplatePublicSkillsSelected()" @click="host.selectAllVisibleTemplatePublicSkills()">全部选择</a-button>
+            <a-button :disabled="!host.selectedPublicSkillIds.length" @click="host.recommendSelectedTemplateSkills()">批量推荐置顶</a-button>
+            <a-button :disabled="!host.selectedPublicSkillIds.length" @click="host.unrecommendSelectedTemplateSkills()">批量取消推荐</a-button>
+            <a-button :disabled="!host.selectedPublicSkillIds.length" @click="host.exportSelectedTemplateSkills()">批量导出</a-button>
+            <a-button v-if="host.selectedPublicSkillIds.length" type="link" @click="host.clearTemplateSkillSelection()">清空选择</a-button>
+          </div>
+
           <div v-if="filteredSkills.length" class="ds-l1-list">
             <a-row :gutter="16" class="recent-projects-row">
               <a-col v-for="s in filteredSkills" :key="s.id" :span="12">
@@ -569,12 +632,16 @@
                   :skill-type-label="getSkillDimensionLabel('skillType', s.skillType)"
                   :dimension-labels="getSkillDimensionLabels(s)"
                   :market-intaked="skillLibraryTab === 'market' && isMarketSkillIntaked(s)"
+                  :recommended="host.isTemplateSkillRecommended(s)"
+                  :selectable="skillLibraryTab === 'shared' && host.templateSkillBatchMode"
+                  :selected="host.isTemplateSkillSelected(s)"
                   @classify="openSkillClassifyModal"
                   @config="openSkillConfig"
                   @edit="openSkillBasicModal"
                   @menu="onTemplateCardMenu"
                   @open-shared-source="openMySharedPublicSkillConfig"
                   @publish-skill="openSkillMarketPublishModalForCard"
+                  @select="(skill, checked) => host.toggleTemplateSkillSelection(skill, checked)"
                   @toggle-status="toggleSharedSkillStatus"
                   @toggle-share="togglePrivateSkillPublicShare"
                   @unshare-public="unshareSharedSkillCard"

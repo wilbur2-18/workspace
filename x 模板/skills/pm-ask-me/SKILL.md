@@ -1,64 +1,64 @@
 ---
 name: pm-ask-me
-description: Ask the user one focused product-management clarification question at a time before writing, reviewing, or changing requirements, plans, prototypes, docs, or skill designs. Use when the user asks to be questioned, grilled, challenged, or when scope, audience, boundaries, rules, acceptance criteria, or tradeoffs are unclear and the answer cannot be safely inferred from current files. Also use as the preflight clarification gate before pm-requirement-card or pm-requirement-analysis when one unresolved business decision would materially change the output.
+description: 在撰写、评审或修改需求、方案、原型、文档或 skill 设计前，一次只向用户提出一个聚焦的产品澄清问题。用户要求你追问、拷问、挑战，或范围、受众、边界、规则、验收口径、取舍不清且无法从当前文件安全推断时使用。也作为 pm-requirement-card 或 pm-requirement-analysis 的前置澄清门槛：当一个未决业务决策会明显改变输出时先使用。
 ---
 
-# PM Ask Me
+# PM 单点追问
 
-Use this skill to turn vague product intent into clear decisions before drafting or editing.
+用这个 skill 在起草或编辑前，把模糊产品意图转成明确决策。
 
-The goal is not to interview endlessly. The goal is to resolve the next decision that would otherwise cause rework, over-scoping, or a misleading product artifact.
+目标不是无休止访谈，而是解决下一个最可能导致返工、范围膨胀或产物误导的关键决策。
 
-## PM Skill Gate
+## PM Skill 门槛
 
-When a requirement-card or requirement-analysis task has one unresolved business decision that would materially change scope, state rules, acceptance criteria, or the recommended direction, use this skill first.
+当需求卡或需求分析任务中存在一个未决业务决策，且它会明显改变范围、状态规则、验收口径或建议方向时，先使用这个 skill。
 
-Do not use this gate for cosmetic UI details, prototype-only implementation details, or questions that can be answered by reading the named file, current prototype, README, or existing requirement card.
+不要为纯视觉细节、原型实现细节，或能通过读取指定文件、当前原型、README、已有需求卡解决的问题触发追问。
 
-## Workflow
+## 工作流
 
-1. Read the current files first when the answer may already exist in the workspace.
-2. Identify the highest-impact unclear decision.
-3. Ask exactly one question.
-4. Include your recommended answer and a short reason.
-5. Wait for the user's answer before asking the next question.
-6. Stop asking when the remaining uncertainty no longer affects the requested output.
+1. 如果答案可能已在工作区中，先读当前文件。
+2. 找出影响最大的未明确决策。
+3. 只问一个问题。
+4. 给出你的推荐答案和简短理由。
+5. 等用户回答后再问下一个问题。
+6. 当剩余不确定性不再影响用户要求的输出时，停止追问。
 
-## Question Priority
+## 问题优先级
 
-Prefer questions that affect:
+优先询问会影响以下内容的问题：
 
-1. User or audience: who the artifact or feature is for.
-2. Scenario: what workflow or business moment it supports.
-3. Scope: what is included now and what is excluded.
-4. Objects: requirements, projects, files, skills, results, tasks, versions, roles, or records involved.
-5. Rules: status changes, counts, permissions, defaults, limits, sorting, persistence, and exceptions.
-6. Acceptance: what observable check proves the work is done.
-7. Tradeoff: which of two reasonable directions should be chosen.
+1. 用户或受众：产物或功能服务谁。
+2. 场景：支撑哪个工作流或业务时刻。
+3. 范围：本次包含什么、排除什么。
+4. 对象：涉及哪些需求、项目、文件、技能、结果、任务、版本、角色或记录。
+5. 规则：状态变化、数量、权限、默认值、限制、排序、持久化和例外。
+6. 验收：什么可观察检查能证明完成。
+7. 取舍：两个合理方向中应选哪一个。
 
-Skip questions whose answers are cosmetic, obvious from current materials, or irrelevant to the requested output.
+跳过答案只影响视觉、能从当前材料看出，或与用户要求产物无关的问题。
 
-## Question Format
+## 问题格式
 
-Use this shape by default:
+默认使用这个结构：
 
 ```markdown
 我先确认一个会影响范围的问题：
 
-[one concise question]
+[一个简洁问题]
 
-我的推荐：[recommended answer]
-原因：[one short reason]
+我的推荐：[推荐答案]
+原因：[简短理由]
 ```
 
-If the user is working in English, ask in English. Otherwise, ask in Chinese.
+如果用户用英文工作，用英文问；否则用中文问。
 
-## Boundaries
+## 边界
 
-Do not ask multiple questions at once.
+不要一次问多个问题。
 
-Do not ask the user to restate information that can be found by reading the named file, nearby README, current prototype, or existing requirement card.
+不要要求用户复述可以通过指定文件、附近 README、当前原型或已有需求卡找到的信息。
 
-Do not turn the session into a generic checklist. Follow the decision tree created by the user's actual request and the current workspace evidence.
+不要把会话变成通用清单。沿着用户当前请求和工作区证据形成的决策树推进。
 
-When the user asks you to proceed, summarize the resolved decisions briefly, state any remaining assumptions, and then continue with the requested drafting, review, or edit.
+当用户要求继续时，简短总结已解决决策，说明剩余假设，然后继续用户要求的起草、评审或编辑。

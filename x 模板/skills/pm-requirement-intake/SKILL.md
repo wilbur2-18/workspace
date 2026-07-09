@@ -1,53 +1,53 @@
 ---
 name: pm-requirement-intake
-description: Capture early product requirement signals into a lightweight 待梳理 card while preserving the user's original wording. Use when the user says 记录个需求, 先记一下, 新需求, 先把背景记录下来, 需求还没想清楚, or provides rough notes/screenshots/chat context that need intake, source preservation, current-material lookup, impact/risk collection, and open questions. Do not use when the user asks for first-principles analysis, product-director review, final card polishing, status changes, or file renaming.
+description: 将早期产品需求信号记录成轻量的待梳理卡片，同时尽量保留用户原话。用户说记录个需求、先记一下、新需求、先把背景记录下来、需求还没想清楚，或提供粗略笔记、截图、聊天上下文，需要记录来源、查找当前材料、收集影响/风险和开放问题时使用。不要用于第一性原理分析、产品总监评审、最终需求卡润色、状态变更或文件改名。
 ---
 
-# PM Requirement Intake
+# PM 需求记录
 
-Use this skill when a requirement is just entering the workspace. The goal is to **capture faithfully, collect context, and surface open questions**, not to prematurely decide the final solution.
+当一个需求刚进入工作区时使用这个 skill。目标是如实记录、收集上下文、暴露待确认问题，而不是过早决定最终方案。
 
-## 1. Trigger Boundary
+## 1. 触发边界
 
-Use this skill for:
+适用场景：
 
 - “记录个需求”
 - “先记一下”
 - “有个新需求”
 - “先把背景记录下来”
 - “这个需求还没想清楚”
-- rough WeChat notes, meeting notes, screenshots, or PM-transcribed user feedback
+- 粗略微信记录、会议纪要、截图或 PM 转述的用户反馈
 
-Do not use this skill for:
+不适用场景：
 
 - “第一性原理”, “一起讨论”, “产品总监评审”, “是不是过度设计”
 - “精简”, “更新需求卡”, “转待设计/待开发”, “改状态和命名”
-- final card polish after scope is already decided
+- 范围已经明确后的最终卡片润色
 
-## 2. Intake Principles
+## 2. 记录原则
 
-1. Preserve the user's original wording as much as possible.
-2. Mark what is raw input, what is your initial PM understanding, and what still needs confirmation.
-3. Inspect nearby existing cards, prototype/code, README, or relevant materials before writing when files are available.
-4. Collect impact areas and risks broadly, but do not force final decisions.
-5. Keep the card lightweight and usually `待梳理`.
+1. 尽量保留用户原话。
+2. 标清哪些是原始输入、哪些是初步 PM 理解、哪些仍待确认。
+3. 如果本地有文件，写作前检查附近已有卡片、原型/代码、README 或相关材料。
+4. 影响面和风险可以先收集广一点，但不要强行做最终决策。
+5. 卡片保持轻量，通常状态为 `待梳理`。
 
-## 3. Work Steps
+## 3. 工作步骤
 
-1. Identify the target product/module and likely requirement directory.
-2. Read existing related demand cards or prototype snippets if they are relevant.
-3. Draft a `待梳理` card with:
-   - original requirement / background
-   - initial PM understanding
-   - target scenario
-   - preliminary scope
-   - impacted modules / risks
-   - pending questions
-4. If the user explicitly asks to write/update files, create or update the card. Otherwise, show the draft in chat.
+1. 识别目标产品/模块和可能的需求目录。
+2. 如有关联，读取已有相关需求卡或原型片段。
+3. 起草一张 `待梳理` 卡，包含：
+   - 原始需求 / 背景
+   - 初步 PM 理解
+   - 目标场景
+   - 初步范围
+   - 影响模块 / 风险
+   - 待确认问题
+4. 如果用户明确要求写入或更新文件，就创建或更新卡片；否则在对话中展示草稿。
 
-## 4. Output Shape
+## 4. 输出结构
 
-Use the local card style:
+使用本地卡片风格：
 
 ```markdown
 # 需求名称
@@ -72,4 +72,4 @@ Use the local card style:
 ## 待确认问题
 ```
 
-Remove empty sections when the requirement is simple, but keep enough raw context to avoid losing the user's intent.
+需求简单时可以删除空章节，但要保留足够原始上下文，避免丢失用户意图。

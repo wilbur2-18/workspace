@@ -24,6 +24,50 @@
     };
   }
 
+  function isGuideMarketSkill(row) {
+    const sourceKind = String((row && row.sourceKind) || '').trim();
+    if (sourceKind) return sourceKind === 'market';
+    const sharedBy = String((row && row.sharedBy) || '').trim();
+    return sharedBy === '系统预置' || sharedBy === '平台管理员';
+  }
+
+  function guideSkillDimensionLabel(kind, value) {
+    const dims = (window.DemoSkillData && window.DemoSkillData.skillDimensions) || {};
+    const rows = kind === 'skillType' ? dims.skillTypes : dims.auditScenes;
+    const hit = (Array.isArray(rows) ? rows : []).find((item) => String(item.id) === String(value));
+    return hit ? hit.label : '';
+  }
+
+  function buildGuideSkillCardsFromPublicRows(fallbackCards) {
+    const rows = window.DemoSkillData && Array.isArray(window.DemoSkillData.publicSkillRuntimeRows)
+      ? window.DemoSkillData.publicSkillRuntimeRows
+      : [];
+    const publicRows = rows.filter((row) => row && !isGuideMarketSkill(row));
+    const time = (row) => Date.parse(String((row && row.recommendedAt) || '')) || 0;
+    const mapped = publicRows
+      .filter((row) => row.recommendedAt)
+      .sort((a, b) => time(b) - time(a))
+      .map((row) => {
+        const tags = [
+          guideSkillDimensionLabel('auditScene', row.auditScene),
+          guideSkillDimensionLabel('skillType', row.skillType),
+        ].filter(Boolean);
+        return {
+          key: 'public-skill-' + String(row.id || row.name || ''),
+          title: String(row.name || '未命名技能').trim() || '未命名技能',
+          desc: String(row.description || '').trim(),
+          tags,
+          raw: row,
+        };
+      });
+    const used = new Set(mapped.map((card) => card.title));
+    const fallback = (Array.isArray(fallbackCards) ? fallbackCards : []).filter((card) => {
+      const title = String((card && card.title) || '').trim();
+      return title && !used.has(title);
+    });
+    return mapped.concat(fallback);
+  }
+
   app.component('ChatThinkingMessage', {
     props: {
       host: { type: Object, required: true },
@@ -341,11 +385,14 @@
         this.dailyGuideBatchIndex = (this.dailyGuideBatchIndex + 1) % count;
       },
       visibleAuditGuideCards() {
-        const cards = this.auditGuideCards || [];
+        const cards = this.auditGuideSourceCards();
         if (cards.length <= 3) return cards;
         const start = (this.auditGuideBatchIndex * 3) % cards.length;
         const group = cards.slice(start, start + 3);
         return group.length === 3 ? group : group.concat(cards.slice(0, 3 - group.length));
+      },
+      auditGuideSourceCards() {
+        return buildGuideSkillCardsFromPublicRows(this.auditGuideCards || []);
       },
       visibleGuideTags(card) {
         return Array.isArray(card && card.tags) ? card.tags.slice(0, 2) : [];
@@ -409,7 +456,7 @@
       applyAuditGuidePrompt(action) {
         const key = action && action.key;
         if (key === 'refresh') {
-          const count = Math.max(1, Math.ceil((this.auditGuideCards || []).length / 3));
+          const count = Math.max(1, Math.ceil(this.auditGuideSourceCards().length / 3));
           this.auditGuideBatchIndex = (this.auditGuideBatchIndex + 1) % count;
           return;
         }

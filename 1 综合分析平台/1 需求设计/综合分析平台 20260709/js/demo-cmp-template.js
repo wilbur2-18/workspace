@@ -674,6 +674,8 @@
           skillLibraryTab: TEMPLATE_SKILL_LIBRARY.SHARED,
           publicSkills: getTemplateRuntimePublicSkills(),
           privateSkills: skillDeepClone(SKILL_SEED_PRIVATE),
+          templateSkillBatchMode: false,
+          selectedPublicSkillIds: [],
           skillSearchKeyword: '',
           skillFilterTagKeys: [],
           skillFilterTagMatchMode: 'any',
@@ -1044,7 +1046,13 @@
           };
           const byName = (a, b) => collator.compare(str(a.name), str(b.name));
           const usageCount = (s) => this.getSkillUsageCount(s);
+          const recommendFirst = normalizeTemplateSkillTab(this.skillLibraryTab) === TEMPLATE_SKILL_LIBRARY.SHARED;
+          const byRecommended = (a, b) => recommendFirst
+            ? Number(this.isTemplateSkillRecommended(b)) - Number(this.isTemplateSkillRecommended(a))
+            : 0;
           const sorted = [...filtered].sort((a, b) => {
+            const recommended = byRecommended(a, b);
+            if (recommended) return recommended;
             const key = this.skillSortBy;
             if (key === 'downloads_desc') return usageCount(b) - usageCount(a) || byName(a, b);
             if (key === 'name_asc') return byName(a, b);
@@ -1192,6 +1200,109 @@
           }
           return false;
         },
+        isTemplateSkillRecommended(s) {
+          return !!(s && !isTemplateMarketSkill(s) && s.recommendedAt);
+        },
+        isTemplateSkillSelected(s) {
+          const id = String((s && s.id) || '').trim();
+          return !!(id && (this.selectedPublicSkillIds || []).includes(id));
+        },
+        toggleTemplateSkillSelection(s, checked) {
+          if (!s || isTemplateMarketSkill(s)) return;
+          const id = String(s.id || '').trim();
+          if (!id) return;
+          const set = new Set((this.selectedPublicSkillIds || []).map(String));
+          if (checked === false) set.delete(id);
+          else set.add(id);
+          this.selectedPublicSkillIds = Array.from(set);
+        },
+        clearTemplateSkillSelection() {
+          this.selectedPublicSkillIds = [];
+        },
+        visibleTemplatePublicSkills() {
+          return (this.filteredSkills || []).filter((row) => row && !isTemplateMarketSkill(row));
+        },
+        allVisibleTemplatePublicSkillsSelected() {
+          const rows = this.visibleTemplatePublicSkills();
+          if (!rows.length) return false;
+          const selected = new Set((this.selectedPublicSkillIds || []).map(String));
+          return rows.every((row) => selected.has(String(row.id || '')));
+        },
+        selectAllVisibleTemplatePublicSkills() {
+          const ids = this.visibleTemplatePublicSkills().map((row) => String(row.id || '')).filter(Boolean);
+          if (!ids.length) return;
+          const selected = new Set((this.selectedPublicSkillIds || []).map(String));
+          ids.forEach((id) => selected.add(id));
+          this.selectedPublicSkillIds = Array.from(selected);
+        },
+        enterTemplateSkillBatchMode() {
+          this.templateSkillBatchMode = true;
+        },
+        exitTemplateSkillBatchMode() {
+          this.clearTemplateSkillSelection();
+          this.templateSkillBatchMode = false;
+        },
+        selectedTemplatePublicSkills() {
+          const ids = new Set((this.selectedPublicSkillIds || []).map(String));
+          if (!ids.size) return [];
+          return (this.currentSkillList || []).filter((row) => ids.has(String((row && row.id) || '')) && !isTemplateMarketSkill(row));
+        },
+        removeTemplateSkillSelection(ids) {
+          const removing = new Set((Array.isArray(ids) ? ids : [ids]).map(String));
+          if (!removing.size) return;
+          this.selectedPublicSkillIds = (this.selectedPublicSkillIds || []).filter((id) => !removing.has(String(id)));
+        },
+        setTemplateSkillsRecommended(skills, recommended) {
+          const rows = (Array.isArray(skills) ? skills : [skills]).filter((row) => row && !isTemplateMarketSkill(row));
+          if (!rows.length) return 0;
+          const ids = new Set(rows.map((row) => String(row.id || '')).filter(Boolean));
+          const now = templateNow();
+          let changed = 0;
+          (this.publicSkills || []).forEach((row) => {
+            if (!row || !ids.has(String(row.id || '')) || isTemplateMarketSkill(row)) return;
+            if (recommended) {
+              if (!row.recommendedAt) changed += 1;
+              row.recommendedAt = row.recommendedAt || now;
+            } else if (row.recommendedAt) {
+              delete row.recommendedAt;
+              changed += 1;
+            }
+          });
+          return changed;
+        },
+        toggleTemplateSkillRecommendation(s) {
+          if (!s || isTemplateMarketSkill(s)) return;
+          const next = !this.isTemplateSkillRecommended(s);
+          this.setTemplateSkillsRecommended([s], next);
+          message.success(next ? '已推荐置顶' : '已取消推荐');
+        },
+        recommendSelectedTemplateSkills() {
+          const rows = this.selectedTemplatePublicSkills();
+          if (!rows.length) return;
+          this.setTemplateSkillsRecommended(rows, true);
+          message.success('已批量推荐置顶');
+        },
+        unrecommendSelectedTemplateSkills() {
+          const rows = this.selectedTemplatePublicSkills();
+          if (!rows.length) return;
+          this.setTemplateSkillsRecommended(rows, false);
+          message.success('已批量取消推荐');
+        },
+        exportSelectedTemplateSkills() {
+          const rows = this.selectedTemplatePublicSkills().map((row) => this.resolveSkillExportTarget(row)).filter(Boolean);
+          if (!rows.length) return;
+          if (rows.length === 1) {
+            this.exportOneSkill(rows[0]);
+            return;
+          }
+          const blob = new Blob([JSON.stringify(rows, null, 2)], { type: 'application/json' });
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = 'template-skills-' + templateNow().slice(0, 10) + '.json';
+          a.click();
+          URL.revokeObjectURL(a.href);
+          message.success('已导出 ' + rows.length + ' 个技能');
+        },
         resolveCardSkillTarget(s, options) {
           const preferEdit = !(options && options.readOnly);
           if (!s) return { skill: null, readOnly: true };
@@ -1266,6 +1377,7 @@
             onOk: () => {
               const id = s.id;
               this.publicSkills = this.publicSkills.filter((row) => row.id !== id);
+              this.removeTemplateSkillSelection(id);
               if (id === this.skillConfigTemplateId) {
                 this._skillModalSnapshot = null;
                 this.closeSkillConfigModal(false);
@@ -1626,6 +1738,7 @@
           const pubId = s.sharedPublicSkillId;
           const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
           this.publicSkills = this.publicSkills.filter((p) => p.id !== pubId);
+          this.removeTemplateSkillSelection(pubId);
           this.privateSkills = this.privateSkills.map((row) => {
             if (row.id !== s.id) return row;
             const next = { ...row, updatedAt: now };
@@ -1705,6 +1818,7 @@
             this.privateSkills = this.privateSkills.filter((x) => x.id !== s.id);
           } else if (s.library === SKILL_LIBRARY.PUBLIC) {
             this.publicSkills = this.publicSkills.filter((x) => x.id !== s.id);
+            this.removeTemplateSkillSelection(s.id);
           } else {
             return;
           }
@@ -1740,6 +1854,10 @@
           }
           if (key === 'share' || key === 'unpublish') {
             this.unshareSharedSkillCard(s);
+            return;
+          }
+          if (key === 'recommend') {
+            this.toggleTemplateSkillRecommendation(s);
             return;
           }
           if (key === 'copy') {
@@ -1797,6 +1915,8 @@
         setSkillLibraryTab(tab) {
           this.skillMarketSyncing = false;
           this.skillLibraryTab = normalizeTemplateSkillTab(tab);
+          this.clearTemplateSkillSelection();
+          this.templateSkillBatchMode = false;
         },
         syncSkillMarketFromRemote() {
           if (this.skillMarketSyncing) return;

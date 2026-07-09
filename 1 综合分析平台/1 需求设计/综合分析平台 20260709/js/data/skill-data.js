@@ -99,6 +99,7 @@ const SKILL_LIBRARY = { PUBLIC: 'public', PRIVATE: 'private' };
         sourceKind: 'shared',
         sourceLabel: '共享技能',
         libraryStatus: 'enabled',
+        recommendedAt: '2026-07-03 09:00',
         skillFiles: [
           {
             id: 'sk-pub-2-fd',

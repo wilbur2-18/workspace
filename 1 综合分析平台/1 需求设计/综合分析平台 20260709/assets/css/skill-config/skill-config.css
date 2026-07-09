@@ -3652,3 +3652,75 @@
   padding: var(--ds-space-xs);
   min-height: 120px;
 }
+
+.template-library-batch-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-xs);
+  min-height: 32px;
+  color: var(--ds-text-2);
+  font-size: var(--ds-type-body-fs);
+  font-weight: var(--ds-type-body-fw);
+  line-height: 1.43;
+}
+
+.template-center-shell .tc-template-card__head {
+  grid-template-columns: 42px minmax(0, 1fr) max-content;
+}
+
+.template-center-shell .tc-template-card__actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--ds-space-xs);
+  min-width: 0;
+  min-height: 32px;
+  position: relative;
+}
+
+.template-center-shell .tc-template-card--list:hover .tc-template-card__actions,
+.template-center-shell .tc-template-card--list:focus-within .tc-template-card__actions,
+.template-center-shell .tc-template-card__actions:has(.tc-template-card__more-btn.ant-dropdown-open) {
+  padding-right: 40px;
+}
+
+.template-center-shell .tc-template-card__actions .tc-template-card__more-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.template-center-shell .tc-template-card__select {
+  flex: 0 0 auto;
+  line-height: 1;
+}
+
+.template-center-shell .tc-template-card__hero-icon--select {
+  background: var(--ds-bg-container);
+  border: 1px solid var(--ds-border);
+  color: var(--ds-text-2);
+}
+
+.template-center-shell .tc-template-card__hero-select {
+  margin: 0;
+}
+
+.template-center-shell .tc-template-card__recommend-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
+  padding: 0 var(--ds-space-xs);
+  border-radius: var(--ds-radius-control);
+  color: var(--ds-tone-amber-fg);
+  background: var(--ds-tone-amber-bg);
+  font-size: var(--ds-type-micro-fs);
+  font-weight: var(--ds-type-body-fw);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.template-center-shell .tc-template-card--list.is-selected {
+  border-color: var(--ds-border-primary-soft) !important;
+  box-shadow: 0 0 0 1px var(--ds-border-primary-soft);
+}

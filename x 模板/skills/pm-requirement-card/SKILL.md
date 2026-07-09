@@ -1,17 +1,17 @@
 ---
 name: pm-requirement-card
-description: Write, polish, compress, and maintain lightweight PM requirement cards after the requirement direction is mostly known. Use when the user says 更新需求卡, 写入文件, 精简, 润色, 转待设计, 转待开发, 改状态, 改命名, or asks to convert existing discussion into a concise card. Handles card structure, naming, status flow, acceptance criteria, and file updates. Do not use for early raw intake or first-principles requirement analysis unless the user explicitly asks to write the card.
+description: 在需求方向基本明确后，撰写、润色、压缩和维护轻量 PM 需求卡。用户说更新需求卡、写入文件、精简、润色、转待设计、转待开发、改状态、改命名，或要求把讨论内容整理成简洁需求卡时使用。处理卡片结构、命名、状态流转、验收口径和文件更新。不要用于早期原始记录或第一性原理分析，除非用户明确要求写卡。
 ---
 
-# PM Requirement Card
+# PM 需求卡
 
-Use this skill to turn an agreed or mostly clear product requirement into a concise requirement card, or to maintain existing card files and statuses.
+用这个 skill 将已经达成共识或基本清楚的产品需求整理成简洁需求卡，或维护已有需求卡文件和状态。
 
-Always read the sibling file `需求卡模板.md` in this skill directory before drafting or editing a card. Use it as the shape reference, but do not copy instruction text into the final card.
+起草或编辑需求卡前，必须读取同目录的 `需求卡模板.md`。它是结构参考，不要把模板里的说明文字复制到最终卡片中。
 
-## 1. Trigger Boundary
+## 1. 触发边界
 
-Use this skill for:
+适用场景：
 
 - “更新需求卡”
 - “写入文件”
@@ -24,85 +24,95 @@ Use this skill for:
 - “设计做完了，回看需求卡”
 - “对齐当前 demo / 原型 / UI”
 
-Do not use this skill for:
+不适用场景：
 
-- raw “记录个需求” intake unless the user explicitly asks to create a file now
+- 原始“记录个需求”，除非用户明确要求现在创建文件
 - “第一性原理”, “一起讨论”, “是不是过度设计”
-- broad discovery before the requirement direction is known
+- 需求方向未明确前的大范围探索
 
-## 2. Gather Current Facts
+## 2. 收集当前事实
 
-Before writing:
+写作前：
 
-1. Read the target card or source material.
-2. Read nearby `README.md` or directory guidance when working inside a PM workspace.
-3. If prototype/code is relevant, inspect the current materials rather than relying on old paths.
-4. If several candidates exist, choose by current path/context; ask only when multiple targets are equally plausible.
-5. If one unresolved business decision would materially change scope, state rules, acceptance criteria, or status, use `pm-ask-me` first and ask exactly one focused question before editing.
+1. 读取目标卡片或来源材料。
+2. 在 PM 工作区内工作时，读取附近 `README.md` 或目录说明。
+3. 如果原型或代码相关，检查当前材料，不依赖旧路径。
+4. 如果存在多个候选目标，优先根据当前路径和上下文判断；只有多个目标同样合理时才问用户。
+5. 如果一个未决业务问题会明显改变范围、状态规则、验收口径或状态，先使用 `pm-ask-me`，编辑前只问一个聚焦问题。
 
-Distinguish:
+区分：
 
-1. confirmed fact
-2. reasonable inference
-3. needs confirmation
+1. 已确认事实
+2. 合理推断
+3. 待确认事项
 
-Do not present inference as confirmed fact.
+不要把推断当成已确认事实。
 
-## 3. Card Maturity And Status
+### 按来源反查需求卡
 
-Use the user's status flow:
+当用户说的是页面、菜单项、原型区域或 UI 标签，而不是明确文件名时，使用这套逻辑。
 
-| Prefix | Status | Card style |
+1. 先搜索需求卡目录、仍存在的台账/卡片索引，以及相关原型或配置代码，再判断是否没有匹配卡片。
+2. 尝试产品区域里的相邻词和别名，因为 UI 标签和需求卡标题可能不完全一致。
+3. 找到匹配后，简短说明映射关系，并编辑真实卡片，不新造一张卡。
+4. 如果该卡片仍同步存在于嵌入台账或卡片索引中，同一轮里同时更新 Markdown 文件和嵌入/索引内容。
+5. 用最近的本地检查确认同步目标仍可解析或渲染；对嵌入 JSON/HTML 台账，至少确认编辑后的数据可解析。
+
+## 3. 卡片成熟度与状态
+
+使用用户的状态流：
+
+| 前缀 | 状态 | 卡片风格 |
 | --- | --- | --- |
-| `1待梳理：` | 待梳理 | background, initial scope, open questions |
-| `2待设计：` | 待设计 | requirement scope clear, interaction/UI pending |
-| `3待开发：` | 待开发 | rules/design clear enough for development |
-| `x 已上线：` | 已上线 | historical record |
+| `1待梳理：` | 待梳理 | 背景、初步范围、开放问题 |
+| `2待设计：` | 待设计 | 需求范围清楚，交互/UI 待设计 |
+| `3待开发：` | 待开发 | 规则和设计足够开发 |
+| `x 已上线：` | 已上线 | 历史记录 |
 
-When status changes, update:
+状态变化时，同步更新：
 
-1. filename prefix
-2. internal `**状态**`
-3. obvious markdown links or references
+1. 文件名前缀
+2. 卡片内部 `**状态**`
+3. 明显的 Markdown 链接或引用
 
-## 4. Compression Rules
+## 4. 压缩规则
 
-The requirement card is not a transcript. Keep only what product, design, engineering, and QA need.
+需求卡不是聊天记录。只保留产品、设计、开发和测试需要的信息。
 
-1. Prefer 50-80 lines for simple requirements.
-2. Delete discussion history, reasoning trails, repeated examples, and alternate plans unless the user asks to keep them.
-3. Keep rules near the feature they govern.
-4. Do not keep “待确认问题” for settled rules.
-5. Use one compact table when it replaces multiple repetitive paragraphs.
-6. Prefer practical unified rules over many semantically precise special cases.
+1. 简单需求优先控制在 50-80 行。
+2. 删除讨论历史、推理过程、重复例子和备选方案，除非用户要求保留。
+3. 规则紧贴对应功能点。
+4. 已定规则不要继续放在“待确认问题”里。
+5. 一个紧凑表格能替代多段重复文字时，优先用表格。
+6. 优先使用实际可落地的统一规则，少写语义精确但分支过多的特例。
 
-## 5. Design Calibration Mode
+## 5. 设计校准模式
 
-Use this mode when the interaction/UI design or prototype is already updated and the requirement card must be aligned to the actual design.
+当交互/UI 设计或原型已经更新，需要让需求卡对齐实际设计时，使用这个模式。
 
-This is not a status rollback. It happens between `待设计` and `待开发`:
+这不是状态回退，而是发生在 `待设计` 到 `待开发` 之间：
 
 ```text
-待设计 -> design/prototype completed -> calibrate requirement card -> 待开发
+待设计 -> 设计/原型完成 -> 校准需求卡 -> 待开发
 ```
 
-Workflow:
+流程：
 
-1. Read the existing requirement card.
-2. Read or inspect the current prototype, screenshot, demo code, or design notes.
-3. Classify prototype facts before editing: product/business rules, interaction/UI design, and prototype/demo implementation details.
-4. Put only product/business rules and necessary acceptance criteria into the card. Do not turn button icons, colors, hover behavior, chip sizes, layout slots, mock data, or demo shortcuts into requirement text unless the user explicitly asks.
-5. If the prototype conflicts with the card, decide whether it is a real product-rule change or only a prototype/demo limitation. Demo limitations must not override the requirement card.
-6. Compare the card against the actual design.
-7. Remove requirements that were not implemented in the design.
-8. Update confirmed wording, user-visible labels, field names, modal titles, states, and interaction rules only when they materially affect product behavior or acceptance.
-9. Replace old assumptions with the actual design result.
-10. Remove settled `待确认问题`.
-11. If the design is clear enough for engineering, update the card to `待开发`; otherwise keep it `待设计`.
+1. 读取已有需求卡。
+2. 读取或检查当前原型、截图、demo 代码或设计说明。
+3. 编辑前先区分原型事实：产品/业务规则、交互/UI 设计、原型/demo 实现细节。
+4. 只把产品/业务规则和必要验收口径写进卡片。除非用户明确要求，不要把按钮图标、颜色、hover、标签尺寸、布局槽位、mock 数据或 demo 快捷逻辑写成需求。
+5. 如果原型与卡片冲突，判断它是真正的产品规则变化，还是原型/demo 限制。demo 限制不能覆盖需求卡。
+6. 对照实际设计检查卡片。
+7. 删除设计中未实现的需求。
+8. 只在影响产品行为或验收时，更新已确认的文案、用户可见标签、字段名、弹窗标题、状态和交互规则。
+9. 用实际设计结果替换旧假设。
+10. 删除已解决的 `待确认问题`。
+11. 如果设计已经足够开发，更新为 `待开发`；否则保持 `待设计`。
 
-Keep the goal stable, but let product rules follow the final design. Keep detailed UI styling and prototype-only mechanics in design notes or prototype comments, not in the requirement card.
+保持需求目标稳定，但产品规则要跟随最终设计。详细 UI 样式和原型专用机制留在设计说明或原型注释里，不写进需求卡。
 
-## 6. Preferred Structure
+## 6. 推荐结构
 
 ```markdown
 # 需求名称
@@ -125,36 +135,36 @@ Keep the goal stable, but let product rules follow the final design. Keep detail
 ## 5. 验收口径
 ```
 
-Optional:
+可选：
 
-- `关键决策`: only for settled tradeoffs that affect implementation/design
-- `待确认问题`: only for open points that affect scope, implementation, or acceptance
+- `关键决策`：只记录会影响实现或设计的已定取舍
+- `待确认问题`：只记录会影响范围、实现或验收的开放问题
 
-## 7. Writing Rules
+## 7. 写作规则
 
-1. Write in Chinese when the user works in Chinese.
-2. Use product language, not implementation language.
-3. Keep cards short but not vague.
-4. Do not add speculative features.
-5. Do not turn a card into a heavy PRD.
-6. Do not use generic acceptance lines like “正常展示”, “符合预期”, or “体验良好”.
+1. 用户使用中文工作时，用中文写。
+2. 使用产品语言，不使用实现语言。
+3. 卡片要短，但不能含糊。
+4. 不增加猜测性功能。
+5. 不把需求卡写成重型 PRD。
+6. 不使用“正常展示”“符合预期”“体验良好”这类泛化验收语句。
 
-## 8. Acceptance Criteria
+## 8. 验收口径
 
-Acceptance criteria must be verifiable:
+验收口径必须可验证：
 
-1. user sees a specified object/count/status/action
-2. user clicks/selects/submits/deletes/etc. and the system changes in a specified way
-3. counts/status/results match stated口径
-4. edge cases follow stated behavior
+1. 用户能看到指定对象、数量、状态或操作。
+2. 用户点击、选择、提交、删除等操作后，系统按明确方式变化。
+3. 数量、状态、结果与指定口径一致。
+4. 边界情况按已写明的行为处理。
 
-## 9. File Editing Boundaries
+## 9. 文件编辑边界
 
-Default to conversation output unless the user clearly asks to modify files.
+除非用户明确要求修改文件，否则默认只在对话中输出。
 
-When editing:
+编辑文件时：
 
-1. keep changes scoped to the named card/template/skill
-2. preserve unrelated user edits
-3. discover target files from the filesystem when unclear
-4. update both active skill and project backup when maintaining skills and a backup convention exists
+1. 变更范围限制在用户指定的卡片、模板或 skill。
+2. 保留无关的用户改动。
+3. 目标文件不明确时，先从文件系统发现候选。
+4. 维护 skill 且项目存在备份约定时，同时更新在用 skill 和项目备份。

@@ -4009,6 +4009,7 @@ body.is-col-resizing * {
 .workbench-v2-skill-section {
   min-height: 0;
   flex: 1 1 auto;
+  overflow: auto;
 }
 
 .workbench-v2-skill-grid {
@@ -4016,7 +4017,6 @@ body.is-col-resizing * {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
-  overflow: auto;
   align-content: start;
   align-items: start;
 }

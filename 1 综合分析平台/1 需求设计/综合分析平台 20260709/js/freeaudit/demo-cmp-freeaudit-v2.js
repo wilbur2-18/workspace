@@ -506,6 +506,10 @@
     return sharedBy === '系统预置' || sharedBy === '平台管理员';
   }
 
+  function isV2RecommendedPublicSkill(raw) {
+    return !!(raw && !isV2MarketSkill(raw) && raw.recommendedAt);
+  }
+
   function getV2SkillInstallCount(raw) {
     const id = String((raw && raw.id) || '').trim();
     if (id && Object.prototype.hasOwnProperty.call(V2_SKILL_INSTALL_COUNT_BY_ID, id)) {
@@ -3064,17 +3068,18 @@
               <span class="workbench-v2-skill-tabs__total">共 {{ v2SkillCards.length }} 个</span>
             </nav>
             <section class="workbench-v2-skill-section" aria-label="技能列表" data-tour-id="workbench-public-skill-list">
-              <div v-if="v2SkillCards.length" class="workbench-v2-skill-grid">
-                <article
-                  v-for="card in v2SkillCards"
-                  :key="card.key"
-                  class="workbench-v2-skill-item tc-template-card tc-template-card--list ds-list-card"
-                  role="button"
-                  tabindex="0"
-                  @click="openSkillCard(card)"
-                  @keydown.enter.prevent="openSkillCard(card)"
-                  @keydown.space.prevent="openSkillCard(card)"
-                >
+              <template v-if="v2SkillCards.length">
+                <div class="workbench-v2-skill-grid">
+                    <article
+                      v-for="card in v2SkillCards"
+                      :key="card.key"
+                      class="workbench-v2-skill-item tc-template-card tc-template-card--list ds-list-card"
+                      role="button"
+                      tabindex="0"
+                      @click="openSkillCard(card)"
+                      @keydown.enter.prevent="openSkillCard(card)"
+                      @keydown.space.prevent="openSkillCard(card)"
+                    >
                   <div class="tc-template-card__body">
                     <div class="tc-template-card__head">
                       <div class="tc-template-card__hero-icon" aria-hidden="true">
@@ -3264,8 +3269,9 @@
                       </div>
                     </div>
                   </div>
-                </article>
-              </div>
+                    </article>
+                </div>
+              </template>
               <div v-else class="workbench-v2-skill-empty">{{ v2SkillEmptyText }}</div>
             </section>
           </section>
@@ -5318,6 +5324,7 @@
               skillType: String(raw.skillType || '').trim(),
               sourceLabel: String(raw.sourceLabel || raw.sourceVersionLabel || (this.v2SkillScopeTab === 'workbench' ? '当前工作台' : (isV2MarketSkill(raw) ? '技能市场' : '共享技能'))).trim(),
               tags,
+              recommended: this.v2SkillScopeTab === 'org' && isV2RecommendedPublicSkill(raw),
             };
           })
           .filter((card) => {
@@ -5334,7 +5341,9 @@
         touchV2SkillDimensionsRevision();
         const cards = (this.v2SkillBaseCards || [])
           .filter((card) => matchV2SkillCategory(card, this.v2SkillCategoryTab));
-        return sortV2SkillCards(cards, this.v2SkillSortBy, this.v2SkillSortOrder);
+        const sorted = sortV2SkillCards(cards, this.v2SkillSortBy, this.v2SkillSortOrder);
+        if (this.v2SkillScopeTab !== 'org') return sorted;
+        return sorted.slice().sort((a, b) => Number(!!b.recommended) - Number(!!a.recommended));
       },
       hasV2SearchQuery() {
         return !!String(this.v2SearchQuery || '').trim();
@@ -7470,6 +7479,7 @@
       },
       v2SkillCardHasCornerTag(card) {
         if (this.v2SkillScopeTab === 'workbench') return this.v2SkillCardIsShared(card);
+        if (this.v2SkillScopeTab === 'org') return !!(card && card.recommended);
         return false;
       },
       v2SkillCardCornerTagWarning(card) {
@@ -7477,10 +7487,12 @@
       },
       v2SkillCardCornerTagLabel(card) {
         if (this.v2SkillScopeTab === 'workbench') return this.v2SkillCardNeedsSync(card) ? '未同步' : '已公开';
+        if (this.v2SkillScopeTab === 'org' && card && card.recommended) return '推荐';
         return '';
       },
       v2SkillCardCornerTagTitle(card) {
         if (this.v2SkillScopeTab === 'workbench') return this.v2SkillCardNeedsSync(card) ? '当前工作台内容尚未同步到公共技能' : '已公开为公共技能';
+        if (this.v2SkillScopeTab === 'org' && card && card.recommended) return '管理员推荐置顶的公共技能';
         return '';
       },
       v2SkillCardCtaLabel(card) {

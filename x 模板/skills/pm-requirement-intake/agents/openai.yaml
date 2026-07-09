@@ -1,4 +1,4 @@
 interface:
-  display_name: "PM Requirement Intake"
-  short_description: "Capture rough product needs while preserving original context."
-  default_prompt: "Record this new requirement, preserve the original wording, collect related context, and draft a lightweight 待梳理 card."
+  display_name: "PM 需求记录"
+  short_description: "记录早期需求信号，并保留原始上下文。"
+  default_prompt: "使用 $pm-requirement-intake 记录这个新需求，保留原始表达，补充相关上下文，并起草一张轻量的待梳理卡。"

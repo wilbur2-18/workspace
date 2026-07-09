@@ -1,15 +1,15 @@
 ---
 name: pm-requirement-analysis
-description: Analyze product requirements before final card writing. Use when the user asks to discuss, use first principles, think from product director/senior PM perspective, evaluate whether a requirement is overdesigned, split or merge requirements, use subagents/multi-role PM analysis, or do 先加法再减法. Produces a more correct and complete requirement direction or discussion card. Do not use for simple intake, final polishing, status/file renaming, or concise card compression.
+description: 在正式写需求卡前做产品需求分析。用户要求一起讨论、第一性原理、产品总监/资深 PM 视角、判断是否过度设计、拆分或合并需求、调用子代理/多角色分析、先加法再减法时使用。产出更准确完整的需求方向或讨论稿。不要用于简单记录、最终润色、状态/文件改名或需求卡压缩。
 ---
 
-# PM Requirement Analysis
+# PM 需求分析
 
-Use this skill when the user wants to **think the requirement through**, not merely record or polish it.
+当用户要把需求想清楚，而不是单纯记录或润色时，使用这个 skill。
 
-## 1. Trigger Boundary
+## 1. 触发边界
 
-Use this skill for:
+适用场景：
 
 - “第一性原理”
 - “一起讨论一下”
@@ -20,50 +20,50 @@ Use this skill for:
 - “先加法再减法”
 - “调度子代理 / 多角色梳理”
 
-Do not use this skill for:
+不适用场景：
 
-- “记录个需求” with only rough input
+- 只有粗略输入的“记录个需求”
 - “更新需求卡”, “精简一下”, “转待设计/待开发”
-- pure file/status maintenance
+- 纯文件或状态维护
 
-## 2. Clarification Gate
+## 2. 澄清门槛
 
-Before analysis, read the current files when they may answer the question. If one unresolved business decision would materially change the analysis direction, scope, state rules, or acceptance criteria, use `pm-ask-me` first and ask exactly one focused question.
+分析前，如果当前文件可能已经包含答案，先读文件。若仍有一个未决业务问题会明显改变分析方向、范围、状态规则或验收口径，先使用 `pm-ask-me`，只问一个聚焦问题。
 
-Do not use this gate for cosmetic UI details, prototype-only implementation details, or uncertainty that can be handled as an explicit assumption without changing the recommendation.
+不要为纯视觉细节、原型实现细节，或可作为明确假设且不影响建议方向的不确定点触发澄清。
 
-## 3. Thinking Principles
+## 3. 分析原则
 
-1. Start from the real user/workflow problem, not the requested UI control.
-2. Separate raw facts, assumptions, and decisions.
-3. Do additive thinking first: objects, states, operations, edge cases, affected modules, user costs, implementation costs.
-4. Then reduce: remove low-value branches, unnecessary states, special-case wording, and implementation-heavy options.
-5. Prefer practical consistency over semantic perfection.
-6. The output can be more complete than the final card, but should not become a heavy PRD.
+1. 从真实用户问题和工作流问题出发，不从用户指定的 UI 控件出发。
+2. 区分原始事实、合理假设和已定决策。
+3. 先做加法：对象、状态、操作、边界、影响模块、用户成本、实现成本。
+4. 再做减法：删掉低价值分支、非必要状态、特殊话术和实现过重的方案。
+5. 优先保持实际一致性，不追求语义上的过度精确。
+6. 输出可以比最终需求卡更完整，但不要写成重型 PRD。
 
-## 4. Multi-Role Mode
+## 4. 多角色模式
 
-When the user explicitly asks for subagents or role simulation:
+当用户明确要求子代理或角色模拟时：
 
-1. PM A focuses on interaction quality, UI entry points, wording, and user friction.
-2. PM B focuses on functional completeness, object/status rules, edge cases, and acceptance.
-3. The main agent acts as product director: first principles, consistency, implementation simplicity, and scope reduction.
+1. PM A 关注交互质量、入口、文案和用户阻力。
+2. PM B 关注功能完整性、对象/状态规则、边界和验收。
+3. 主代理以产品负责人视角收敛：第一性原理、一致性、实现简洁性和范围减法。
 
-If subagent tools are unavailable, simulate the same perspectives locally and state that briefly.
+如果没有可用的子代理工具，就在本地模拟这些视角，并简短说明。
 
-## 5. Review Checklist
+## 5. 结论前检查
 
-Before giving conclusions, check:
+给结论前检查：
 
-1. What is the first-principles problem?
-2. What must happen for the product to be safe/useful?
-3. What can be omitted because it adds interruption, implementation branches, or unclear value?
-4. Does the requirement need to be split because interaction models differ?
-5. Which parts are ready for `待设计`, and which should remain `待梳理`?
+1. 第一性原理问题是什么？
+2. 产品要安全或有用，必须满足什么？
+3. 哪些内容会增加打断、实现分支或价值不清，应该省掉？
+4. 是否因交互模型不同而需要拆分需求？
+5. 哪些部分已经可进入 `待设计`，哪些仍应停留在 `待梳理`？
 
-## 6. Output
+## 6. 输出
 
-Prefer a concise analysis memo:
+优先输出简洁分析纪要：
 
 ```markdown
 **核心判断**
@@ -77,4 +77,4 @@ Prefer a concise analysis memo:
 **待确认问题**
 ```
 
-If the user asks for a card, output a complete but not over-compressed requirement card. Leave final compression and status maintenance to `pm-requirement-card`.
+如果用户要求写成需求卡，输出完整但不过度压缩的需求卡。最终压缩和状态维护交给 `pm-requirement-card`。
